@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31911.196
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ricaun.Nuke", "ricaun.Nuke\ricaun.Nuke.csproj", "{F1CF4177-489D-466B-8D26-10C505372F5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj", "{BA6C8C29-3519-49C7-9C66-334A7FA69ED6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project", "Project", "{4EED1749-7A3F-47C6-8361-F4E45A143AFA}"
+	ProjectSection(SolutionItems) = preProject
+		CHANGELOG.md = CHANGELOG.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F1CF4177-489D-466B-8D26-10C505372F5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1CF4177-489D-466B-8D26-10C505372F5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1CF4177-489D-466B-8D26-10C505372F5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1CF4177-489D-466B-8D26-10C505372F5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA6C8C29-3519-49C7-9C66-334A7FA69ED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA6C8C29-3519-49C7-9C66-334A7FA69ED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5BEF182C-C416-4BB8-AD20-37E949775CF0}
+	EndGlobalSection
+EndGlobal
