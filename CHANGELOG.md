@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Change To `https://api.nuget.org/v3/index.json`
 
 ## [0.0.1] / 2021-12-06
-- Github
+- Github Develop
+- Github Master
 - Nuke Local Test - Ok
 - Add LICENCE
 - First Release
