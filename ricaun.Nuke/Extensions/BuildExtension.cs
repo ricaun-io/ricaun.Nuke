@@ -1,4 +1,5 @@
-﻿using Nuke.Common.IO;
+﻿using Nuke.Common;
+using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Utilities.Collections;
@@ -235,13 +236,17 @@ namespace ricaun.Nuke.Extensions
             var dllFiles = Directory.GetFiles(sourceDir, searchPattern, SearchOption.AllDirectories);
             foreach (var dll in dllFiles)
             {
-                var assemblyTest = Assembly.Load(File.ReadAllBytes(dll));
-                var fileVersion = assemblyTest.GetName().Version;
-                if (version < fileVersion)
+                try
                 {
-                    version = fileVersion;
-                    assembly = assemblyTest;
+                    var assemblyTest = Assembly.Load(File.ReadAllBytes(dll));
+                    var fileVersion = assemblyTest.GetName().Version;
+                    if (version < fileVersion)
+                    {
+                        version = fileVersion;
+                        assembly = assemblyTest;
+                    }
                 }
+                catch { }
             }
             return assembly;
         }
