@@ -3,6 +3,7 @@ using System.IO.Compression;
 using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Utilities.Collections;
 using ricaun.Nuke.Extensions;
 
 namespace ricaun.Nuke.Components
@@ -34,7 +35,15 @@ namespace ricaun.Nuke.Components
             var fileName = $"{project.Name} {version}";
             var ProjectDirectory = ReleaseDirectory / fileName;
 
-            FileSystemTasks.CopyDirectoryRecursively(ContentDirectory, ProjectDirectory);
+            var nupkgs = PathConstruction.GlobFiles(ContentDirectory, "**/*.nupkg");
+            if (nupkgs.Count > 0)
+            {
+                nupkgs.ForEach(file => FileSystemTasks.CopyFileToDirectory(file, ProjectDirectory));
+            }
+            else
+            {
+                FileSystemTasks.CopyDirectoryRecursively(ContentDirectory, ProjectDirectory);
+            }
 
             var zipFile = ReleaseDirectory / $"{fileName}.zip";
             ZipFile.CreateFromDirectory(ProjectDirectory, zipFile, CompressionLevel.Optimal, true);
