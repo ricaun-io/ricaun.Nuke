@@ -13,11 +13,6 @@ namespace ricaun.Nuke.Components
         [Parameter]
         string Folder => ValueInjectionUtility.TryGetValue(() => Folder) ?? "Release";
 
-        /// <summary>
-        /// Release Type (Normal / Pack)
-        /// </summary>
-        [Parameter]
-        string Type => ValueInjectionUtility.TryGetValue(() => Type) ?? "Normal";
         AbsolutePath ReleaseDirectory => Solution.GetMainProject().Directory / "bin" / Folder;
     }
 }
