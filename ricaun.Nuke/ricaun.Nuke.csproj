@@ -7,11 +7,11 @@
 
   <PropertyGroup>
     <PackageId>ricaun.Nuke</PackageId>
-    <Version>0.0.4</Version>
+    <Version>0.0.5</Version>
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageAssemblyVersion>.$(Version)</PackageAssemblyVersion>
+    <PackageAssemblyVersion></PackageAssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
     <PackageAssemblyVersion>.Dev</PackageAssemblyVersion>
