@@ -13,8 +13,6 @@ namespace ricaun.Nuke.Extensions
 {
     public static class SignExtension
     {
-
-
         #region Sign Util
 
         const string timestampServer = "http://timestamp.digicert.com/";
@@ -47,7 +45,7 @@ namespace ricaun.Nuke.Extensions
         {
             if (HasSignature(binaryPath)) return;
 
-            Logger.Warn($"Signing: {binaryPath}");
+            Logger.Normal($"Signing: {binaryPath}");
 
             try
             {
