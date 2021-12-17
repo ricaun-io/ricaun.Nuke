@@ -28,6 +28,7 @@ namespace ricaun.Nuke.Extensions
             destinationArchiveFileName = Path.ChangeExtension(destinationArchiveFileName, "zip");
             var folder = Path.GetDirectoryName(destinationArchiveFileName);
             if (Directory.Exists(folder) == false) Directory.CreateDirectory(folder);
+            if (File.Exists(destinationArchiveFileName)) return;
             ZipFile.CreateFromDirectory(sourceDirectoryName, destinationArchiveFileName, CompressionLevel.Optimal, includeBaseDirectory);
         }
     }

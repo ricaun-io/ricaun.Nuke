@@ -46,7 +46,7 @@ namespace ricaun.Nuke.Components
             }
 
             var zipFile = ReleaseDirectory / $"{fileName}.zip";
-            ZipFile.CreateFromDirectory(ProjectDirectory, zipFile, CompressionLevel.Optimal, false);
+            ZipExtension.CreateFromDirectory(ProjectDirectory, zipFile);
         }
     }
 }

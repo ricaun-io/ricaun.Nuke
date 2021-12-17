@@ -10,16 +10,15 @@ namespace ricaun.Nuke.Components
         /// Name of the MainProject (default: <seealso cref="Solution.Name"/>)
         /// </summary>
         [Parameter]
-        string Name => ValueInjectionUtility.TryGetValue(() => Name) ?? Solution.Name;
+        string MainName => ValueInjectionUtility.TryGetValue(() => MainName) ?? Solution.Name;
 
         /// <summary>
-        /// MainProject (default: <seealso cref="Solution.Name"/>)
+        /// MainProject (default: <seealso cref="MainName"/>)
         /// </summary>
-        [Parameter]
-        public Project MainProject => ValueInjectionUtility.TryGetValue(() => MainProject) ?? Solution.GetOtherProject(Name);
+        public Project MainProject => Solution.GetOtherProject(MainName);
 
         /// <summary>
-        /// MainProject (default: <seealso cref="Solution.Name"/>)
+        /// MainProject (default: <seealso cref="MainName"/>)
         /// </summary>
         /// <returns></returns>
         public Project GetMainProject() => MainProject;
