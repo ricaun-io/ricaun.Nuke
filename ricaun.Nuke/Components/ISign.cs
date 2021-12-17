@@ -12,7 +12,7 @@ namespace ricaun.Nuke.Components
             .TriggeredBy(Compile)
             .Executes(() =>
             {
-                SignProject(Solution.GetMainProject());
+                SignProject(MainProject);
             });
 
         /// <summary>

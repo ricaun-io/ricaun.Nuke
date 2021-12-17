@@ -14,7 +14,7 @@ namespace ricaun.Nuke.Components
             .TriggeredBy(Sign)
             .Executes(() =>
             {
-                ReleaseProject(Solution.GetMainProject());
+                ReleaseProject(MainProject);
             });
 
         /// <summary>

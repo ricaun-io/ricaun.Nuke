@@ -10,7 +10,7 @@ namespace ricaun.Nuke.Components
             .Before(Sign)
             .Executes(() =>
             {
-                Solution.BuildOtherProject(GetExampleProject(), (project) =>
+                Solution.BuildProject(GetExampleProject(), (project) =>
                 {
                     SignProject(project);
                     var folder = ExampleDirectory;

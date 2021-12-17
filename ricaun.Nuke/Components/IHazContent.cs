@@ -6,14 +6,14 @@ using Nuke.Common.ValueInjection;
 using ricaun.Nuke.Extensions;
 namespace ricaun.Nuke.Components
 {
-    public interface IHazContent : IHazSolution, INukeBuild
+    public interface IHazContent : IHazMainProject, IHazSolution, INukeBuild
     {
         /// <summary>
         /// Folder Content 
         /// </summary>
         [Parameter]
         string Folder => ValueInjectionUtility.TryGetValue(() => Folder) ?? "Content";
-        AbsolutePath ContentDirectory => GetContentDirectory(Solution.GetMainProject());
+        AbsolutePath ContentDirectory => GetContentDirectory(MainProject);
         public AbsolutePath GetContentDirectory(Project project) => project.Directory / "bin" / Folder;
     }
 }

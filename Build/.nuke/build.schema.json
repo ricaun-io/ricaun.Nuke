@@ -37,6 +37,9 @@
             "VSCode"
           ]
         },
+        "MainProject": {
+          "type": "string"
+        },
         "Name": {
           "type": "string"
         },

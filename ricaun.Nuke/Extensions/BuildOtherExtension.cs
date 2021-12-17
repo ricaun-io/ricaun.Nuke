@@ -13,9 +13,9 @@ namespace ricaun.Nuke.Extensions
         /// <param name="Solution"></param>
         /// <param name="projectName"></param>
         /// <param name="afterBuild"></param>
-        public static void BuildOtherProject(this Solution Solution, string projectName, Action<Project> afterBuild = null)
+        public static void BuildProject(this Solution Solution, string projectName, Action<Project> afterBuild = null)
         {
-            Solution.BuildOtherProject(Solution.GetOtherProject(projectName), afterBuild);
+            Solution.BuildProject(Solution.GetOtherProject(projectName), afterBuild);
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace ricaun.Nuke.Extensions
         /// <param name="Solution"></param>
         /// <param name="projectName"></param>
         /// <param name="afterBuild"></param>
-        public static void BuildOtherProject(this Solution Solution, Project project, Action<Project> afterBuild = null)
+        public static void BuildProject(this Solution Solution, Project project, Action<Project> afterBuild = null)
         {
             if (project is Project)
             {

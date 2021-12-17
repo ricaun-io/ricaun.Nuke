@@ -62,7 +62,7 @@ namespace ricaun.Nuke.Extensions
         /// Build the Main project
         /// </summary>
         /// <param name="Solution"></param>
-        public static void BuildMainProject(this Solution Solution)
+        private static void BuildMainProject(this Solution Solution)
         {
             if (Solution.GetMainProject() is Project project)
             {
@@ -90,7 +90,7 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <param name="Solution"></param>
         /// <returns></returns>
-        public static Project GetMainProject(this Solution Solution)
+        private static Project GetMainProject(this Solution Solution)
         {
             return Solution.GetProjects("*")
                 .FirstOrDefault(p => p.Name.Equals(Solution.Name, StringComparison.OrdinalIgnoreCase));
