@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project", "Project", "{4EED
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ricaun.Nuke.Example", "Examples\ricaun.Nuke.Example.csproj", "{027171E5-2FB6-4A4C-A8DE-F3E148B47FFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ricaun.Nuke.Example", "ricaun.Nuke.Examples\ricaun.Nuke.Example.csproj", "{027171E5-2FB6-4A4C-A8DE-F3E148B47FFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
