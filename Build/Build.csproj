@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Build.cs~RF299b4df2.TMP" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ricaun.Nuke\ricaun.Nuke.csproj" />
   </ItemGroup>
 </Project>
