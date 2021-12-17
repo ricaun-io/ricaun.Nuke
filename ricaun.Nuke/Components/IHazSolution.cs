@@ -16,6 +16,6 @@ namespace ricaun.Nuke.Components
         /// </summary>
         /// <param name="hazSolution"></param>
         /// <returns></returns>
-        public static Solution GetMainProject(this IHazSolution hazSolution) => hazSolution.Solution;
+        public static Solution GetSolution(this IHazSolution hazSolution) => hazSolution.Solution;
     }
 }
