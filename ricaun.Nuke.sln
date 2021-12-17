@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ricaun.Nuke", "ricaun.Nuke\ricaun.Nuke.csproj", "{F1CF4177-489D-466B-8D26-10C505372F5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ricaun.Nuke", "ricaun.Nuke\ricaun.Nuke.csproj", "{F1CF4177-489D-466B-8D26-10C505372F5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj", "{BA6C8C29-3519-49C7-9C66-334A7FA69ED6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "Build\Build.csproj", "{BA6C8C29-3519-49C7-9C66-334A7FA69ED6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project", "Project", "{4EED1749-7A3F-47C6-8361-F4E45A143AFA}"
 	ProjectSection(SolutionItems) = preProject
 		CHANGELOG.md = CHANGELOG.md
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples.csproj", "{027171E5-2FB6-4A4C-A8DE-F3E148B47FFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,8 @@ Global
 		{F1CF4177-489D-466B-8D26-10C505372F5E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA6C8C29-3519-49C7-9C66-334A7FA69ED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BA6C8C29-3519-49C7-9C66-334A7FA69ED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{027171E5-2FB6-4A4C-A8DE-F3E148B47FFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{027171E5-2FB6-4A4C-A8DE-F3E148B47FFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

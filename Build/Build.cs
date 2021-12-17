@@ -4,7 +4,7 @@ using ricaun.Nuke;
 using ricaun.Nuke.Components;
 
 [CheckBuildProjectConfigurations]
-class Build : NukeBuild, IPublishPack
+class Build : NukeBuild, IPublishPack, IExampleCompile
 {
     string IHazContent.Folder => "Release";
     string IHazRelease.Folder => "ReleasePack";

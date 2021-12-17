@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.0.8] / 2021-12-17
+- Release Example Project
+- Add Example Project
+- Add Select other Project To Compile and Release
+- Add Example to Compile
+- Set Visible false
+
 ## [0.0.7] / 2021-12-09
 - Add Readme inside Package
 - Update Readme
@@ -51,6 +58,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: https://github.com/ricaun-io/ricaun.Nuke/compare/1.0.0...HEAD
+[0.0.8]: https://github.com/ricaun-io/ricaun.Nuke/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/ricaun-io/ricaun.Nuke/compare/0.0.6...0.0.7
 [0.0.6]: https://github.com/ricaun-io/ricaun.Nuke/compare/0.0.5...0.0.6
 [0.0.5]: https://github.com/ricaun-io/ricaun.Nuke/compare/0.0.4...0.0.5

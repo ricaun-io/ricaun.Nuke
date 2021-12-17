@@ -40,6 +40,14 @@ class Build : NukeBuild, IPublishPack
 }
 ```
 
+## License
+
+This package is [licensed](LICENSE) under the [MIT Licence](https://en.wikipedia.org/wiki/MIT_License).
+
+---
+
+Do you like this package? Please [star this project on GitHub](https://github.com/ricaun-io/ricaun.Nuke/stargazers)!
+
 ---
 
 Copyright © 2021 ricaun
