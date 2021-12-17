@@ -1,21 +1,23 @@
 ﻿using Nuke.Common;
-using ricaun.Nuke.Components;
 using ricaun.Nuke.Extensions;
 
-public interface IExampleCompile : ICompile, ISign, IRelease, IHazContent
+namespace ricaun.Nuke.Components
 {
-    Target ExampleCompile => _ => _
+    public interface ICompileExample : IHazExample, ICompile, ISign, IRelease, IHazContent, INukeBuild
+    {
+        Target CompileExample => _ => _
             .TriggeredBy(Compile)
             .Before(Sign)
             .Executes(() =>
             {
-                Solution.BuildOtherProject("Examples", (project) =>
+                Solution.BuildOtherProject(GetExampleProject(), (project) =>
                 {
                     SignProject(project);
-                    var folder = GetContentDirectory(project);
+                    var folder = ExampleDirectory;
                     var fileName = project.Name;
                     var zipFile = ReleaseDirectory / $"{fileName}.zip";
                     ZipExtension.CreateFromDirectory(folder, zipFile);
                 });
             });
+    }
 }
