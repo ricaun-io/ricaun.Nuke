@@ -1,6 +1,7 @@
 ﻿using System;
 using Nuke.Common;
 using Nuke.Common.IO;
+using Nuke.Common.ProjectModel;
 using Nuke.Common.ValueInjection;
 using ricaun.Nuke.Extensions;
 namespace ricaun.Nuke.Components
@@ -13,6 +14,8 @@ namespace ricaun.Nuke.Components
         [Parameter]
         string Folder => ValueInjectionUtility.TryGetValue(() => Folder) ?? "Release";
 
-        AbsolutePath ReleaseDirectory => Solution.GetMainProject().Directory / "bin" / Folder;
+        AbsolutePath ReleaseDirectory => GetReleaseDirectory(Solution.GetMainProject());
+
+        public AbsolutePath GetReleaseDirectory(Project project) => project.Directory / "bin" / Folder;
     }
 }
