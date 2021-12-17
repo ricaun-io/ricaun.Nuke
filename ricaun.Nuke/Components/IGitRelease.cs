@@ -20,7 +20,7 @@ namespace ricaun.Nuke.Components
             .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch())
             .Executes(() =>
             {
-                var project = Solution.GetMainProject();
+                var project = MainProject;
 
                 if (Directory.Exists(ReleaseDirectory) == false)
                 {

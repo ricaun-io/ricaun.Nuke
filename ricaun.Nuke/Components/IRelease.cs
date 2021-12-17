@@ -14,7 +14,7 @@ namespace ricaun.Nuke.Components
             .TriggeredBy(Sign)
             .Executes(() =>
             {
-                ReleaseProject(Solution.GetMainProject());
+                ReleaseProject(MainProject);
             });
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace ricaun.Nuke.Components
             var fileName = $"{project.Name} {version}";
             var ProjectDirectory = ReleaseDirectory / fileName;
 
-            var nupkgs = PathConstruction.GlobFiles(ContentDirectory.Parent, "**/*.nupkg", "**/*.exe");
+            var nupkgs = PathConstruction.GlobFiles(ContentDirectory, "**/*.nupkg");
             if (nupkgs.Count > 0)
             {
                 nupkgs.ForEach(file => FileSystemTasks.CopyFileToDirectory(file, ProjectDirectory));

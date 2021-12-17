@@ -6,7 +6,7 @@ using Nuke.Common.ValueInjection;
 using ricaun.Nuke.Extensions;
 namespace ricaun.Nuke.Components
 {
-    public interface IHazRelease : IHazSolution, INukeBuild
+    public interface IHazRelease : IHazMainProject, IHazSolution, INukeBuild
     {
         /// <summary>
         /// Folder Release 
@@ -14,7 +14,7 @@ namespace ricaun.Nuke.Components
         [Parameter]
         string Folder => ValueInjectionUtility.TryGetValue(() => Folder) ?? "Release";
 
-        AbsolutePath ReleaseDirectory => GetReleaseDirectory(Solution.GetMainProject());
+        AbsolutePath ReleaseDirectory => GetReleaseDirectory(MainProject);
 
         public AbsolutePath GetReleaseDirectory(Project project) => project.Directory / "bin" / Folder;
     }
