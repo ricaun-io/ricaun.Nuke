@@ -6,6 +6,9 @@ using ricaun.Nuke.Extensions;
 
 namespace ricaun.Nuke.Components
 {
+    /// <summary>
+    /// IHazGitVersion
+    /// </summary>
     public interface IHazGitVersion : INukeBuild
     {
         /// <summary>

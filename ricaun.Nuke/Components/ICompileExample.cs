@@ -3,6 +3,9 @@ using ricaun.Nuke.Extensions;
 
 namespace ricaun.Nuke.Components
 {
+    /// <summary>
+    /// ICompileExample
+    /// </summary>
     public interface ICompileExample : IHazExample, ICompile, ISign, IRelease, IHazContent, INukeBuild
     {
         Target CompileExample => _ => _

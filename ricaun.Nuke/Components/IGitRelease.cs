@@ -9,6 +9,9 @@ using System.IO;
 
 namespace ricaun.Nuke.Components
 {
+    /// <summary>
+    /// IGitRelease
+    /// </summary>
     public interface IGitRelease : IRelease, IHazGitRepository, IHazGitVersion, IHazChangelog, INukeBuild
     {
         Target GitRelease => _ => _

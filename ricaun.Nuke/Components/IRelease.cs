@@ -8,6 +8,9 @@ using ricaun.Nuke.Extensions;
 
 namespace ricaun.Nuke.Components
 {
+    /// <summary>
+    /// IRelease
+    /// </summary>
     public interface IRelease : IHazRelease, IHazContent, ISign, INukeBuild
     {
         Target Release => _ => _

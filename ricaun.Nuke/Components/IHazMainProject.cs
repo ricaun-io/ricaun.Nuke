@@ -4,6 +4,9 @@ using Nuke.Common.ValueInjection;
 using ricaun.Nuke.Extensions;
 namespace ricaun.Nuke.Components
 {
+    /// <summary>
+    /// IHazMainProject
+    /// </summary>
     public interface IHazMainProject : IHazSolution, INukeBuild
     {
         /// <summary>
@@ -24,6 +27,9 @@ namespace ricaun.Nuke.Components
         public Project GetMainProject() => MainProject;
     }
 
+    /// <summary>
+    /// HazMainProjectExtension
+    /// </summary>
     public static class HazMainProjectExtension
     {
         /// <summary>
@@ -32,5 +38,12 @@ namespace ricaun.Nuke.Components
         /// <param name="hazMainProject"></param>
         /// <returns></returns>
         public static Project GetMainProject(this IHazMainProject hazMainProject) => hazMainProject.MainProject;
+
+        /// <summary>
+        /// Get Project
+        /// </summary>
+        /// <param name="hazMainProject"></param>
+        /// <returns></returns>
+        public static Project GetProject(this IHazMainProject hazMainProject, string projectName) => hazMainProject.GetSolution().GetOtherProject(projectName);
     }
 }

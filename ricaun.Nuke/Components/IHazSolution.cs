@@ -4,11 +4,20 @@ using Nuke.Common.ValueInjection;
 
 namespace ricaun.Nuke.Components
 {
+    /// <summary>
+    /// IHazSolution
+    /// </summary>
     public interface IHazSolution : INukeBuild
     {
+        /// <summary>
+        /// Solution
+        /// </summary>
         [Required] [Solution] Solution Solution => ValueInjectionUtility.TryGetValue(() => Solution);
     }
 
+    /// <summary>
+    /// HazSolutionExtension
+    /// </summary>
     public static class HazSolutionExtension
     {
         /// <summary>

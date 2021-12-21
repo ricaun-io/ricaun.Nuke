@@ -6,6 +6,9 @@ using ricaun.Nuke.Extensions;
 
 namespace ricaun.Nuke.Components
 {
+    /// <summary>
+    /// ISign
+    /// </summary>
     public interface ISign : ICompile, IHazSign, IHazSolution, INukeBuild
     {
         Target Sign => _ => _

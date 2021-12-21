@@ -1,15 +1,16 @@
 ﻿
-using System;
-
 using Nuke.Common;
-using static Nuke.Common.ChangeLog.ChangelogTasks;
+using Nuke.Common.ChangeLog;
 
 namespace ricaun.Nuke.Components
 {
+    /// <summary>
+    /// IHazChangelog
+    /// </summary>
     public interface IHazChangelog : INukeBuild
     {
         // TODO: assert file exists
         string ChangelogFile => RootDirectory / ".." / "CHANGELOG.md";
-        string NuGetReleaseNotes => GetNuGetReleaseNotes(ChangelogFile, (this as IHazGitRepository)?.GitRepository);
+        string NuGetReleaseNotes => ChangelogTasks.GetNuGetReleaseNotes(ChangelogFile, (this as IHazGitRepository)?.GitRepository);
     }
 }

@@ -7,6 +7,9 @@ using ricaun.Nuke.Extensions;
 
 namespace ricaun.Nuke.Components
 {
+    /// <summary>
+    /// IPack
+    /// </summary>
     public interface IPack : IHazPack, IHazContent, ISign, IHazGitRepository, INukeBuild
     {
         Target Pack => _ => _
