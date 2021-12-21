@@ -1,19 +1,15 @@
-﻿using Nuke.Common;
-using Nuke.Common.IO;
-using Nuke.Common.ProjectModel;
-using Nuke.Common.Tools.MSBuild;
-using Nuke.Common.Utilities.Collections;
+﻿using Nuke.Common.ProjectModel;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using static Nuke.Common.IO.PathConstruction;
-using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 
 namespace ricaun.Nuke.Extensions
 {
+    /// <summary>
+    /// AssemblyExtension
+    /// </summary>
     public static class AssemblyExtension
     {
         #region Version Dll

@@ -8,6 +8,9 @@ namespace ricaun.Nuke.Components
     /// </summary>
     public interface IClean : IHazSolution, INukeBuild
     {
+        /// <summary>
+        /// Target Clean
+        /// </summary>
         Target Clean => _ => _
             .Executes(() =>
             {

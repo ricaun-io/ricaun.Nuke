@@ -5,15 +5,13 @@ using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Utilities.Collections;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using static Nuke.Common.IO.PathConstruction;
-using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 
 namespace ricaun.Nuke.Extensions
 {
+    /// <summary>
+    /// BuildExtension
+    /// </summary>
     public static class BuildExtension
     {
         #region Solution
@@ -80,8 +78,8 @@ namespace ricaun.Nuke.Extensions
         /// <param name="BuildProjectDirectory"></param>
         public static void ClearSolution(this Solution Solution, AbsolutePath BuildProjectDirectory)
         {
-            GlobDirectories(Solution.Directory, "**/bin", "**/obj")
-                .Where(x => !IsDescendantPath(BuildProjectDirectory, x))
+            PathConstruction.GlobDirectories(Solution.Directory, "**/bin", "**/obj")
+                .Where(x => !PathConstruction.IsDescendantPath(BuildProjectDirectory, x))
                 .ForEach(FileSystemTasks.DeleteDirectory);
         }
 
@@ -143,7 +141,7 @@ namespace ricaun.Nuke.Extensions
         /// <param name="configuration"></param>
         public static void Build(this Project project, string configuration)
         {
-            MSBuild(s => s
+            MSBuildTasks.MSBuild(s => s
                 .SetTargets("Rebuild")
                 .SetTargetPath(project)
                 .SetConfiguration(configuration)

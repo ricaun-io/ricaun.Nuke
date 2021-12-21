@@ -43,6 +43,7 @@ namespace ricaun.Nuke.Components
         /// Get Project
         /// </summary>
         /// <param name="hazMainProject"></param>
+        /// <param name="projectName"></param>
         /// <returns></returns>
         public static Project GetProject(this IHazMainProject hazMainProject, string projectName) => hazMainProject.GetSolution().GetOtherProject(projectName);
     }

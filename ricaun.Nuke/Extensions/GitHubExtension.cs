@@ -9,6 +9,9 @@ using System.Linq;
 
 namespace ricaun.Nuke.Extensions
 {
+    /// <summary>
+    /// GitHubExtension
+    /// </summary>
     public static class GitHubExtension
     {
         #region GitHubUtil

@@ -11,16 +11,23 @@ using System.Threading.Tasks;
 
 namespace ricaun.Nuke.Extensions
 {
+    /// <summary>
+    /// SignExtension
+    /// </summary>
     public static class SignExtension
     {
         #region Sign Util
 
+        /// <summary>
+        /// timestampServer
+        /// </summary>
         const string timestampServer = "http://timestamp.digicert.com/";
 
         /// <summary>
         /// VerifySignFile
         /// </summary>
         /// <param name="path"></param>
+        /// <param name="tempFolderDownloadFile"></param>
         /// <returns></returns>
         public static string VerifySignFile(string path, string tempFolderDownloadFile)
         {

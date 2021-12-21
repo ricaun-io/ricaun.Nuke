@@ -8,6 +8,9 @@ namespace ricaun.Nuke.Components
     /// </summary>
     public interface ICompile : IClean, IHazMainProject, IHazSolution, INukeBuild
     {
+        /// <summary>
+        /// Target Compile
+        /// </summary>
         Target Compile => _ => _
             .DependsOn(Clean)
             .Executes(() =>
