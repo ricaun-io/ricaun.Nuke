@@ -3,6 +3,9 @@ using System.IO.Compression;
 
 namespace ricaun.Nuke.Extensions
 {
+    /// <summary>
+    /// ZipExtension
+    /// </summary>
     public static class ZipExtension
     {
         /// <summary>

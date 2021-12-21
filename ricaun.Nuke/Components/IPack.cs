@@ -7,8 +7,14 @@ using ricaun.Nuke.Extensions;
 
 namespace ricaun.Nuke.Components
 {
+    /// <summary>
+    /// IPack
+    /// </summary>
     public interface IPack : IHazPack, IHazContent, ISign, IHazGitRepository, INukeBuild
     {
+        /// <summary>
+        /// Target Pack
+        /// </summary>
         Target Pack => _ => _
             .TriggeredBy(Sign)
             .OnlyWhenStatic(() => NugetApiUrl.SkipEmpty())

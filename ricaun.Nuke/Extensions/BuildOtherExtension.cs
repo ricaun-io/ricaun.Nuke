@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace ricaun.Nuke.Extensions
 {
+    /// <summary>
+    /// BuildOtherExtension
+    /// </summary>
     public static class BuildOtherExtension
     {
         #region Other
@@ -22,7 +25,7 @@ namespace ricaun.Nuke.Extensions
         /// Build the Other project
         /// </summary>
         /// <param name="Solution"></param>
-        /// <param name="projectName"></param>
+        /// <param name="project"></param>
         /// <param name="afterBuild"></param>
         public static void BuildProject(this Solution Solution, Project project, Action<Project> afterBuild = null)
         {

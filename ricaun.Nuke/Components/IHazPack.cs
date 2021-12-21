@@ -2,6 +2,9 @@
 
 namespace ricaun.Nuke.Components
 {
+    /// <summary>
+    /// IHazPack
+    /// </summary>
     public interface IHazPack : IHazGitRepository, INukeBuild
     {
         /// <summary>

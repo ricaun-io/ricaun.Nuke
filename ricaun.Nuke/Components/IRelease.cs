@@ -8,8 +8,14 @@ using ricaun.Nuke.Extensions;
 
 namespace ricaun.Nuke.Components
 {
+    /// <summary>
+    /// IRelease
+    /// </summary>
     public interface IRelease : IHazRelease, IHazContent, ISign, INukeBuild
     {
+        /// <summary>
+        /// Target Release
+        /// </summary>
         Target Release => _ => _
             .TriggeredBy(Sign)
             .Executes(() =>
