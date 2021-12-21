@@ -24,6 +24,12 @@ namespace ricaun.Nuke.Components
         string Name => ValueInjectionUtility.TryGetValue(() => Name) ?? $"{Solution.Name}.Example";
 
         /// <summary>
+        /// ReleaseExample (default: true)
+        /// </summary>
+        [Parameter]
+        bool ReleaseExample => ValueInjectionUtility.TryGetValue<bool?>(() => ReleaseExample) ?? true;
+
+        /// <summary>
         /// ExampleDirectory
         /// </summary>
         AbsolutePath ExampleDirectory => GetExampleDirectory(GetExampleProject());

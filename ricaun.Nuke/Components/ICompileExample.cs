@@ -21,8 +21,11 @@ namespace ricaun.Nuke.Components
                     SignProject(project);
                     var folder = ExampleDirectory;
                     var fileName = project.Name;
-                    var zipFile = ReleaseDirectory / $"{fileName}.zip";
-                    ZipExtension.CreateFromDirectory(folder, zipFile);
+                    if (ReleaseExample)
+                    {
+                        var zipFile = ReleaseDirectory / $"{fileName}.zip";
+                        ZipExtension.CreateFromDirectory(folder, zipFile);
+                    }
                 });
             });
     }
