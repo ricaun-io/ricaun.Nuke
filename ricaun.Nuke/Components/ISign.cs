@@ -35,6 +35,8 @@ namespace ricaun.Nuke.Components
             var certPath = SignExtension.VerifySignFile(SignFile, BuildAssemblyDirectory);
             var certPassword = SignPassword;
 
+            SignExtension.CreateCerFile(certPath, certPassword, BuildAssemblyDirectory);
+
             var files = PathConstruction.GlobFiles(projectFolder, "**/*.dll");
             files.ForEach(file => SignExtension.SignBinary(certPath, certPassword, file));
 

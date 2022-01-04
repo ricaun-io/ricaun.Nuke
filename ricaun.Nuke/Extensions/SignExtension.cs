@@ -2,12 +2,7 @@
 using Nuke.Common.Tools.NuGet;
 using Nuke.Common.Tools.SignTool;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ricaun.Nuke.Extensions
 {
@@ -26,20 +21,34 @@ namespace ricaun.Nuke.Extensions
         /// <summary>
         /// VerifySignFile
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="fileNamePfx"></param>
         /// <param name="tempFolderDownloadFile"></param>
         /// <returns></returns>
-        public static string VerifySignFile(string path, string tempFolderDownloadFile)
+        public static string VerifySignFile(string fileNamePfx, string tempFolderDownloadFile)
         {
-            if (File.Exists(path))
-                return path;
+            if (File.Exists(fileNamePfx))
+                return fileNamePfx;
 
             var file = Path.Combine(tempFolderDownloadFile, "signfile.pfx");
             using (var client = new System.Net.WebClient())
             {
-                client.DownloadFile(path, file);
+                client.DownloadFile(fileNamePfx, file);
             }
             return file;
+        }
+
+        /// <summary>
+        /// Create a Cer Certificate with a <paramref name="fileNamePfx"/>
+        /// </summary>
+        /// <param name="fileNamePfx"></param>
+        /// <param name="passwordPfx"></param>
+        /// <param name="tempFolderDownloadFile"></param>
+        /// <returns></returns>
+        public static bool CreateCerFile(string fileNamePfx, string passwordPfx, string tempFolderDownloadFile)
+        {
+            var cert = Path.Combine(tempFolderDownloadFile, "certificate.cer");
+            if (File.Exists(cert)) return true;
+            return CreateCertificatesCer(fileNamePfx, passwordPfx, cert);
         }
 
         /// <summary>
@@ -137,6 +146,28 @@ namespace ricaun.Nuke.Extensions
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Create a Cer Certificate with a <paramref name="fileNamePfx"/>
+        /// </summary>
+        /// <param name="fileNamePfx"></param>
+        /// <param name="passwordPfx"></param>
+        /// <param name="outputCer"></param>
+        /// <returns></returns>
+        static bool CreateCertificatesCer(string fileNamePfx, string passwordPfx, string outputCer)
+        {
+            try
+            {
+                var certificates = new System.Security.Cryptography.X509Certificates.X509Certificate2(fileNamePfx, passwordPfx);
+                File.WriteAllBytes(outputCer, certificates.Export(System.Security.Cryptography.X509Certificates.X509ContentType.Cert));
+                return true;
+            }
+            catch (Exception)
+            {
+                Logger.Error($"Failed to create 'cer' file '{outputCer}");
+            }
+            return false;
         }
 
         #endregion
