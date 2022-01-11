@@ -20,12 +20,21 @@ namespace ricaun.Nuke.Components
         [GitRepository] GitRepository GitRepository => ValueInjectionUtility.TryGetValue(() => GitRepository);
 
         /// <summary>
-        /// GetGitRepositoryPackageUrl (default: https://nuget.pkg.github.com/../../index.json)
+        /// GetGitRepositoryPackageUrl (default: https://nuget.pkg.github.com/repository_owner/index.json)
         /// </summary>
         /// <returns></returns>
         public string GetGitRepositoryPackageUrl()
         {
-            return $@"https://nuget.pkg.github.com/{GitRepository.Identifier}/index.json";
+            return $@"https://nuget.pkg.github.com/{GetGitRepositoryOwner()}/index.json";
+        }
+
+        /// <summary>
+        /// GetGitRepositoryOwner based on the GitRepository.Identifier
+        /// </summary>
+        /// <returns></returns>
+        public string GetGitRepositoryOwner()
+        {
+            return GitRepository.Identifier.Split("/")[0];
         }
     }
 }
