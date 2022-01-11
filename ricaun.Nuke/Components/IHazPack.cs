@@ -1,4 +1,5 @@
 ﻿using Nuke.Common;
+using Nuke.Common.ValueInjection;
 
 namespace ricaun.Nuke.Components
 {
@@ -10,10 +11,10 @@ namespace ricaun.Nuke.Components
         /// <summary>
         /// NugetApiUrl
         /// </summary>
-        public string NugetApiUrl => EnvironmentInfo.GetVariable<string>("NugetApiUrl");
+        [Secret] [Parameter] public string NugetApiUrl => ValueInjectionUtility.TryGetValue(() => NugetApiUrl) ?? GetGitRepositoryPackageUrl();
         /// <summary>
         /// NugetApiKey
         /// </summary>
-        public string NugetApiKey => EnvironmentInfo.GetVariable<string>("NugetApiKey");
+        [Secret] [Parameter] public string NugetApiKey => ValueInjectionUtility.TryGetValue(() => NugetApiKey) ?? GitHubToken;
     }
 }
