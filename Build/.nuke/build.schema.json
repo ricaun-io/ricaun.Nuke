@@ -13,6 +13,10 @@
         "Folder": {
           "type": "string"
         },
+        "GitHubToken": {
+          "type": "string",
+          "default": "Secrets must be entered via 'nuke :secret [profile]'"
+        },
         "Help": {
           "type": "boolean",
           "description": "Shows the help text for this build assembly"
@@ -47,6 +51,14 @@
           "type": "boolean",
           "description": "Disables displaying the NUKE logo"
         },
+        "NugetApiKey": {
+          "type": "string",
+          "default": "Secrets must be entered via 'nuke :secret [profile]'"
+        },
+        "NugetApiUrl": {
+          "type": "string",
+          "default": "Secrets must be entered via 'nuke :secret [profile]'"
+        },
         "Partition": {
           "type": "string",
           "description": "Partition to use on CI"
@@ -68,6 +80,14 @@
         "Root": {
           "type": "string",
           "description": "Root directory during build execution"
+        },
+        "SignFile": {
+          "type": "string",
+          "default": "Secrets must be entered via 'nuke :secret [profile]'"
+        },
+        "SignPassword": {
+          "type": "string",
+          "default": "Secrets must be entered via 'nuke :secret [profile]'"
         },
         "Skip": {
           "type": "array",

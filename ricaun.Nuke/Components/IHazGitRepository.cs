@@ -10,13 +10,22 @@ namespace ricaun.Nuke.Components
     public interface IHazGitRepository : INukeBuild
     {
         /// <summary>
-        /// IHazGitRepository
+        /// GitHubToken
         /// </summary>
-        public string GitHubToken => EnvironmentInfo.GetVariable<string>("GitHubToken");
+        [Secret] [Parameter] public string GitHubToken => ValueInjectionUtility.TryGetValue(() => GitHubToken);
 
         /// <summary>
         /// GitRepository
         /// </summary>
         [GitRepository] GitRepository GitRepository => ValueInjectionUtility.TryGetValue(() => GitRepository);
+
+        /// <summary>
+        /// GetGitRepositoryPackageUrl (default: https://nuget.pkg.github.com/../../index.json)
+        /// </summary>
+        /// <returns></returns>
+        public string GetGitRepositoryPackageUrl()
+        {
+            return $@"https://nuget.pkg.github.com/{GitRepository.Identifier}/index.json";
+        }
     }
 }
