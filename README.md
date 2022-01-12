@@ -23,6 +23,15 @@ class Build : NukeBuild, IPublish
 }
 ```
 
+## Environment Variables
+
+```yml
+env:
+    GitHubToken: ${{ secrets.GITHUB_TOKEN }}
+    SignFile: ${{ secrets.SIGN_FILE }}
+    SignPassword: ${{ secrets.SIGN_PASSWORD }}
+```
+
 # Build.cs - IPublishPack
 
 ```C#
@@ -34,11 +43,32 @@ using ricaun.Nuke.Components;
 [CheckBuildProjectConfigurations]
 class Build : NukeBuild, IPublishPack
 {
-    // string IHazContent.Folder => "Release";
-    // string IHazRelease.Folder => "ReleaseFiles";
     public static int Main() => Execute<Build>(x => x.From<IPublishPack>().Build);
 }
 ```
+
+## Environment Variables
+
+### Publish Package Github
+
+```yml
+env:
+    GitHubToken: ${{ secrets.GITHUB_TOKEN }}
+    SignFile: ${{ secrets.SIGN_FILE }}
+    SignPassword: ${{ secrets.SIGN_PASSWORD }}
+```
+
+### Publish Package Nuget
+
+```yml
+env:
+    GitHubToken: ${{ secrets.GITHUB_TOKEN }}
+    SignFile: ${{ secrets.SIGN_FILE }}
+    SignPassword: ${{ secrets.SIGN_PASSWORD }}
+    NugetApiUrl: ${{ secrets.NUGET_API_URL }}
+    NugetApiKey: ${{ secrets.NUGET_API_KEY }}
+```
+
 
 ## License
 
