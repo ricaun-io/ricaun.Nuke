@@ -106,20 +106,26 @@ namespace ricaun.Nuke.Extensions
         #endregion
 
         #region Assembly
+        /// <summary>
+        /// Get Version <see cref="Version"/>
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <returns></returns>
+        public static string GetVersion(this Assembly assembly) => assembly.GetName().Version.ToString();
 
         /// <summary>
         /// Get InformationalVersion
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        public static string GetInformationalVersion(this Assembly assembly) => assembly.GetValue<AssemblyInformationalVersionAttribute>();
+        public static string GetInformationalVersion(this Assembly assembly) => assembly.GetValue<AssemblyInformationalVersionAttribute>(assembly.GetVersion());
 
         /// <summary>
         /// Get FileVersion
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        public static string GetFileVersion(this Assembly assembly) => assembly.GetValue<AssemblyFileVersionAttribute>();
+        public static string GetFileVersion(this Assembly assembly) => assembly.GetValue<AssemblyFileVersionAttribute>(assembly.GetVersion());
 
         /// <summary>
         /// Get Title
@@ -175,11 +181,12 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <typeparam name="TCustomAttributeType"></typeparam>
         /// <param name="assembly"></param>
+        /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public static string GetValue<TCustomAttributeType>(this Assembly assembly)
+        public static string GetValue<TCustomAttributeType>(this Assembly assembly, string defaultValue = "")
         {
             var attribute = assembly.CustomAttributes.Where(y => y.AttributeType == typeof(TCustomAttributeType)).FirstOrDefault();
-            if (attribute == null) return "";
+            if (attribute == null) return defaultValue;
             return attribute.ConstructorArguments[0].Value.ToString();
         }
         #endregion

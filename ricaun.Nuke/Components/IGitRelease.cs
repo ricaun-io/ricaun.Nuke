@@ -54,7 +54,7 @@ namespace ricaun.Nuke.Components
                 var newRelease = new NewRelease(version)
                 {
                     Name = version,
-                    Body = NuGetReleaseNotes,
+                    Body = GetNuGetReleaseNotes(),
                     Draft = true,
                     TargetCommitish = GitVersion.Sha
                 };
