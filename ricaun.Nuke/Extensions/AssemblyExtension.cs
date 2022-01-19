@@ -107,11 +107,11 @@ namespace ricaun.Nuke.Extensions
 
         #region Assembly
         /// <summary>
-        /// Get Version <see cref="Version"/>
+        /// Get Version with major.minor.build
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        public static string GetVersion(this Assembly assembly) => assembly.GetName().Version.ToString();
+        public static string GetVersion(this Assembly assembly) => assembly.GetName().Version.ToString(3);
 
         /// <summary>
         /// Get InformationalVersion
