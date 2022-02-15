@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageDownload Include="GitVersion.Tool" Version="[5.7.0]" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\.github\workflows\*.yml" LinkBase="ci" />
   </ItemGroup>
 

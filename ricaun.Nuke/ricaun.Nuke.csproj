@@ -68,6 +68,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageDownload Include="GitVersion.Tool" Version="[5.7.0]" />
     <PackageReference Include="NuGet.CommandLine" Version="6.0.0"/>
     <PackageReference Include="Nuke.Common" Version="*" />
   </ItemGroup>
