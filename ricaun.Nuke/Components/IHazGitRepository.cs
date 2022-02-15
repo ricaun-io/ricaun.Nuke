@@ -1,6 +1,5 @@
 ﻿using Nuke.Common;
 using Nuke.Common.Git;
-using Nuke.Common.ValueInjection;
 
 namespace ricaun.Nuke.Components
 {
@@ -12,12 +11,12 @@ namespace ricaun.Nuke.Components
         /// <summary>
         /// GitHubToken
         /// </summary>
-        [Secret] [Parameter] public string GitHubToken => ValueInjectionUtility.TryGetValue(() => GitHubToken);
+        [Secret] [Parameter] public string GitHubToken => TryGetValue(() => GitHubToken);
 
         /// <summary>
         /// GitRepository
         /// </summary>
-        [GitRepository] GitRepository GitRepository => ValueInjectionUtility.TryGetValue(() => GitRepository);
+        [GitRepository] GitRepository GitRepository => TryGetValue(() => GitRepository);
 
         /// <summary>
         /// GetGitRepositoryPackageUrl (default: https://nuget.pkg.github.com/repository_owner/index.json)

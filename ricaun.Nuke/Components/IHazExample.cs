@@ -2,7 +2,6 @@
 using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
-using Nuke.Common.ValueInjection;
 using ricaun.Nuke.Extensions;
 namespace ricaun.Nuke.Components
 {
@@ -15,19 +14,19 @@ namespace ricaun.Nuke.Components
         /// Folder Example 
         /// </summary>
         [Parameter]
-        string Folder => ValueInjectionUtility.TryGetValue(() => Folder) ?? "Release";
+        string Folder => TryGetValue(() => Folder) ?? "Release";
 
         /// <summary>
         /// Example Project Name
         /// </summary>
         [Parameter]
-        string Name => ValueInjectionUtility.TryGetValue(() => Name) ?? $"{Solution.Name}.Example";
+        string Name => TryGetValue(() => Name) ?? $"{Solution.Name}.Example";
 
         /// <summary>
         /// ReleaseExample (default: true)
         /// </summary>
         [Parameter]
-        bool ReleaseExample => ValueInjectionUtility.TryGetValue<bool?>(() => ReleaseExample) ?? true;
+        bool ReleaseExample => TryGetValue<bool?>(() => ReleaseExample) ?? true;
 
         /// <summary>
         /// ExampleDirectory

@@ -1,6 +1,5 @@
 ﻿using Nuke.Common;
 using Nuke.Common.ProjectModel;
-using Nuke.Common.ValueInjection;
 using ricaun.Nuke.Extensions;
 namespace ricaun.Nuke.Components
 {
@@ -13,7 +12,7 @@ namespace ricaun.Nuke.Components
         /// Name of the MainProject (default: <seealso cref="Solution.Name"/>)
         /// </summary>
         [Parameter]
-        string MainName => ValueInjectionUtility.TryGetValue(() => MainName) ?? Solution.Name;
+        string MainName => TryGetValue(() => MainName) ?? Solution.Name;
 
         /// <summary>
         /// MainProject (default: <seealso cref="MainName"/>)

@@ -7,7 +7,7 @@
 
   <PropertyGroup>
     <PackageId>ricaun.Nuke</PackageId>
-    <Version>1.0.2</Version>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -68,7 +68,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nuke.Common" Version="5.3.0" />
+    <PackageReference Include="Nuke.Common" Version="6.0.0" />
     <PackageDownload Include="GitVersion.Tool" Version="[5.7.0]" />
     <PackageDownload Include="NuGet.CommandLine" Version="[5.11.0]" />
   </ItemGroup>

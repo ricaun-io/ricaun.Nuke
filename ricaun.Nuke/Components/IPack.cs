@@ -24,7 +24,6 @@ namespace ricaun.Nuke.Components
             .Executes(() =>
             {
                 PathConstruction.GlobFiles(ContentDirectory, "**/*.nupkg")
-                   .NotEmpty()
                    .ForEach(x =>
                    {
                        DotNetTasks.DotNetNuGetPush(s => s

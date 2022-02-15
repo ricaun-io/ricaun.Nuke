@@ -14,6 +14,6 @@ namespace ricaun.Nuke.Components
         /// <summary>
         /// GitVersion
         /// </summary>
-        [GitVersion] GitVersion GitVersion => ValueInjectionUtility.TryGetValue(() => GitVersion);
+        [GitVersion] GitVersion GitVersion => TryGetValue(() => GitVersion);
     }
 }

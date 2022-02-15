@@ -1,6 +1,5 @@
 ﻿using Nuke.Common;
 using Nuke.Common.ProjectModel;
-using Nuke.Common.ValueInjection;
 
 namespace ricaun.Nuke.Components
 {
@@ -12,7 +11,7 @@ namespace ricaun.Nuke.Components
         /// <summary>
         /// Solution
         /// </summary>
-        [Required] [Solution] Solution Solution => ValueInjectionUtility.TryGetValue(() => Solution);
+        [Required] [Solution] Solution Solution => TryGetValue(() => Solution);
     }
 
     /// <summary>

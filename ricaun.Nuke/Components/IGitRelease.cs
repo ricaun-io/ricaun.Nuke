@@ -30,7 +30,7 @@ namespace ricaun.Nuke.Components
 
                 if (Directory.Exists(ReleaseDirectory) == false)
                 {
-                    Logger.Warn($"Release Directory not Found: {ReleaseDirectory}");
+                    Serilog.Log.Warning($"Release Directory not Found: {ReleaseDirectory}");
                     return;
                 }
 
@@ -47,7 +47,7 @@ namespace ricaun.Nuke.Components
 
                 if (GitHubExtension.CheckTags(gitHubOwner, gitHubName, version))
                 {
-                    Logger.Warn($"The repository already contains a Release with the tag: {version}");
+                    Serilog.Log.Warning($"The repository already contains a Release with the tag: {version}");
                     return;
                 }
 
