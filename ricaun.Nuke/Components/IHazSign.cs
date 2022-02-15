@@ -1,5 +1,4 @@
 ﻿using Nuke.Common;
-using Nuke.Common.ValueInjection;
 
 namespace ricaun.Nuke.Components
 {
@@ -11,11 +10,11 @@ namespace ricaun.Nuke.Components
         /// <summary>
         /// SignFile
         /// </summary>
-        [Secret] [Parameter] public string SignFile => ValueInjectionUtility.TryGetValue(() => SignFile);
+        [Secret] [Parameter] public string SignFile => TryGetValue(() => SignFile);
 
         /// <summary>
         /// SignPassword
         /// </summary>
-        [Secret] [Parameter] public string SignPassword => ValueInjectionUtility.TryGetValue(() => SignPassword);
+        [Secret] [Parameter] public string SignPassword => TryGetValue(() => SignPassword);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Nuke.Common;
 using Nuke.Common.Git;
 using Nuke.Common.Tools.GitVersion;
-using Nuke.Common.ValueInjection;
 using ricaun.Nuke.Extensions;
 
 namespace ricaun.Nuke.Components
@@ -14,6 +13,6 @@ namespace ricaun.Nuke.Components
         /// <summary>
         /// GitVersion
         /// </summary>
-        [GitVersion] GitVersion GitVersion => ValueInjectionUtility.TryGetValue(() => GitVersion);
+        [GitVersion] GitVersion GitVersion => TryGetValue(() => GitVersion);
     }
 }

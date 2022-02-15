@@ -1,7 +1,6 @@
 ﻿using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
-using Nuke.Common.ValueInjection;
 namespace ricaun.Nuke.Components
 {
     /// <summary>
@@ -13,7 +12,7 @@ namespace ricaun.Nuke.Components
         /// Folder Release 
         /// </summary>
         [Parameter]
-        string Folder => ValueInjectionUtility.TryGetValue(() => Folder) ?? "ReleaseFiles";
+        string Folder => TryGetValue(() => Folder) ?? "ReleaseFiles";
 
         /// <summary>
         /// ReleaseDirectory

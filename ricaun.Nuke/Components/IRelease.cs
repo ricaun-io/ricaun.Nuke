@@ -31,12 +31,12 @@ namespace ricaun.Nuke.Components
         {
             if (!FileSystemTasks.DirectoryExists(ContentDirectory))
             {
-                Logger.Warn($"Skip Not found: {ContentDirectory}");
+                Serilog.Log.Warning($"Skip Not found: {ContentDirectory}");
                 return;
             }
 
             var version = project.GetInformationalVersion();
-            Logger.Success($"Release Version: {project.GetInformationalVersion()}");
+            Serilog.Log.Information($"Release Version: {project.GetInformationalVersion()}");
 
             var fileName = $"{project.Name} {version}";
             var ProjectDirectory = ReleaseDirectory / fileName;

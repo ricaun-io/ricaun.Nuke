@@ -51,7 +51,7 @@ namespace ricaun.Nuke.Extensions
                     RawData = File.OpenRead(file)
                 };
                 var _ = GitHubTasks.GitHubClient.Repository.Release.UploadAsset(createdRelease, releaseAssetUpload).Result;
-                Logger.Normal($"Added file: {file}");
+                Serilog.Log.Information($"Added file: {file}");
             }
         }
 

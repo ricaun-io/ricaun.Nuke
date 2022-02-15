@@ -61,7 +61,7 @@ namespace ricaun.Nuke.Extensions
         {
             if (HasSignature(binaryPath)) return;
 
-            Logger.Normal($"Signing: {binaryPath}");
+            Serilog.Log.Information($"Signing: {binaryPath}");
 
             try
             {
@@ -75,7 +75,7 @@ namespace ricaun.Nuke.Extensions
             }
             catch (Exception)
             {
-                Logger.Error($"Failed to sign file '{binaryPath}");
+                Serilog.Log.Error($"Failed to sign file '{binaryPath}");
             }
 
         }
@@ -90,7 +90,7 @@ namespace ricaun.Nuke.Extensions
         {
             if (HasSignature(binaryPath)) return;
 
-            Logger.Normal($"Signing: {binaryPath}");
+            Serilog.Log.Information($"Signing: {binaryPath}");
 
             try
             {
@@ -100,15 +100,14 @@ namespace ricaun.Nuke.Extensions
                     $" -CertificatePassword {certPassword}" +
                     $" -Timestamper {timestampServer} -NonInteractive",
                     logOutput: false,
-                    logInvocation: false,
-                    logTimestamp: false
+                    logInvocation: false
                     ); // don't print to std out/err
             }
             catch (Exception)
             {
                 // Exception doesn't say anything useful generally and don't want to expose it if it does
                 // so don't log it
-                Logger.Error($"Failed to sign nuget package '{binaryPath}");
+                Serilog.Log.Error($"Failed to sign nuget package '{binaryPath}");
             }
         }
 
@@ -126,8 +125,7 @@ namespace ricaun.Nuke.Extensions
                     NuGetTasks.NuGet(
                         $"verify -Signatures \"{fileInfo}\"",
                         logOutput: false,
-                        logInvocation: false,
-                        logTimestamp: false
+                        logInvocation: false
                         ); // don't print to std out/err
                     return true;
                 }
@@ -165,7 +163,7 @@ namespace ricaun.Nuke.Extensions
             }
             catch (Exception)
             {
-                Logger.Error($"Failed to create 'cer' file '{outputCer}");
+                Serilog.Log.Error($"Failed to create 'cer' file '{outputCer}");
             }
             return false;
         }
