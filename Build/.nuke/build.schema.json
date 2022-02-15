@@ -102,6 +102,7 @@
               "GitRelease",
               "Pack",
               "Release",
+              "ShowGitVersion",
               "Sign"
             ]
           }
@@ -123,6 +124,7 @@
               "GitRelease",
               "Pack",
               "Release",
+              "ShowGitVersion",
               "Sign"
             ]
           }
