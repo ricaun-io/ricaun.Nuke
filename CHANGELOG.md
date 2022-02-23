@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Bug Fixes
 - Fix Error When Read AssemblyAttribute
 ### Changed
+- Add XmlnsDefinition on Example to Force Error with AssemblyAttribute
 - Remove AssemblyAttribute
 - Add RevitAddin Example
 - Add Multiple Example Compile
