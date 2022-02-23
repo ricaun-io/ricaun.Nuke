@@ -20,61 +20,87 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public static Version GetVersion(this Project project) => new Version(project.GetFileVersionInfo().ProductVersion);
+        public static Version GetVersion(this Project project)
+        {
+            var version = project.GetFileVersionInfo()?.ProductVersion;
+            if (version == null) version = "0.0.0.0";
+            return new Version(version);
+        }
 
         /// <summary>
         /// GetProduct => ProductName
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public static string GetProduct(this Project project) => project.GetFileVersionInfo().ProductName;
+        public static string GetProduct(this Project project) => project.GetFileVersionInfo()?.ProductName;
         /// <summary>
-        /// 
+        /// GetTitle => ProductName
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public static string GetTitle(this Project project) => project.GetFileVersionInfo().ProductName;
+        public static string GetTitle(this Project project) => project.GetFileVersionInfo()?.ProductName;
 
         /// <summary>
         /// GetFileVersion => FileVersion
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public static string GetFileVersion(this Project project) => project.GetFileVersionInfo().FileVersion;
+        public static string GetFileVersion(this Project project) => project.GetFileVersionInfo()?.FileVersion;
+
+        /// <summary>
+        /// GetFileDescription => FileDescription
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns></returns>
+        public static string GetFileDescription(this Project project) => project.GetFileVersionInfo()?.FileDescription;
+
+        /// <summary>
+        /// GetAssemblyName => FileDescription
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns></returns>
+        public static string GetAssemblyName(this Project project) => project.GetFileVersionInfo()?.FileDescription;
 
         /// <summary>
         /// GetInformationalVersion => ProductVersion
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public static string GetInformationalVersion(this Project project) => project.GetFileVersionInfo().ProductVersion;
+        public static string GetInformationalVersion(this Project project) => project.GetFileVersionInfo()?.ProductVersion;
 
         /// <summary>
         /// GetCompany => CompanyName
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public static string GetCompany(this Project project) => project.GetFileVersionInfo().CompanyName;
+        public static string GetCompany(this Project project) => project.GetFileVersionInfo()?.CompanyName;
 
         /// <summary>
         /// GetDescription => Comments
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public static string GetDescription(this Project project) => project.GetFileVersionInfo().Comments;
+        public static string GetDescription(this Project project) => project.GetFileVersionInfo()?.Comments;
+
+        /// <summary>
+        /// GetComments => Comments
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns></returns>
+        public static string GetComments(this Project project) => project.GetFileVersionInfo()?.Comments;
 
         /// <summary>
         /// GetCopyright => LegalCopyright
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public static string GetCopyright(this Project project) => project.GetFileVersionInfo().LegalCopyright;
+        public static string GetCopyright(this Project project) => project.GetFileVersionInfo()?.LegalCopyright;
         /// <summary>
         /// GetTrademark => LegalTrademarks
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public static string GetTrademark(this Project project) => project.GetFileVersionInfo().LegalTrademarks;
+        public static string GetTrademark(this Project project) => project.GetFileVersionInfo()?.LegalTrademarks;
 
         /// <summary>
         /// Get ProjectId
@@ -122,16 +148,20 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
-        /// ShowInfo
+        /// ShowInformation
         /// </summary>
         /// <param name="project"></param>
-        public static void ShowInfo(this Project project)
+        public static void ShowInformation(this Project project)
         {
-            Serilog.Log.Information($"GetAppId: {project.GetAppId()}");
-            Serilog.Log.Information($"Name: {project.Name}");
             Serilog.Log.Information($"-");
+            Serilog.Log.Information($"Name: {project.Name}");
+            Serilog.Log.Information($"GetAppId: {project.GetAppId()}");
+
+            if (project.GetFileVersionInfo() == null)
+                Serilog.Log.Warning($"GetFileVersionInfo: {project.Name} not found!");
 
             Serilog.Log.Information($"GetInformationalVersion: {project.GetInformationalVersion()}");
+            Serilog.Log.Information($"GetAssemblyName: {project.GetAssemblyName()}");
             Serilog.Log.Information($"GetVersion: {project.GetVersion()}");
             Serilog.Log.Information($"GetFileVersion: {project.GetFileVersion()}");
             Serilog.Log.Information($"GetTitle: {project.GetTitle()}");
@@ -140,6 +170,9 @@ namespace ricaun.Nuke.Extensions
             Serilog.Log.Information($"GetProduct: {project.GetProduct()}");
             Serilog.Log.Information($"GetCopyright: {project.GetCopyright()}");
             Serilog.Log.Information($"GetDescription: {project.GetDescription()}");
+            Serilog.Log.Information($"GetComments: {project.GetComments()}");
+            Serilog.Log.Information($"GetFileDescription: {project.GetFileDescription()}");
+            Serilog.Log.Information($"-");
 
             //var ass = project.GetAssemblyGreaterVersion();
 

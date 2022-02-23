@@ -15,7 +15,11 @@ namespace ricaun.Nuke.Components
             .DependsOn(Clean)
             .Executes(() =>
             {
-                Solution.BuildProject(MainProject);
+                Solution.BuildProject(MainProject, (project) =>
+                    {
+                        project.ShowInformation();
+                    }
+                );
             });
     }
 }
