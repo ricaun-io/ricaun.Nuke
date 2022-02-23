@@ -1,5 +1,6 @@
 ﻿using Nuke.Common.ProjectModel;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ricaun.Nuke.Extensions
@@ -49,6 +50,18 @@ namespace ricaun.Nuke.Extensions
         {
             return Solution.GetProjects("*")
                 .FirstOrDefault(p => p.Name.Equals(projectName, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>
+        /// Get Others Projects EndWith
+        /// </summary>
+        /// <param name="Solution"></param>
+        /// <param name="projectNameEndWith"></param>
+        /// <returns></returns>
+        public static IEnumerable<Project> GetOtherProjects(this Solution Solution, string projectNameEndWith)
+        {
+            return Solution.GetProjects("*")
+                .Where(p => p.Name.EndsWith(projectNameEndWith, StringComparison.OrdinalIgnoreCase));
         }
 
         #endregion
