@@ -82,7 +82,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageAssemblyVersion></PackageAssemblyVersion>
+    <PackageAssemblyVersion>.$(Version)</PackageAssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
     <Revision>$([System.DateTime]::Now.ToString('ffff'))</Revision>
