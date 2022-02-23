@@ -122,15 +122,14 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
-        /// ShowInfo
+        /// ShowInformation
         /// </summary>
         /// <param name="project"></param>
-        public static void ShowInfo(this Project project)
+        public static void ShowInformation(this Project project)
         {
-            Serilog.Log.Information($"GetAppId: {project.GetAppId()}");
-            Serilog.Log.Information($"Name: {project.Name}");
             Serilog.Log.Information($"-");
-
+            Serilog.Log.Information($"Name: {project.Name}");
+            Serilog.Log.Information($"GetAppId: {project.GetAppId()}");
             Serilog.Log.Information($"GetInformationalVersion: {project.GetInformationalVersion()}");
             Serilog.Log.Information($"GetVersion: {project.GetVersion()}");
             Serilog.Log.Information($"GetFileVersion: {project.GetFileVersion()}");
@@ -140,6 +139,7 @@ namespace ricaun.Nuke.Extensions
             Serilog.Log.Information($"GetProduct: {project.GetProduct()}");
             Serilog.Log.Information($"GetCopyright: {project.GetCopyright()}");
             Serilog.Log.Information($"GetDescription: {project.GetDescription()}");
+            Serilog.Log.Information($"-");
 
             //var ass = project.GetAssemblyGreaterVersion();
 

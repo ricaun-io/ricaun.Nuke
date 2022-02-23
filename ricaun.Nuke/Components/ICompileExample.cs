@@ -20,7 +20,7 @@ namespace ricaun.Nuke.Components
                 {
                     Solution.BuildProject(example, (project) =>
                     {
-                        project.ShowInfo();
+                        project.ShowInformation();
 
                         SignProject(project);
                         var folder = GetExampleDirectory(project);
