@@ -43,6 +43,13 @@ namespace ricaun.Nuke.Extensions
         public static string GetFileVersion(this Project project) => project.GetFileVersionInfo().FileVersion;
 
         /// <summary>
+        /// GetFileDescription => FileDescription
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns></returns>
+        public static string GetFileDescription(this Project project) => project.GetFileVersionInfo().FileDescription;
+
+        /// <summary>
         /// GetInformationalVersion => ProductVersion
         /// </summary>
         /// <param name="project"></param>
@@ -62,6 +69,13 @@ namespace ricaun.Nuke.Extensions
         /// <param name="project"></param>
         /// <returns></returns>
         public static string GetDescription(this Project project) => project.GetFileVersionInfo().Comments;
+
+        /// <summary>
+        /// GetComments => Comments
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns></returns>
+        public static string GetComments(this Project project) => project.GetFileVersionInfo().Comments;
 
         /// <summary>
         /// GetCopyright => LegalCopyright
@@ -139,6 +153,8 @@ namespace ricaun.Nuke.Extensions
             Serilog.Log.Information($"GetProduct: {project.GetProduct()}");
             Serilog.Log.Information($"GetCopyright: {project.GetCopyright()}");
             Serilog.Log.Information($"GetDescription: {project.GetDescription()}");
+            Serilog.Log.Information($"GetComments: {project.GetComments()}");
+            Serilog.Log.Information($"GetFileDescription: {project.GetFileDescription()}");
             Serilog.Log.Information($"-");
 
             //var ass = project.GetAssemblyGreaterVersion();
