@@ -16,17 +16,22 @@ namespace ricaun.Nuke.Components
             .Before(Sign)
             .Executes(() =>
             {
-                Solution.BuildProject(GetExampleProject(), (project) =>
+                foreach (var example in GetExampleProjects())
                 {
-                    SignProject(project);
-                    var folder = ExampleDirectory;
-                    var fileName = project.Name;
-                    if (ReleaseExample)
+                    Solution.BuildProject(example, (project) =>
                     {
-                        var zipFile = ReleaseDirectory / $"{fileName}.zip";
-                        ZipExtension.CreateFromDirectory(folder, zipFile);
-                    }
-                });
+                        project.ShowInfo();
+
+                        SignProject(project);
+                        var folder = GetExampleDirectory(project);
+                        var fileName = project.Name;
+                        if (ReleaseExample)
+                        {
+                            var zipFile = ReleaseDirectory / $"{fileName}.zip";
+                            ZipExtension.CreateFromDirectory(folder, zipFile);
+                        }
+                    });
+                }
             });
     }
 }

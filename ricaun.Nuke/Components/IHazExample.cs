@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
@@ -17,10 +18,10 @@ namespace ricaun.Nuke.Components
         string Folder => TryGetValue(() => Folder) ?? "Release";
 
         /// <summary>
-        /// Example Project Name
+        /// Example Project Name EndWith
         /// </summary>
         [Parameter]
-        string Name => TryGetValue(() => Name) ?? $"{Solution.Name}.Example";
+        string Name => TryGetValue(() => Name) ?? "Example";
 
         /// <summary>
         /// ReleaseExample (default: true)
@@ -29,15 +30,10 @@ namespace ricaun.Nuke.Components
         bool ReleaseExample => TryGetValue<bool?>(() => ReleaseExample) ?? true;
 
         /// <summary>
-        /// ExampleDirectory
-        /// </summary>
-        AbsolutePath ExampleDirectory => GetExampleDirectory(GetExampleProject());
-
-        /// <summary>
-        /// GetExampleProject
+        /// GetExampleProjects
         /// </summary>
         /// <returns></returns>
-        public Project GetExampleProject() => Solution.GetOtherProject(Name);
+        public IEnumerable<Project> GetExampleProjects() => Solution.GetOtherProjects(Name);
 
         /// <summary>
         /// GetExampleDirectory
