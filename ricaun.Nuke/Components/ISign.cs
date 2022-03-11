@@ -22,29 +22,46 @@ namespace ricaun.Nuke.Components
             });
 
         /// <summary>
-        /// Sing All Files On the Project Folder
+        /// Sing All Files On the Project bin Folder
         /// </summary>
         /// <param name="project"></param>
-        public void SignProject(Project project)
+        public bool SignProject(Project project)
         {
             var projectFolder = project.Directory / "bin";
+            return SignFolder(projectFolder);
+        }
 
-            if (!SignFile.SkipEmpty()) return;
-            if (!SignPassword.SkipEmpty()) return;
+        /// <summary>
+        /// Sign Files on the Folder
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <param name="dllSign"></param>
+        /// <param name="nupkgSign"></param>
+        /// <param name="exeSign"></param>
+        /// <returns></returns>
+        public bool SignFolder(string folder, bool dllSign = true, bool nupkgSign = true, bool exeSign = true)
+        {
+            if (!SignFile.SkipEmpty()) return false;
+            if (!SignPassword.SkipEmpty()) return false;
 
             var certPath = SignExtension.VerifySignFile(SignFile, BuildAssemblyDirectory);
             var certPassword = SignPassword;
 
             SignExtension.CreateCerFile(certPath, certPassword, BuildAssemblyDirectory);
 
-            var files = PathConstruction.GlobFiles(projectFolder, "**/*.dll");
-            files.ForEach(file => SignExtension.SignBinary(certPath, certPassword, file));
+            if (dllSign)
+                PathConstruction.GlobFiles(folder, "**/*.dll")
+                    .ForEach(file => SignExtension.SignBinary(certPath, certPassword, file));
 
-            var nupkgs = PathConstruction.GlobFiles(projectFolder, "**/*.nupkg");
-            nupkgs.ForEach(file => SignExtension.SignNuGet(certPath, certPassword, file));
+            if (nupkgSign)
+                PathConstruction.GlobFiles(folder, "**/*.nupkg")
+                    .ForEach(file => SignExtension.SignNuGet(certPath, certPassword, file));
 
-            var exes = PathConstruction.GlobFiles(projectFolder, "**/*.exe");
-            exes.ForEach(file => SignExtension.SignBinary(certPath, certPassword, file));
+            if (exeSign)
+                PathConstruction.GlobFiles(folder, "**/*.exe")
+                    .ForEach(file => SignExtension.SignBinary(certPath, certPassword, file));
+
+            return true;
         }
     }
 }
