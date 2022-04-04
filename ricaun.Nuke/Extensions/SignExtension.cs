@@ -14,9 +14,12 @@ namespace ricaun.Nuke.Extensions
         #region Sign Util
 
         /// <summary>
-        /// timestampServer
+        /// timestampServers
         /// </summary>
-        const string timestampServer = "http://timestamp.digicert.com/";
+        static readonly string[] timestampServers = {
+            "http://timestamp.comodoca.com",
+            "http://timestamp.digicert.com"
+        };
 
         /// <summary>
         /// VerifySignFile
@@ -63,21 +66,27 @@ namespace ricaun.Nuke.Extensions
 
             Serilog.Log.Information($"Signing: {binaryPath}");
 
-            try
+            foreach (var timestampServer in timestampServers)
             {
-                SignToolTasks.SignTool(x => x
-                    .SetFiles(binaryPath)
-                    .SetFile(certPath)
-                    .SetPassword(certPassword)
-                    .SetTimestampServerUrl(timestampServer)
-                    .SetFileDigestAlgorithm(SignToolDigestAlgorithm.SHA256)
-                );
+                try
+                {
+                    SignToolTasks.SignTool(x => x
+                        .SetFiles(binaryPath)
+                        .SetFile(certPath)
+                        .SetPassword(certPassword)
+                        .SetTimestampServerUrl(timestampServer)
+                        .SetFileDigestAlgorithm(SignToolDigestAlgorithm.SHA256)
+                        .EnableQuiet()
+                    );
+                    Serilog.Log.Information($"Signing done with '{timestampServer}");
+                    return;
+                }
+                catch (Exception)
+                {
+                    Serilog.Log.Warning($"Failed to sign file with '{timestampServer}");
+                }
             }
-            catch (Exception)
-            {
-                Serilog.Log.Error($"Failed to sign file '{binaryPath}");
-            }
-
+            Serilog.Log.Error($"Failed to sign file '{binaryPath}");
         }
 
         /// <summary>
@@ -92,23 +101,29 @@ namespace ricaun.Nuke.Extensions
 
             Serilog.Log.Information($"Signing: {binaryPath}");
 
-            try
+            foreach (var timestampServer in timestampServers)
             {
-                NuGetTasks.NuGet(
-                    $"sign \"{binaryPath}\"" +
-                    $" -CertificatePath {certPath}" +
-                    $" -CertificatePassword {certPassword}" +
-                    $" -Timestamper {timestampServer} -NonInteractive",
-                    logOutput: false,
-                    logInvocation: false
-                    ); // don't print to std out/err
+                try
+                {
+                    NuGetTasks.NuGet(
+                        $"sign \"{binaryPath}\"" +
+                        $" -CertificatePath {certPath}" +
+                        $" -CertificatePassword {certPassword}" +
+                        $" -Timestamper {timestampServer} -NonInteractive",
+                        logOutput: false,
+                        logInvocation: false
+                        ); // don't print to std out/err
+
+                    Serilog.Log.Information($"Signing done with '{timestampServer}");
+                    return;
+                }
+                catch (Exception)
+                {
+                    Serilog.Log.Warning($"Failed to sign file with '{timestampServer}");
+                }
             }
-            catch (Exception)
-            {
-                // Exception doesn't say anything useful generally and don't want to expose it if it does
-                // so don't log it
-                Serilog.Log.Error($"Failed to sign nuget package '{binaryPath}");
-            }
+
+            Serilog.Log.Error($"Failed to sign nuget package '{binaryPath}");
         }
 
         /// <summary>
