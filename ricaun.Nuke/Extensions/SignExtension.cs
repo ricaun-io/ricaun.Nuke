@@ -78,15 +78,15 @@ namespace ricaun.Nuke.Extensions
                         .SetFileDigestAlgorithm(SignToolDigestAlgorithm.SHA256)
                         .EnableQuiet()
                     );
-                    Serilog.Log.Information($"Signing done with '{timestampServer}");
+                    Serilog.Log.Information($"Signing done with {timestampServer}");
                     return;
                 }
                 catch (Exception)
                 {
-                    Serilog.Log.Warning($"Failed to sign file with '{timestampServer}");
+                    Serilog.Log.Warning($"Failed to sign file with {timestampServer}");
                 }
             }
-            Serilog.Log.Error($"Failed to sign file '{binaryPath}");
+            Serilog.Log.Error($"Failed to sign file {binaryPath}");
         }
 
         /// <summary>
@@ -114,16 +114,16 @@ namespace ricaun.Nuke.Extensions
                         logInvocation: false
                         ); // don't print to std out/err
 
-                    Serilog.Log.Information($"Signing done with '{timestampServer}");
+                    Serilog.Log.Information($"Signing done with {timestampServer}");
                     return;
                 }
                 catch (Exception)
                 {
-                    Serilog.Log.Warning($"Failed to sign file with '{timestampServer}");
+                    Serilog.Log.Warning($"Failed to sign file with {timestampServer}");
                 }
             }
 
-            Serilog.Log.Error($"Failed to sign nuget package '{binaryPath}");
+            Serilog.Log.Error($"Failed to sign nuget package {binaryPath}");
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace ricaun.Nuke.Extensions
             }
             catch (Exception)
             {
-                Serilog.Log.Error($"Failed to create 'cer' file '{outputCer}");
+                Serilog.Log.Error($"Failed to create 'cer' file {outputCer}");
             }
             return false;
         }
