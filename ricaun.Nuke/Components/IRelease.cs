@@ -35,6 +35,8 @@ namespace ricaun.Nuke.Components
                 return;
             }
 
+            SignProject(project);
+
             var version = project.GetInformationalVersion();
             Serilog.Log.Information($"Release Version: {project.GetInformationalVersion()}");
 

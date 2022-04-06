@@ -50,3 +50,5 @@ jobs:
         run: ./build/build.cmd --root ./build
         env:
           GitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          SignFile: ${{ secrets.SIGN_FILE }}
+          SignPassword: ${{ secrets.SIGN_PASSWORD }}
