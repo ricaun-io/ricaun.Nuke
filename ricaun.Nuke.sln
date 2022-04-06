@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ricaun.Nuke", "ricaun.Nuke\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "Build\Build.csproj", "{BA6C8C29-3519-49C7-9C66-334A7FA69ED6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project", "Project", "{4EED1749-7A3F-47C6-8361-F4E45A143AFA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{4EED1749-7A3F-47C6-8361-F4E45A143AFA}"
 	ProjectSection(SolutionItems) = preProject
 		CHANGELOG.md = CHANGELOG.md
 		README.md = README.md
@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project", "Project", "{4EED
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ricaun.Nuke.Example", "ricaun.Nuke.Examples\ricaun.Nuke.Example.csproj", "{027171E5-2FB6-4A4C-A8DE-F3E148B47FFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ricaun.Nuke.RevitAddin.Example", "ricaun.Nuke.RevitAddin.Example\ricaun.Nuke.RevitAddin.Example.csproj", "{A030741A-2FD6-48C3-9F92-3AB9F35DD17A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ricaun.Nuke.RevitAddin.Example", "ricaun.Nuke.RevitAddin.Example\ricaun.Nuke.RevitAddin.Example.csproj", "{A030741A-2FD6-48C3-9F92-3AB9F35DD17A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
