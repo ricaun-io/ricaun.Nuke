@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] / 2022-04-22
+### Bug Fixed
+- GitRepository thrown error
+
 ## [1.2.1] / 2022-04-06
 ### Changed
 - Sign Before Release
@@ -160,6 +164,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.2.2]: ../../compare/1.2.1...1.2.2
 [1.2.1]: ../../compare/1.2.0...1.2.1
 [1.2.0]: ../../compare/1.1.3...1.2.0
 [1.1.3]: ../../compare/1.1.2...1.1.3
