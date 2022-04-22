@@ -24,6 +24,11 @@ namespace ricaun.Nuke.Components
         /// <returns></returns>
         public string GetGitRepositoryPackageUrl()
         {
+            if (GitRepository == null)
+            {
+                Serilog.Log.Warning($"GitRepository not found.");
+                return "";
+            }
             return $@"https://nuget.pkg.github.com/{GetGitRepositoryOwner()}/index.json";
         }
 
@@ -33,6 +38,7 @@ namespace ricaun.Nuke.Components
         /// <returns></returns>
         public string GetGitRepositoryOwner()
         {
+            if (GitRepository == null) return "";
             return GitRepository.Identifier.Split("/")[0];
         }
     }
