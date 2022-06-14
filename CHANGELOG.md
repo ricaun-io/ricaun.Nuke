@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.3.0]
+### Fixed
+- Fix `IHazContent` Documentation
+### Updated
+- Update Nuke Version
+- Update `timestampServers` order
+- Warning if ClearSolution fail
+
 ## [1.2.2] / 2022-04-22
 ### Bug Fixed
 - GitRepository thrown error

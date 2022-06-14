@@ -80,7 +80,17 @@ namespace ricaun.Nuke.Extensions
         {
             PathConstruction.GlobDirectories(Solution.Directory, "**/bin", "**/obj")
                 .Where(x => !PathConstruction.IsDescendantPath(BuildProjectDirectory, x))
-                .ForEach(FileSystemTasks.DeleteDirectory);
+                .ForEach((file) =>
+                {
+                    try
+                    {
+                        FileSystemTasks.DeleteDirectory(file);
+                    }
+                    catch (Exception ex)
+                    {
+                        Serilog.Log.Warning(ex.Message);
+                    }
+                });
         }
 
         /// <summary>
