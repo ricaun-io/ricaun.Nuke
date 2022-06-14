@@ -10,7 +10,7 @@ namespace ricaun.Nuke.Components
     public interface IHazContent : IHazMainProject, IHazSolution, INukeBuild
     {
         /// <summary>
-        /// Folder Release 
+        /// Folder Content 
         /// </summary>
         [Parameter]
         string Folder => TryGetValue(() => Folder) ?? "Release";

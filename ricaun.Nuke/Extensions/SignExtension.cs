@@ -17,8 +17,8 @@ namespace ricaun.Nuke.Extensions
         /// timestampServers
         /// </summary>
         static readonly string[] timestampServers = {
-            "http://timestamp.digicert.com",
-            "http://timestamp.comodoca.com"
+            "http://timestamp.comodoca.com",
+            "http://timestamp.digicert.com"
         };
 
         /// <summary>
