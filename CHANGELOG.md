@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Fix `IHazContent` Documentation
 ### Updated
+- Update to Visual Studio 2022 - net6.0
 - Update Nuke Version
 - Update `timestampServers` order
 - Warning if ClearSolution fail
