@@ -69,7 +69,7 @@
 
   <ItemGroup>
     <PackageReference Include="GitVersion.CommandLine" Version="5.8.0"/>
-    <PackageReference Include="NuGet.CommandLine" Version="6.0.2" />
+    <PackageReference Include="NuGet.CommandLine" Version="6.0.0" />
     <PackageReference Include="Nuke.Common" Version="*" />
   </ItemGroup>
 
