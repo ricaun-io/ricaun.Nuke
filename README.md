@@ -2,7 +2,7 @@
 
 This package is to simplify the build automation system using [Nuke.Common](https://www.nuget.org/packages/Nuke.Common/).
 
-[![Visual Studio 2019](https://img.shields.io/badge/Visual%20Studio%202019-16.11.7+-blue)](../..)
+[![Visual Studio 2022](https://img.shields.io/badge/Visual%20Studio-2022-blue)](../..)
 [![Nuke](https://img.shields.io/badge/Nuke-Build-blue)](https://nuke.build/)
 [![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Publish](../../actions/workflows/Publish.yml/badge.svg)](../../actions)
@@ -19,7 +19,6 @@ using Nuke.Common.Execution;
 using ricaun.Nuke;
 using ricaun.Nuke.Components;
 
-[CheckBuildProjectConfigurations]
 class Build : NukeBuild, IPublish
 {
     public static int Main() => Execute<Build>(x => x.From<IPublish>().Build);
@@ -43,7 +42,6 @@ using Nuke.Common.Execution;
 using ricaun.Nuke;
 using ricaun.Nuke.Components;
 
-[CheckBuildProjectConfigurations]
 class Build : NukeBuild, IPublishPack
 {
     public static int Main() => Execute<Build>(x => x.From<IPublishPack>().Build);
