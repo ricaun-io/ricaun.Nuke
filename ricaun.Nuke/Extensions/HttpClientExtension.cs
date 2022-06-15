@@ -32,6 +32,9 @@ namespace ricaun.Nuke.Extensions
         /// <param name="fileName"></param>
         public static void DownloadFile(this System.Net.Http.HttpClient client, string address, string fileName)
         {
+            if (File.Exists(fileName))
+                return;
+
             var uri = new Uri(address);
             var task = Task.Run(async () =>
             {
