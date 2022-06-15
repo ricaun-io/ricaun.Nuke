@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [1.3.1]
 ### Updated
+- Set `Solution(SuppressBuildProjectCheck = true)`
 - Update Package to net6.0
 ### Added
 - Test Download
