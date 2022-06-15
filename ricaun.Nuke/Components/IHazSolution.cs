@@ -9,9 +9,9 @@ namespace ricaun.Nuke.Components
     public interface IHazSolution : INukeBuild
     {
         /// <summary>
-        /// Solution
+        /// Solution (SuppressBuildProjectCheck = true)
         /// </summary>
-        [Required] [Solution] Solution Solution => TryGetValue(() => Solution);
+        [Required][Solution(SuppressBuildProjectCheck = true)] Solution Solution => TryGetValue(() => Solution);
     }
 
     /// <summary>
