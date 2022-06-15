@@ -33,10 +33,7 @@ namespace ricaun.Nuke.Extensions
                 return fileNamePfx;
 
             var file = Path.Combine(tempFolderDownloadFile, "signfile.pfx");
-            using (var client = new System.Net.WebClient())
-            {
-                client.DownloadFile(fileNamePfx, file);
-            }
+            HttpClientExtension.DownloadFile(fileNamePfx, file);
             return file;
         }
 
