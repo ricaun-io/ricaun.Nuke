@@ -33,7 +33,12 @@ namespace ricaun.Nuke.Extensions
         public static void DownloadFile(this System.Net.Http.HttpClient client, string address, string fileName)
         {
             if (File.Exists(fileName))
+            {
+                Serilog.Log.Information($"DownloadFile: Exists: {fileName}");
                 return;
+            }
+
+            Serilog.Log.Information($"DownloadFile: {fileName}");
 
             var uri = new Uri(address);
             var task = Task.Run(async () =>
@@ -50,7 +55,7 @@ namespace ricaun.Nuke.Extensions
         /// <param name="address"></param>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static async Task DownloadFileTaskAsync(this System.Net.Http.HttpClient client, Uri address, string fileName)
+        private static async Task DownloadFileTaskAsync(this System.Net.Http.HttpClient client, Uri address, string fileName)
         {
             using (var s = await client.GetStreamAsync(address))
             {
