@@ -6,7 +6,6 @@ This package is to simplify the build automation system using [Nuke.Common](http
 [![Nuke](https://img.shields.io/badge/Nuke-Build-blue)](https://nuke.build/)
 [![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Publish](../../actions/workflows/Publish.yml/badge.svg)](../../actions)
-[![Develop](../../actions/workflows/Develop.yml/badge.svg)](../../actions)
 [![Release](https://img.shields.io/nuget/v/ricaun.Nuke?logo=nuget&label=release&color=blue)](https://www.nuget.org/packages/ricaun.Nuke)
 
 # Examples
