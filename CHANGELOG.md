@@ -189,6 +189,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.3.3]: ../../compare/1.3.2...1.3.3
+[1.3.2]: ../../compare/1.3.1...1.3.2
 [1.3.1]: ../../compare/1.3.0...1.3.1
 [1.3.0]: ../../compare/1.2.2...1.3.0
 [1.2.2]: ../../compare/1.2.1...1.2.2
