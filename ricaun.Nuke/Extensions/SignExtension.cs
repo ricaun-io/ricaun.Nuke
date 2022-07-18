@@ -63,6 +63,12 @@ namespace ricaun.Nuke.Extensions
 
             Serilog.Log.Information($"Signing: {binaryPath}");
 
+            if (!SignToolTasks.SignToolPath.SkipEmpty())
+            {
+                Serilog.Log.Error($"SignToolPath is not found, set SIGNTOOL_EXE enviroment variable path... {SignToolTasks.SignToolPath}");
+                return;
+            }
+
             foreach (var timestampServer in timestampServers)
             {
                 try
