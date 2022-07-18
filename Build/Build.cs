@@ -8,13 +8,17 @@ class Build : NukeBuild, IPublishPack, ICompileExample, IShowGitVersion
     public static int Main() => Execute<Build>(x => x.From<IPublishPack>().Build);
 }
 
-public interface IShowGitVersion : IHazGitVersion, IClean
+public interface IShowGitVersion : IHazGitVersion, IHazChangelog, IClean
 {
     Target ShowGitVersion => _ => _
         .TriggeredBy(Clean)
         .Executes(() =>
         {
+            // GitVersion.BranchName
             Serilog.Log.Information(GitVersion.BranchName);
+
+            // GetReleaseNotes
+            Serilog.Log.Information(GetReleaseNotes());
 
             // Test DownloadFile
             ricaun.Nuke.Extensions.HttpClientExtension.DownloadFile(

@@ -1,6 +1,7 @@
 ﻿
 using Nuke.Common;
 using Nuke.Common.ChangeLog;
+using Nuke.Common.Utilities;
 using System.IO;
 
 namespace ricaun.Nuke.Components
@@ -14,6 +15,20 @@ namespace ricaun.Nuke.Components
         /// ChangelogFile
         /// </summary>
         string ChangelogFile => "CHANGELOG.md";
+
+        /// <summary>
+        /// ReleaseNotes
+        /// </summary>
+        string ReleaseNotes => ChangelogTasks.ExtractChangelogSectionNotes(GetChangelogFile()).JoinNewLine();
+
+        /// <summary>
+        /// GetReleaseNotes
+        /// </summary>
+        /// <returns></returns>
+        string GetReleaseNotes()
+        {
+            return GetChangelogFile() != null ? ReleaseNotes : "CHANGELOG.md not found";
+        }
 
         /// <summary>
         /// NuGetReleaseNotes
