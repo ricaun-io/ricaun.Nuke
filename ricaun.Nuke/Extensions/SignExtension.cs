@@ -33,8 +33,30 @@ namespace ricaun.Nuke.Extensions
                 return fileNamePfx;
 
             var file = Path.Combine(tempFolderDownloadFile, "signfile.pfx");
+
+            if (File.Exists(file))
+                return file;
+
+            if (CreateFileIfBase64(fileNamePfx, file))
+            {
+                Serilog.Log.Information($"SignFile Create Base64");
+                return file;
+            }
+
+            Serilog.Log.Information($"SignFile Create Download");
             HttpClientExtension.DownloadFile(fileNamePfx, file);
             return file;
+        }
+
+        private static bool CreateFileIfBase64(string base64, string file)
+        {
+            Span<byte> buffer = new Span<byte>(new byte[base64.Length]);
+            if (Convert.TryFromBase64String(base64, buffer, out int _))
+            {
+                File.WriteAllBytes(file, buffer.ToArray());
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
