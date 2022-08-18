@@ -11,7 +11,7 @@ namespace ricaun.Nuke.Components
         /// <summary>
         /// GitHubToken
         /// </summary>
-        [Secret] [Parameter] public string GitHubToken => TryGetValue(() => GitHubToken);
+        [Secret][Parameter] public string GitHubToken => TryGetValue(() => GitHubToken);
 
         /// <summary>
         /// GitRepository
@@ -39,7 +39,7 @@ namespace ricaun.Nuke.Components
         public string GetGitRepositoryOwner()
         {
             if (GitRepository == null) return "";
-            return GitRepository.Identifier.Split("/")[0];
+            return GitRepository.Identifier?.Split("/")[0];
         }
     }
 }
