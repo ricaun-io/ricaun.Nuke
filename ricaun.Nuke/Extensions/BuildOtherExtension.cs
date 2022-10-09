@@ -12,35 +12,6 @@ namespace ricaun.Nuke.Extensions
     {
         #region Other
         /// <summary>
-        /// Build the Other project
-        /// </summary>
-        /// <param name="Solution"></param>
-        /// <param name="projectName"></param>
-        /// <param name="afterBuild"></param>
-        public static void BuildProject(this Solution Solution, string projectName, Action<Project> afterBuild = null)
-        {
-            Solution.BuildProject(Solution.GetOtherProject(projectName), afterBuild);
-        }
-
-        /// <summary>
-        /// Build the Other project
-        /// </summary>
-        /// <param name="Solution"></param>
-        /// <param name="project"></param>
-        /// <param name="afterBuild"></param>
-        public static void BuildProject(this Solution Solution, Project project, Action<Project> afterBuild = null)
-        {
-            if (project is Project)
-            {
-                foreach (var configuration in project.GetReleases())
-                {
-                    project.Build(configuration);
-                }
-                afterBuild?.Invoke(project);
-            }
-        }
-
-        /// <summary>
         /// Get Other Project
         /// </summary>
         /// <param name="Solution"></param>

@@ -78,6 +78,9 @@
         "ReleaseExample": {
           "type": "boolean"
         },
+        "ReleaseNameVersion": {
+          "type": "boolean"
+        },
         "Root": {
           "type": "string",
           "description": "Root directory during build execution"
