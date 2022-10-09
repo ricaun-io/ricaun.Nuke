@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO.Compression;
-using Nuke.Common;
+﻿using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Utilities.Collections;
 using ricaun.Nuke.Extensions;
+using System;
+using System.IO.Compression;
 
 namespace ricaun.Nuke.Components
 {
@@ -37,11 +37,12 @@ namespace ricaun.Nuke.Components
 
             SignProject(project);
 
+            var fileName = project.Name;
             var version = project.GetInformationalVersion();
             Serilog.Log.Information($"Release Version: {project.GetInformationalVersion()}");
 
-            var fileName = $"{project.Name} {version}";
-            var ProjectDirectory = ReleaseDirectory / fileName;
+            var fileNameVersion = GetReleaseFileNameVersion(project.Name, version);
+            var ProjectDirectory = ReleaseDirectory / fileNameVersion;
 
             var nupkgs = PathConstruction.GlobFiles(ContentDirectory, "**/*.nupkg");
             if (nupkgs.Count > 0)
@@ -53,8 +54,11 @@ namespace ricaun.Nuke.Components
                 FileSystemTasks.CopyDirectoryRecursively(ContentDirectory, ProjectDirectory);
             }
 
-            var zipFile = ReleaseDirectory / $"{fileName}.zip";
-            ZipExtension.CreateFromDirectory(ProjectDirectory, zipFile);
+            var releaseFileName = CreateReleaseFromDirectory(ProjectDirectory, fileName, version);
+            Serilog.Log.Information($"Release: {releaseFileName}");
+
+            //var zipFile = ReleaseDirectory / $"{fileName}.zip";
+            //ZipExtension.CreateFromDirectory(ProjectDirectory, zipFile);
         }
     }
 }

@@ -23,12 +23,17 @@ namespace ricaun.Nuke.Components
                         project.ShowInformation();
 
                         SignProject(project);
-                        var folder = GetExampleDirectory(project);
+
+                        var exampleDirectory = GetExampleDirectory(project);
                         var fileName = project.Name;
+                        var version = project.GetInformationalVersion();
+
                         if (ReleaseExample)
                         {
-                            var zipFile = ReleaseDirectory / $"{fileName}.zip";
-                            ZipExtension.CreateFromDirectory(folder, zipFile);
+                            var releaseFileName = CreateReleaseFromDirectory(exampleDirectory, fileName, version);
+                            Serilog.Log.Information($"Release: {releaseFileName}");
+                            //var zipFile = ReleaseDirectory / $"{fileName}.zip";
+                            //ZipExtension.CreateFromDirectory(folder, zipFile);
                         }
                     });
                 }

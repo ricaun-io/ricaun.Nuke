@@ -14,8 +14,14 @@ namespace ricaun.Nuke.Extensions
     /// </summary>
     public static class BuildExtension
     {
-        #region Solution
+        #region Const Configuration
+        /// <summary>
+        /// Configuration "Debug"
+        /// </summary>
+        private const string CONFIGURATION_DEBUG = "Debug";
+        #endregion
 
+        #region Solution
         /// <summary>
         /// Get all Configuration With no Debug
         /// </summary>
@@ -23,7 +29,7 @@ namespace ricaun.Nuke.Extensions
         /// <returns></returns>
         public static IEnumerable<string> GetReleases(this Solution Solution)
         {
-            return Solution.GetConfigurations("Debug", true);
+            return Solution.GetConfigurations(CONFIGURATION_DEBUG, true);
         }
 
         /// <summary>
@@ -55,19 +61,39 @@ namespace ricaun.Nuke.Extensions
         #endregion
 
         #region BuildMainProject
-
         /// <summary>
-        /// Build the Main project
+        /// Build Project
         /// </summary>
         /// <param name="Solution"></param>
-        private static void BuildMainProject(this Solution Solution)
+        /// <param name="project"></param>
+        /// <param name="afterBuild"></param>
+        public static void BuildProject(this Solution Solution, Project project, Action<Project> afterBuild = null)
         {
-            if (Solution.GetMainProject() is Project project)
+            if (project is Project)
             {
                 foreach (var configuration in project.GetReleases())
                 {
                     project.Build(configuration);
                 }
+                afterBuild?.Invoke(project);
+            }
+        }
+
+        /// <summary>
+        /// Rebuild Project
+        /// </summary>
+        /// <param name="Solution"></param>
+        /// <param name="project"></param>
+        /// <param name="afterBuild"></param>
+        public static void RebuildProject(this Solution Solution, Project project, Action<Project> afterBuild = null)
+        {
+            if (project is Project)
+            {
+                foreach (var configuration in project.GetReleases())
+                {
+                    project.Rebuild(configuration);
+                }
+                afterBuild?.Invoke(project);
             }
         }
 
@@ -92,18 +118,6 @@ namespace ricaun.Nuke.Extensions
                     }
                 });
         }
-
-        /// <summary>
-        /// Get Main Project
-        /// </summary>
-        /// <param name="Solution"></param>
-        /// <returns></returns>
-        private static Project GetMainProject(this Solution Solution)
-        {
-            return Solution.GetProjects("*")
-                .FirstOrDefault(p => p.Name.Equals(Solution.Name, StringComparison.OrdinalIgnoreCase));
-        }
-
         #endregion
 
         #region Project
@@ -114,7 +128,7 @@ namespace ricaun.Nuke.Extensions
         /// <returns></returns>
         public static IEnumerable<string> GetReleases(this Project project)
         {
-            return project.GetConfigurations("Debug", true);
+            return project.GetConfigurations(CONFIGURATION_DEBUG, true);
         }
 
         /// <summary>
@@ -145,6 +159,24 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
+        /// Rebuild Project
+        /// </summary>
+        /// <param name="project"></param>
+        /// <param name="configuration"></param>
+        public static void Rebuild(this Project project, string configuration)
+        {
+            MSBuildTasks.MSBuild(s => s
+                .SetTargets("Rebuild")
+                .SetTargetPath(project)
+                .SetConfiguration(configuration)
+                .SetVerbosity(MSBuildVerbosity.Minimal)
+                .SetMaxCpuCount(Environment.ProcessorCount)
+                .DisableNodeReuse()
+                .EnableRestore()
+                );
+        }
+
+        /// <summary>
         /// Build Project
         /// </summary>
         /// <param name="project"></param>
@@ -152,7 +184,7 @@ namespace ricaun.Nuke.Extensions
         public static void Build(this Project project, string configuration)
         {
             MSBuildTasks.MSBuild(s => s
-                .SetTargets("Rebuild")
+                .SetTargets("Build")
                 .SetTargetPath(project)
                 .SetConfiguration(configuration)
                 .SetVerbosity(MSBuildVerbosity.Minimal)

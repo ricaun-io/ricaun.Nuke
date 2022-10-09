@@ -12,10 +12,17 @@ namespace ricaun.Nuke.Extensions
         /// Zip the file on the current folder
         /// </summary>
         /// <param name="file"></param>
-        public static void ZipFileCompact(string file)
+        /// <param name="fileNameWithoutExtension"></param>
+        public static void ZipFileCompact(string file, string fileNameWithoutExtension = null)
         {
             var fileName = Path.GetFileName(file);
-            var fileZip = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".zip");
+
+            if (string.IsNullOrEmpty(fileNameWithoutExtension))
+                fileNameWithoutExtension = fileName;
+            else
+                fileNameWithoutExtension += ".zip";
+
+            var fileZip = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(fileNameWithoutExtension) + ".zip");
             using (var zip = ZipFile.Open(fileZip, ZipArchiveMode.Create))
                 zip.CreateEntryFromFile(file, fileName);
         }
