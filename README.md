@@ -69,6 +69,21 @@ env:
     NugetApiKey: ${{ secrets.NUGET_API_KEY }}
 ```
 
+# Build.cs - ITest
+
+```C#
+using Nuke.Common;
+using Nuke.Common.Execution;
+using ricaun.Nuke;
+using ricaun.Nuke.Components;
+
+class Build : NukeBuild, IPublish, ITest
+{
+    // bool ITest.TestBuildStopWhenFailed => true;
+    // string ITest.TestProjectName => "*.Tests";
+    public static int Main() => Execute<Build>(x => x.From<IPublish>().Build);
+}
+```
 
 ## License
 
