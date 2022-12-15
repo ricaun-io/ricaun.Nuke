@@ -107,7 +107,8 @@
               "Pack",
               "Release",
               "ShowGitVersion",
-              "Sign"
+              "Sign",
+              "Test"
             ]
           }
         },
@@ -129,9 +130,19 @@
               "Pack",
               "Release",
               "ShowGitVersion",
-              "Sign"
+              "Sign",
+              "Test"
             ]
           }
+        },
+        "TestBuildStopWhenFailed": {
+          "type": "boolean"
+        },
+        "TestProjectName": {
+          "type": "string"
+        },
+        "TestResults": {
+          "type": "boolean"
         },
         "Verbosity": {
           "type": "string",

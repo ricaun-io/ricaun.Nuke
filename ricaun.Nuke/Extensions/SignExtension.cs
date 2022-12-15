@@ -81,6 +81,13 @@ namespace ricaun.Nuke.Extensions
         /// <param name="binaryPath"></param>
         public static void SignBinary(string certPath, string certPassword, string binaryPath)
         {
+            if (binaryPath.Length > 260)
+            {
+                var messageError = $"FilePath.Length to big: {binaryPath}";
+                Serilog.Log.Error(messageError);
+                throw new PathTooLongException(messageError);
+            }
+
             if (HasSignature(binaryPath)) return;
 
             Serilog.Log.Information($"Signing: {binaryPath}");
