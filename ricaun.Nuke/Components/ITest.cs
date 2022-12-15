@@ -102,7 +102,14 @@ public interface ITest : ICompile, IHazContent
         var failedTests = outcomes.Count(x => x == "Failed");
         var skippedTests = outcomes.Count(x => x == "NotExecuted");
 
-        Serilog.Log.Logger.Information($"ReportTest: {testProject.Name} ({configuration}) \t Passed: {passedTests} \t Skipped: {skippedTests} \t Failed: {failedTests}");
+        var message = $"ReportTest: {testProject.Name} ({configuration}) \t Passed: {passedTests} \t Skipped: {skippedTests} \t Failed: {failedTests}";
+        Serilog.Log.Logger.Information(message);
+
+        if (skippedTests > 0)
+            Serilog.Log.Warning(message);
+
+        if (failedTests > 0)
+            Serilog.Log.Error(message);
 
         return failedTests > 0;
     }

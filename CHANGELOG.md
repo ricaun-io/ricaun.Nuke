@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - ITest - Run all projects with `*.Tests` 
 ### Updated
 - Update `SignExtension` - `throw new PathTooLongException` when length > 260
+### Added
+- Add project `ricaun.Nuke.Example.Tests`
 
 ## [1.4.0] / 2022-10-09
 ### Features
