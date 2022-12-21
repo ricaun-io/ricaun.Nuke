@@ -21,7 +21,7 @@ public interface IShowGitVersion : IHazGitVersion, IHazChangelog, IClean
             Serilog.Log.Information(GetReleaseNotes());
 
             // Test DownloadFile
-            ricaun.Nuke.Extensions.HttpClientExtension.DownloadFile(
+            ricaun.Nuke.Extensions.HttpClientExtension.DownloadFileRetry(
                 @"https://api.github.com/repos/ricaun-io/ricaun.Nuke/releases/latest",
                 System.IO.Path.Combine(BuildAssemblyDirectory, $"latest.json"));
         });

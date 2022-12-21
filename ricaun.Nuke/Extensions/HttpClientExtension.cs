@@ -11,6 +11,35 @@ namespace ricaun.Nuke.Extensions
     public static class HttpClientExtension
     {
         /// <summary>
+        /// Download retry number error
+        /// </summary>
+        private const int DOWNLOAD_NUMBER_RETRY = 5;
+
+        /// <summary>
+        /// Download File Retry if error
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static bool DownloadFileRetry(string address, string fileName)
+        {
+            for (int i = DOWNLOAD_NUMBER_RETRY; i >= 0; i--)
+            {
+                try
+                {
+                    DownloadFile(address, fileName);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Serilog.Log.Warning($"DownloadFileRetry: {ex.Message}");
+                    if (i == 0) throw;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Download File
         /// </summary>
         /// <param name="address"></param>

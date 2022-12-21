@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Set `Nuke.Common` Version = `6.2.1`
 ### Added
 - Add `IHazTest` with base tests methods.
+- Add `DownloadFileRetry` in `HttpClientExtension`
 
 ## [1.4.1] / 2022-12-15
 ### Features
