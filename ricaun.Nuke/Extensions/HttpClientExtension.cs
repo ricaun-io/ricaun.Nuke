@@ -16,6 +16,11 @@ namespace ricaun.Nuke.Extensions
         private const int DOWNLOAD_NUMBER_RETRY = 5;
 
         /// <summary>
+        /// Download retry millis delay/sleep
+        /// </summary>
+        private const int DOWNLOAD_DELAY_RETRY = 5000;
+
+        /// <summary>
         /// Download File Retry if error
         /// </summary>
         /// <param name="address"></param>
@@ -34,6 +39,7 @@ namespace ricaun.Nuke.Extensions
                 {
                     Serilog.Log.Warning($"DownloadFileRetry: {ex.Message}");
                     if (i == 0) throw;
+                    System.Threading.Thread.Sleep(DOWNLOAD_DELAY_RETRY);
                 }
             }
             return false;
