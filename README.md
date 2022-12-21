@@ -71,6 +71,8 @@ env:
 
 # Build.cs - ITest
 
+`ITest` runs all the `TestLocalProjectName` tests on local build and server build.
+
 ```C#
 using Nuke.Common;
 using Nuke.Common.Execution;
@@ -81,6 +83,42 @@ class Build : NukeBuild, IPublish, ITest
 {
     // bool ITest.TestBuildStopWhenFailed => true;
     // string ITest.TestProjectName => "*.Tests";
+    public static int Main() => Execute<Build>(x => x.From<IPublish>().Build);
+}
+```
+
+## Build.cs - ITestLocal
+
+`ITestLocal` runs all the `TestLocalProjectName` tests only on local build.
+
+```C#
+using Nuke.Common;
+using Nuke.Common.Execution;
+using ricaun.Nuke;
+using ricaun.Nuke.Components;
+
+class Build : NukeBuild, IPublish, ITestLocal
+{
+    // bool ITestLocal.TestLocalBuildStopWhenFailed => true;
+    // string ITestLocal.TestLocalProjectName => "*.Tests";
+    public static int Main() => Execute<Build>(x => x.From<IPublish>().Build);
+}
+```
+
+## Build.cs - ITestServer
+
+`ITestServer` runs all the `TestServerProjectName` tests only on server build.
+
+```C#
+using Nuke.Common;
+using Nuke.Common.Execution;
+using ricaun.Nuke;
+using ricaun.Nuke.Components;
+
+class Build : NukeBuild, IPublish, ITestServer
+{
+    // bool ITestServer.TestServerBuildStopWhenFailed => true;
+    // string ITestServer.TestServerProjectName => "*.Tests";
     public static int Main() => Execute<Build>(x => x.From<IPublish>().Build);
 }
 ```

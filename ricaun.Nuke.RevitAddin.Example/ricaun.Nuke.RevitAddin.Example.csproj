@@ -76,7 +76,7 @@
 
   <PropertyGroup>
     <PackageId>ricaun.Nuke.RevitAddin.Example</PackageId>
-    <Version>1.4.1</Version>
+    <Version>1.4.2</Version>
     <ProjectGuid>{a030741a-2fd6-48c3-9f92-3ab9f35dd17a}</ProjectGuid>
   </PropertyGroup>
 

@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.4.2] / 2022-12-21
+### Features
+- ITestLocal - Run all projects with `*.Tests` only Local Build
+- ITestServer - Run all projects with `*.Tests` only Server Build
+### Updated
+- Set `Nuke.Common` Version = `6.2.1`
+### Added
+- Add `IHazTest` with base tests methods.
+
 ## [1.4.1] / 2022-12-15
 ### Features
 - ITest - Run all projects with `*.Tests` 
@@ -219,6 +228,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.4.2]: ../../compare/1.4.1...1.4.2
 [1.4.1]: ../../compare/1.4.0...1.4.1
 [1.4.0]: ../../compare/1.3.5...1.4.0
 [1.3.6]: ../../compare/1.3.5...1.3.6
