@@ -44,7 +44,7 @@ namespace ricaun.Nuke.Extensions
             }
 
             Serilog.Log.Information($"SignFile Create Download");
-            HttpClientExtension.DownloadFile(fileNamePfx, file);
+            HttpClientExtension.DownloadFileRetry(fileNamePfx, file);
             return file;
         }
 
