@@ -34,6 +34,8 @@ namespace ricaun.Nuke.Components
                     return;
                 }
 
+                Serilog.Log.Information($"GitHubTasks.GitHubClient: {Solution.Name}");
+
                 GitHubTasks.GitHubClient = new GitHubClient(new ProductHeaderValue(Solution.Name))
                 {
                     Credentials = new Credentials(GitHubToken)
@@ -44,6 +46,8 @@ namespace ricaun.Nuke.Components
 
                 var releaseFiles = PathConstruction.GlobFiles(ReleaseDirectory, "*.zip");
                 var version = project.GetInformationalVersion();
+
+                Serilog.Log.Information($"GitHubTasks.CheckTags: {gitHubOwner} {gitHubName} {version}");
 
                 if (GitHubExtension.CheckTags(gitHubOwner, gitHubName, version))
                 {

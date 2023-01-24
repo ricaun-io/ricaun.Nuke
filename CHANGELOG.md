@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.4.3] / 2023-01-24
+### Updated
+- Update `IGitRelease` adding information
+### Fixed
+- Fix `GetChangelogFile` is null parent
+
 ## [1.4.2] / 2022-12-21
 ### Features
 - ITestLocal - Run all projects with `*.Tests` only Local Build
@@ -229,6 +235,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.4.3]: ../../compare/1.4.2...1.4.3
 [1.4.2]: ../../compare/1.4.1...1.4.2
 [1.4.1]: ../../compare/1.4.0...1.4.1
 [1.4.0]: ../../compare/1.3.5...1.4.0
