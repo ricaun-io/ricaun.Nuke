@@ -58,6 +58,7 @@ namespace ricaun.Nuke.Components
                 if (File.Exists(file))
                     return file;
                 parent = parent.Parent;
+                if (parent is null) return null;
                 file = parent / ChangelogFile;
             }
             return null;
