@@ -19,8 +19,12 @@ public interface IHazTest : ICompile, IHazContent
     /// <param name="testProjectName"></param>
     /// <param name="testResults"></param>
     /// <param name="testBuildStopWhenFailed"></param>
+    /// <param name="customDotNetTestSettings"></param>
     /// <exception cref="Exception"></exception>
-    public void TestProjects(string testProjectName, bool testResults = true, bool testBuildStopWhenFailed = true)
+    public void TestProjects(string testProjectName,
+        bool testResults = true,
+        bool testBuildStopWhenFailed = true,
+        Func<DotNetTestSettings, DotNetTestSettings> customDotNetTestSettings = null)
     {
         var testFailed = false;
         var testProjects = Solution.GetProjects(testProjectName);
@@ -42,6 +46,7 @@ public interface IHazTest : ICompile, IHazContent
                         .SetProjectFile(testProject)
                         .SetConfiguration(configuration)
                         .EnableNoBuild()
+                        .SetCustomDotNetTestSettings(customDotNetTestSettings)
                         .When(testResults, _ => _
                             .SetLoggers("trx")
                             .SetResultsDirectory(testResultsDirectory)));
