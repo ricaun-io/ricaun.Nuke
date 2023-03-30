@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.4.4] / 2023-03-30
+### Updated
+- IHazTest with `SetCustomDotNetTestSettings` 
+
 ## [1.4.3] / 2023-01-24
 ### Updated
 - Update `IGitRelease` adding information
@@ -235,6 +239,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.4.4]  ../../compare/1.4.3...1.4.4
 [1.4.3]: ../../compare/1.4.2...1.4.3
 [1.4.2]: ../../compare/1.4.1...1.4.2
 [1.4.1]: ../../compare/1.4.0...1.4.1
