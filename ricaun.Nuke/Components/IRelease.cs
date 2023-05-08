@@ -29,7 +29,7 @@ namespace ricaun.Nuke.Components
         /// <param name="project"></param>
         public void ReleaseProject(Project project)
         {
-            if (!FileSystemTasks.DirectoryExists(ContentDirectory))
+            if (!ContentDirectory.DirectoryExists())
             {
                 Serilog.Log.Warning($"Skip Not found: {ContentDirectory}");
                 return;
@@ -44,7 +44,7 @@ namespace ricaun.Nuke.Components
             var fileNameVersion = GetReleaseFileNameVersion(project.Name, version);
             var ProjectDirectory = ReleaseDirectory / fileNameVersion;
 
-            var nupkgs = PathConstruction.GlobFiles(ContentDirectory, "**/*.nupkg");
+            var nupkgs = Globbing.GlobFiles(ContentDirectory, "**/*.nupkg");
             if (nupkgs.Count > 0)
             {
                 nupkgs.ForEach(file => FileSystemTasks.CopyFileToDirectory(file, ProjectDirectory));

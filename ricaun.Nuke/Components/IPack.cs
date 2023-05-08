@@ -23,7 +23,7 @@ namespace ricaun.Nuke.Components
             .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch())
             .Executes(() =>
             {
-                PathConstruction.GlobFiles(ContentDirectory, "**/*.nupkg")
+                Globbing.GlobFiles(ContentDirectory, "**/*.nupkg")
                    .ForEach(x =>
                    {
                        DotNetTasks.DotNetNuGetPush(s => s

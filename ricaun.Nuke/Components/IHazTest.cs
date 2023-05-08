@@ -84,7 +84,7 @@ public interface IHazTest : ICompile, IHazContent
                 "/xn:TestRun/xn:Results/xn:UnitTestResult/@outcome",
                 ("xn", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010"));
 
-        var resultFiles = PathConstruction.GlobFiles(testResultsDirectory, "*.trx");
+        var resultFiles = Globbing.GlobFiles(testResultsDirectory, "*.trx");
         var outcomes = resultFiles.SelectMany(GetOutcomes).ToList();
         var passedTests = outcomes.Count(x => x == "Passed");
         var failedTests = outcomes.Count(x => x == "Failed");
