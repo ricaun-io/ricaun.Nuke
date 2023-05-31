@@ -70,7 +70,7 @@
   <ItemGroup>
     <PackageReference Include="GitVersion.CommandLine" Version="*"/>
     <PackageReference Include="NuGet.CommandLine" Version="*" />
-    <PackageReference Include="Nuke.Common" Version="7.0.0" />
+    <PackageReference Include="Nuke.Common" Version="7.0.2" />
   </ItemGroup>
 
 </Project>
