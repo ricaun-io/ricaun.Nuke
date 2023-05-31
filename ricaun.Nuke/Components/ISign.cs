@@ -50,15 +50,15 @@ namespace ricaun.Nuke.Components
             SignExtension.CreateCerFile(certPath, certPassword, BuildAssemblyDirectory);
 
             if (dllSign)
-                PathConstruction.GlobFiles(folder, "**/*.dll")
+                Globbing.GlobFiles(folder, "**/*.dll")
                     .ForEach(file => SignExtension.SignBinary(certPath, certPassword, file));
 
             if (nupkgSign)
-                PathConstruction.GlobFiles(folder, "**/*.nupkg")
+                Globbing.GlobFiles(folder, "**/*.nupkg")
                     .ForEach(file => SignExtension.SignNuGet(certPath, certPassword, file));
 
             if (exeSign)
-                PathConstruction.GlobFiles(folder, "**/*.exe")
+                Globbing.GlobFiles(folder, "**/*.exe")
                     .ForEach(file => SignExtension.SignBinary(certPath, certPassword, file));
 
             return true;

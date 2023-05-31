@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Nuke.Common;
+﻿using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using ricaun.Nuke.Extensions;
+using System;
+using System.Collections.Generic;
+
 namespace ricaun.Nuke.Components
 {
     /// <summary>
@@ -12,7 +13,7 @@ namespace ricaun.Nuke.Components
     public interface IHazExample : IHazSolution, INukeBuild
     {
         /// <summary>
-        /// Folder Example 
+        /// Folder Release 
         /// </summary>
         [Parameter]
         string Folder => TryGetValue(() => Folder) ?? "Release";
