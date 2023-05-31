@@ -1,35 +1,38 @@
 ﻿using Nuke.Common;
 
-/// <summary>
-/// ITest
-/// </summary>
-public interface ITest : IHazTest
+namespace ricaun.Nuke.Components
 {
     /// <summary>
-    /// TestResults (Default: true)
+    /// ITest
     /// </summary>
-    [Parameter]
-    bool TestResults => TryGetValue<bool?>(() => TestResults) ?? true;
+    public interface ITest : IHazTest
+    {
+        /// <summary>
+        /// TestResults (Default: true)
+        /// </summary>
+        [Parameter]
+        bool TestResults => TryGetValue<bool?>(() => TestResults) ?? true;
 
-    /// <summary>
-    /// TestBuildStopWhenFailed (Default: true)
-    /// </summary>
-    [Parameter]
-    bool TestBuildStopWhenFailed => TryGetValue<bool?>(() => TestBuildStopWhenFailed) ?? true;
+        /// <summary>
+        /// TestBuildStopWhenFailed (Default: true)
+        /// </summary>
+        [Parameter]
+        bool TestBuildStopWhenFailed => TryGetValue<bool?>(() => TestBuildStopWhenFailed) ?? true;
 
-    /// <summary>
-    /// TestProjectName (Default: "*.Tests")
-    /// </summary>
-    [Parameter]
-    string TestProjectName => TryGetValue<string>(() => TestProjectName) ?? "*.Tests";
+        /// <summary>
+        /// TestProjectName (Default: "*.Tests")
+        /// </summary>
+        [Parameter]
+        string TestProjectName => TryGetValue<string>(() => TestProjectName) ?? "*.Tests";
 
-    /// <summary>
-    /// Test
-    /// </summary>
-    Target Test => _ => _
-        .TriggeredBy(Compile)
-        .Executes(() =>
-        {
-            TestProjects(TestProjectName, TestResults, TestBuildStopWhenFailed);
-        });
+        /// <summary>
+        /// Test
+        /// </summary>
+        Target Test => _ => _
+            .TriggeredBy(Compile)
+            .Executes(() =>
+            {
+                TestProjects(TestProjectName, TestResults, TestBuildStopWhenFailed);
+            });
+    }
 }

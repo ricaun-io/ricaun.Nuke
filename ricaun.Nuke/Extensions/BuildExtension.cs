@@ -104,13 +104,13 @@ namespace ricaun.Nuke.Extensions
         /// <param name="BuildProjectDirectory"></param>
         public static void ClearSolution(this Solution Solution, AbsolutePath BuildProjectDirectory)
         {
-            PathConstruction.GlobDirectories(Solution.Directory, "**/bin", "**/obj")
+            Globbing.GlobDirectories(Solution.Directory, "**/bin", "**/obj")
                 .Where(x => !PathConstruction.IsDescendantPath(BuildProjectDirectory, x))
                 .ForEach((file) =>
                 {
                     try
                     {
-                        FileSystemTasks.DeleteDirectory(file);
+                        file.DeleteDirectory();
                     }
                     catch (Exception ex)
                     {

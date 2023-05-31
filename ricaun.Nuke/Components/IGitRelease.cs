@@ -44,7 +44,7 @@ namespace ricaun.Nuke.Components
                 var gitHubName = GitRepository.GetGitHubName();
                 var gitHubOwner = GitRepository.GetGitHubOwner();
 
-                var releaseFiles = PathConstruction.GlobFiles(ReleaseDirectory, "*.zip");
+                var releaseFiles = Globbing.GlobFiles(ReleaseDirectory, "*.zip");
                 var version = project.GetInformationalVersion();
 
                 Serilog.Log.Information($"GitHubTasks.CheckTags: {gitHubOwner} {gitHubName} {version}");

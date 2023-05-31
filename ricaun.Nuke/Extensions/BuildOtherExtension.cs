@@ -19,7 +19,7 @@ namespace ricaun.Nuke.Extensions
         /// <returns></returns>
         public static Project GetOtherProject(this Solution Solution, string projectName)
         {
-            return Solution.GetProjects("*")
+            return Solution.GetAllProjects("*")
                 .FirstOrDefault(p => p.Name.Equals(projectName, StringComparison.OrdinalIgnoreCase));
         }
 
@@ -31,7 +31,7 @@ namespace ricaun.Nuke.Extensions
         /// <returns></returns>
         public static IEnumerable<Project> GetOtherProjects(this Solution Solution, string projectNameEndWith)
         {
-            return Solution.GetProjects("*")
+            return Solution.GetAllProjects("*")
                 .Where(p => p.Name.EndsWith(projectNameEndWith, StringComparison.OrdinalIgnoreCase));
         }
 
