@@ -107,6 +107,51 @@ namespace ricaun.Nuke.Components
             {
                 Serilog.Log.Logger.Information($"TestFile: {testFile}");
             }
+
+            try
+            {
+                ReportTestProjectsGitHubSummary(testFiles);
+            }
+            catch (Exception ex)
+            {
+                Serilog.Log.Logger.Warning($"ReportTestProjectsGitHubSummary Fail");
+                Serilog.Log.Logger.Information($"ReportTestProjectsGitHubSummary {ex}");
+            }
+        }
+
+        /// <summary>
+        /// Simple ReportTestProjectsGitHubSummary
+        /// </summary>
+        /// <param name="resultFiles"></param>
+        void ReportTestProjectsGitHubSummary(IEnumerable<AbsolutePath> resultFiles)
+        {
+            GitHubSummary(
+                $"|   | Test File | Passed | Failed | Skipped | Total | Time |",
+                $"| :-: | --------- | :------: | :------: | :-------: | :-----: | :----: |"
+            );
+
+            foreach (var resultFile in resultFiles)
+            {
+                var outcomes = GetTestFileOutcomes(resultFile).ToList();
+                var passedTests = outcomes.Count(x => x == "Passed");
+                var failedTests = outcomes.Count(x => x == "Failed");
+                var skippedTests = outcomes.Count(x => x == "NotExecuted");
+
+                var duration = GetTestFileDurations(resultFile).Select(e => e.TotalSeconds).Sum();
+
+                var resultIcon =
+                    (failedTests != 0) ? ":x:" :
+                    (skippedTests != 0) ? ":warning:" :
+                    ":heavy_check_mark:";
+
+                GitHubSummary(
+                    $"| {resultIcon} | {resultFile.Name} | {passedTests} | {failedTests} | {skippedTests} | {outcomes.Count} | {duration:0.00}s |"
+                );
+            }
+
+            GitHubSummary(
+                ""
+            );
         }
 
         /// <summary>
