@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - GitHub Actions with Test Summary
 ### Updated
 - Update `ITest` log file name with `ProjectName` + `Configuration`
-- Update to dotnet `7.0`
+- Update to dotnet `7.0` the `Build` project
 ### Added
 - Add `IHazGitHubActions`
 
