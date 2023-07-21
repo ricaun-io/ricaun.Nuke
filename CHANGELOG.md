@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add `TrxExtension`
 ### Tests
 - Update `Tests` with fail test, ignore and pass.
+- Add configuration `Ignore` and `Fail`
 
 ## [1.5.0] / 2023-05-31
 ### Updated

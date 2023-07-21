@@ -181,7 +181,9 @@ namespace ricaun.Nuke.Extensions
             /// <returns></returns>
             public static string GetDetailsTestReport(AbsolutePath resultFile)
             {
-                var testResults = GetTestFileResults(resultFile);
+                var testResults = GetTestFileResults(resultFile)
+                    .OrderBy(e => e.StartTime);
+
                 var fileIcon = GetIcon(testResults.Select(r => r.Outcome).ToArray());
                 var fileName = resultFile.Name;
 
@@ -203,7 +205,7 @@ namespace ricaun.Nuke.Extensions
                     var totalSeconds = TimeSpan.Parse(testResult.Duration).TotalSeconds;
                     var message = GetMessage(testResult);
                     var error = GetError(testResult);
-                    stringBuilder.AppendLine($"| {icon} | {testName} | {totalSeconds:0.00} | {message} | {error} |");
+                    stringBuilder.AppendLine($"| {icon} | {testName} | {totalSeconds:0.00} | <pre>{message}</pre> | <pre>{error}</pre> |");
                 }
 
                 stringBuilder.AppendLine();

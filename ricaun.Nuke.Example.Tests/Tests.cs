@@ -19,8 +19,9 @@ namespace ricaun.Nuke.Example.Tests
             Console.WriteLine("Console Line 3");
         }
 
+#if IGNORE
         [Test]
-        [Explicit]
+        [Explicit("Explicit Message")]
         public void TestExplicit()
         {
 
@@ -38,7 +39,8 @@ namespace ricaun.Nuke.Example.Tests
         {
             Assert.Ignore("Ignore Message");
         }
-
+#endif
+#if FAIL
         [Test]
         public void TestException()
         {
@@ -50,5 +52,6 @@ namespace ricaun.Nuke.Example.Tests
         {
             Assert.Fail("Fail Message");
         }
+#endif
     }
 }
