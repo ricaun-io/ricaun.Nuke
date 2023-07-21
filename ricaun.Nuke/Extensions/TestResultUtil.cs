@@ -193,8 +193,8 @@ namespace ricaun.Nuke.Extensions
                 stringBuilder.AppendLine("</summary>");
                 stringBuilder.AppendLine();
 
-                stringBuilder.AppendLine("|     | TestName | Time | Message |");
-                stringBuilder.AppendLine("| :-: | :------: | :--: | ------- |");
+                stringBuilder.AppendLine("|     | TestName | Time | Message | Error |");
+                stringBuilder.AppendLine("| :-: | :------: | :--: | ------- | ----- |");
 
                 foreach (var testResult in testResults)
                 {
@@ -202,7 +202,8 @@ namespace ricaun.Nuke.Extensions
                     var testName = testResult.TestName;
                     var totalSeconds = TimeSpan.Parse(testResult.Duration).TotalSeconds;
                     var message = GetMessage(testResult);
-                    stringBuilder.AppendLine($"| {icon} | {testName} | {totalSeconds:0.00} | {message} |");
+                    var error = GetError(testResult);
+                    stringBuilder.AppendLine($"| {icon} | {testName} | {totalSeconds:0.00} | {message} | {error} |");
                 }
 
                 stringBuilder.AppendLine();
@@ -236,7 +237,19 @@ namespace ricaun.Nuke.Extensions
             /// <returns></returns>
             public static string GetMessage(UnitTestResult testResult)
             {
-                var message = $"{testResult.Output?.StdOut}\n{testResult.Output?.StdErr}\n{testResult.Output?.ErrorInfo?.Message}\n{testResult.Output?.ErrorInfo?.StackTrace}";
+                var message = $"{testResult.Output?.StdOut}\n{testResult.Output?.StdErr}";
+                message = message.Trim();
+                return message.Replace("\r", "").Replace("\n", "<br>");
+            }
+
+            /// <summary>
+            /// GetError
+            /// </summary>
+            /// <param name="testResult"></param>
+            /// <returns></returns>
+            public static string GetError(UnitTestResult testResult)
+            {
+                var message = $"{testResult.Output?.ErrorInfo?.Message}\n{testResult.Output?.ErrorInfo?.StackTrace}";
                 message = message.Trim();
                 return message.Replace("\r", "").Replace("\n", "<br>");
             }

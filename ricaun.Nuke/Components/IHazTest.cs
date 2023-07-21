@@ -139,37 +139,6 @@ namespace ricaun.Nuke.Components
                 var testReport = TestResultUtil.Markdown.GetDetailsTestReport(resultFile);
                 GitHubSummary(testReport);
             }
-
-            return;
-
-            GitHubSummary(
-                $"|   | Test File | Passed | Failed | Skipped | Total | Time |",
-                $"| :-: | --------- | :------: | :------: | :-------: | :-----: | :----: |"
-            );
-
-            foreach (var resultFile in resultFiles)
-            {
-                var testReport = TrxExtension.GetTestReport(resultFile);
-                var passedTests = testReport.Passed;
-                var failedTests = testReport.Failed;
-                var skippedTests = testReport.Skipped;
-                var duration = testReport.TotalSeconds;
-
-                var totalTests = passedTests + failedTests + skippedTests;
-
-                var resultIcon =
-                    (failedTests != 0) ? ":x:" :
-                    (skippedTests != 0) ? ":warning:" :
-                    ":heavy_check_mark:";
-
-                GitHubSummary(
-                    $"| {resultIcon} | {resultFile.Name} | {passedTests} | {failedTests} | {skippedTests} | {totalTests} | {duration:0.00}s |"
-                );
-            }
-
-            GitHubSummary(
-                ""
-            );
         }
 
         /// <summary>
