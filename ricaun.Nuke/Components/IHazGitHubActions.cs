@@ -8,6 +8,9 @@ namespace ricaun.Nuke.Components
     /// </summary>
     public interface IHazGitHubActions
     {
+        /// <summary>
+        /// GitHubActions
+        /// </summary>
         GitHubActions GitHubActions => GitHubActions.Instance;
 
         /// <summary>

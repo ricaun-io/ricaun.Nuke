@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update to dotnet `7.0` the `Build` project
 ### Added
 - Add `IHazGitHubActions`
+- Add `TestResultUtil` / `TestResultUtil.Markdown`
+- Add `TrxExtension`
 
 ## [1.5.0] / 2023-05-31
 ### Updated

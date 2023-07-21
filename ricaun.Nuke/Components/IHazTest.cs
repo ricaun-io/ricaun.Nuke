@@ -85,16 +85,20 @@ namespace ricaun.Nuke.Components
             }
         }
 
+        /// <summary>
+        /// ReportTestProjects
+        /// </summary>
+        /// <param name="testProjects"></param>
         void ReportTestProjects(IEnumerable<Project> testProjects)
         {
             var testFiles = testProjects.SelectMany(testProject =>
                     Globbing.GlobFiles(GetTestDirectory(testProject), ProjectTestFileName(testProject, "*"))
                 );
 
-            var outcomes = testFiles.SelectMany(GetTestFileOutcomes).ToList();
-            var passedTests = outcomes.Count(x => x == "Passed");
-            var failedTests = outcomes.Count(x => x == "Failed");
-            var skippedTests = outcomes.Count(x => x == "NotExecuted");
+            var testReport = TrxExtension.GetTestReport(testFiles);
+            var passedTests = testReport.Passed;
+            var failedTests = testReport.Failed;
+            var skippedTests = testReport.Skipped;
 
             ReportSummary(_ => _
                 .When(failedTests > 0, _ => _
@@ -125,6 +129,19 @@ namespace ricaun.Nuke.Components
         /// <param name="resultFiles"></param>
         void ReportTestProjectsGitHubSummary(IEnumerable<AbsolutePath> resultFiles)
         {
+            if (resultFiles.IsEmpty()) return;
+
+            var summaryTestReport = TestResultUtil.Markdown.GetSummaryTestReports(resultFiles);
+            GitHubSummary(summaryTestReport);
+
+            foreach (var resultFile in resultFiles)
+            {
+                var testReport = TestResultUtil.Markdown.GetDetailsTestReport(resultFile);
+                GitHubSummary(testReport);
+            }
+
+            return;
+
             GitHubSummary(
                 $"|   | Test File | Passed | Failed | Skipped | Total | Time |",
                 $"| :-: | --------- | :------: | :------: | :-------: | :-----: | :----: |"
@@ -132,12 +149,13 @@ namespace ricaun.Nuke.Components
 
             foreach (var resultFile in resultFiles)
             {
-                var outcomes = GetTestFileOutcomes(resultFile).ToList();
-                var passedTests = outcomes.Count(x => x == "Passed");
-                var failedTests = outcomes.Count(x => x == "Failed");
-                var skippedTests = outcomes.Count(x => x == "NotExecuted");
+                var testReport = TrxExtension.GetTestReport(resultFile);
+                var passedTests = testReport.Passed;
+                var failedTests = testReport.Failed;
+                var skippedTests = testReport.Skipped;
+                var duration = testReport.TotalSeconds;
 
-                var duration = GetTestFileDurations(resultFile).Select(e => e.TotalSeconds).Sum();
+                var totalTests = passedTests + failedTests + skippedTests;
 
                 var resultIcon =
                     (failedTests != 0) ? ":x:" :
@@ -145,7 +163,7 @@ namespace ricaun.Nuke.Components
                     ":heavy_check_mark:";
 
                 GitHubSummary(
-                    $"| {resultIcon} | {resultFile.Name} | {passedTests} | {failedTests} | {skippedTests} | {outcomes.Count} | {duration:0.00}s |"
+                    $"| {resultIcon} | {resultFile.Name} | {passedTests} | {failedTests} | {skippedTests} | {totalTests} | {duration:0.00}s |"
                 );
             }
 
