@@ -209,7 +209,7 @@ namespace ricaun.Nuke.Extensions
                 }
 
                 stringBuilder.AppendLine();
-                stringBuilder.AppendLine("<summary>");
+                stringBuilder.AppendLine("</details>");
                 stringBuilder.AppendLine();
 
                 return stringBuilder.ToString();

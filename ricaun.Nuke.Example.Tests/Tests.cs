@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System;
+using System.Threading;
 
 namespace ricaun.Nuke.Example.Tests
 {
@@ -17,6 +18,12 @@ namespace ricaun.Nuke.Example.Tests
             Console.WriteLine("Console Line 1");
             Console.WriteLine("Console Line 2");
             Console.WriteLine("Console Line 3");
+        }
+
+        [Test]
+        public void TestSleep()
+        {
+            Thread.Sleep(1234);
         }
 
 #if IGNORE
@@ -44,6 +51,13 @@ namespace ricaun.Nuke.Example.Tests
         [Test]
         public void TestException()
         {
+            throw new Exception();
+        }
+
+        [Test]
+        public void TestException2()
+        {
+            Console.WriteLine("Console Line");
             throw new Exception();
         }
 
