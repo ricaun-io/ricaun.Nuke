@@ -9,6 +9,7 @@ namespace ricaun.Nuke.Example.Tests
         [Test]
         public void TestPass()
         {
+            Console.WriteLine("Console Line");
             Assert.Pass("Pass Message");
         }
 
