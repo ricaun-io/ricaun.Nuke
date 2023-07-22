@@ -182,7 +182,7 @@ namespace ricaun.Nuke.Extensions
             public static string GetDetailsTestReport(AbsolutePath resultFile)
             {
                 var testResults = GetTestFileResults(resultFile)
-                    .OrderBy(e => e.StartTime);
+                    .OrderBy(e => e.TestName);
 
                 var fileIcon = GetIcon(testResults.Select(r => r.Outcome).ToArray());
                 var fileName = resultFile.Name;
@@ -193,6 +193,7 @@ namespace ricaun.Nuke.Extensions
                 stringBuilder.AppendLine("<summary>");
                 stringBuilder.AppendLine($"<strong>{fileIcon} {fileName}</strong>");
                 stringBuilder.AppendLine("</summary>");
+                stringBuilder.AppendLine("<br>");
                 stringBuilder.AppendLine();
 
                 stringBuilder.AppendLine("|     | TestName | Time | Message | Error |");

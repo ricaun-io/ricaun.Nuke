@@ -162,12 +162,13 @@ namespace ricaun.Nuke.Components
             var testResultsDirectory = GetTestDirectory(testProject);
 
             var resultFiles = Globbing.GlobFiles(testResultsDirectory, ProjectTestFileName(testProject, configuration));
-            var outcomes = resultFiles.SelectMany(GetTestFileOutcomes).ToList();
-            var passedTests = outcomes.Count(x => x == "Passed");
-            var failedTests = outcomes.Count(x => x == "Failed");
-            var skippedTests = outcomes.Count(x => x == "NotExecuted");
+            var testReport = TrxExtension.GetTestReport(resultFiles);
+            var passedTests = testReport.Passed;
+            var failedTests = testReport.Failed;
+            var skippedTests = testReport.Skipped;
+            var totalSeconds = testReport.TotalSeconds;
 
-            var message = $"ReportTest: {testProject.Name} ({configuration}) \t Passed: {passedTests} \t Skipped: {skippedTests} \t Failed: {failedTests}";
+            var message = $"ReportTest: {testProject.Name} ({configuration}) \t Passed: {passedTests} \t Skipped: {skippedTests} \t Failed: {failedTests} \t TotalSeconds: {totalSeconds}";
             Serilog.Log.Logger.Information(message);
 
             if (failedTests > 0)
@@ -181,28 +182,5 @@ namespace ricaun.Nuke.Components
 
             return failedTests > 0;
         }
-
-        #region GetTestFile
-        /// <summary>
-        /// GetTestFileOutcomes
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        IEnumerable<string> GetTestFileOutcomes(AbsolutePath file)
-            => XmlTasks.XmlPeek(
-                file,
-                "/xn:TestRun/xn:Results/xn:UnitTestResult/@outcome",
-                ("xn", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010"));
-        /// <summary>
-        /// GetTestFileDurations
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        IEnumerable<TimeSpan> GetTestFileDurations(AbsolutePath file)
-            => XmlTasks.XmlPeek(
-                file,
-                "/xn:TestRun/xn:Results/xn:UnitTestResult/@duration",
-                ("xn", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010")).Select(TimeSpan.Parse);
-        #endregion
     }
 }
