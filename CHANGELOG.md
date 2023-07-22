@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Tests
 - Update `Tests` with fail test, ignore and pass.
 - Add configuration `Ignore` and `Fail`
+- Add `TestCase` in configuration `Release`
 
 ## [1.5.0] / 2023-05-31
 ### Updated

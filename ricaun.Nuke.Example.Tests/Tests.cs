@@ -26,6 +26,16 @@ namespace ricaun.Nuke.Example.Tests
             Thread.Sleep(1234);
         }
 
+#if RELEASE
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        public void TestCase(int number)
+        {
+            Console.WriteLine(number);
+        }
+#endif
+
 #if IGNORE
         [Test]
         [Explicit("Explicit Message")]
