@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Bson;
-using Nuke.Common.IO;
+﻿using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
@@ -22,7 +21,7 @@ namespace ricaun.Nuke.Components
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public AbsolutePath GetTestDirectory(Project project) => project.Directory / "bin" / "Tests";
+        public AbsolutePath GetTestDirectory(Project project) => project.Directory / "bin" / "TestResults";
 
         /// <summary>
         /// TestProjects

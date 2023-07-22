@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Updated
 - Update `ITest` log file name with `ProjectName` + `Configuration`
 - Update to dotnet `7.0` the `Build` project
+- Update `IHazTest` folder to `TestResults`
 ### Added
 - Add `IHazGitHubActions`
 - Add `TestResultUtil` / `TestResultUtil.Markdown`
