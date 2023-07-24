@@ -177,9 +177,6 @@ namespace ricaun.Nuke.Components
             if (failedTests > 0)
                 Serilog.Log.Error(message);
 
-            else if (skippedTests > 0)
-                Serilog.Log.Warning(message);
-
             if (passedTests == 0 && skippedTests == 0)
                 return true;
 
