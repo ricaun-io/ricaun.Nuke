@@ -4,7 +4,7 @@ namespace ricaun.Nuke.Components
     /// <summary>
     /// ITestServer
     /// </summary>
-    public interface ITestServer : IHazTest
+    public interface ITestServer : ICompile, IHazTest
     {
         /// <summary>
         /// TestServerResults (Default: true)

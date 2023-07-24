@@ -7,14 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.5.1] / 2023-07-21
 ### Features
 - GitHub Actions with Test Summary
+- `Utils` with `TestReportUtil` and `TestRunUtil`
 ### Updated
 - Update `ITest` log file name with `ProjectName` + `Configuration`
 - Update to dotnet `7.0` the `Build` project
 - Update `IHazTest` folder to `TestResults`
+- Update `IHazTest` remove `ICompile`
 ### Added
+- Add `Utils` with `TestReportUtil` and `TestRunUtil`
 - Add `IHazGitHubActions`
-- Add `TestResultUtil` / `TestResultUtil.Markdown`
-- Add `TrxExtension`
 ### Tests
 - Update `Tests` with fail test, ignore and pass.
 - Add configuration `Ignore` and `Fail`

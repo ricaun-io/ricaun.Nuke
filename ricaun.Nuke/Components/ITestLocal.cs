@@ -4,7 +4,7 @@ namespace ricaun.Nuke.Components
     /// <summary>
     /// ITestLocal
     /// </summary>
-    public interface ITestLocal : IHazTest
+    public interface ITestLocal : ICompile, IHazTest
     {
         /// <summary>
         /// TestLocalResults (Default: true)

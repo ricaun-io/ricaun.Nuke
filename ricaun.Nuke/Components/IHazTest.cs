@@ -1,10 +1,12 @@
-﻿using Nuke.Common.IO;
+﻿using Nuke.Common;
+using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Utilities.Collections;
 using ricaun.Nuke.Components;
 using ricaun.Nuke.Extensions;
+using ricaun.Nuke.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +16,7 @@ namespace ricaun.Nuke.Components
     /// <summary>
     /// IHazTest
     /// </summary>
-    public interface IHazTest : ICompile, IHazContent, IHazGitHubActions
+    public interface IHazTest : IHazSolution, IHazGitHubActions
     {
         /// <summary>
         /// GetTestDirectory
@@ -69,7 +71,7 @@ namespace ricaun.Nuke.Components
                     }
 
                     if (testResults)
-                        testFailed |= ReportTestProject(testProject, configuration);
+                        testFailed |= CheckReportTestProject(testProject, configuration);
                 }
             }
 
@@ -91,10 +93,10 @@ namespace ricaun.Nuke.Components
         void ReportTestProjects(IEnumerable<Project> testProjects)
         {
             var testFiles = testProjects.SelectMany(testProject =>
-                    Globbing.GlobFiles(GetTestDirectory(testProject), ProjectTestFileName(testProject, "*"))
-                );
+                Globbing.GlobFiles(GetTestDirectory(testProject), ProjectTestFileName(testProject, "*"))
+            );
 
-            var testReport = TrxExtension.GetTestReport(testFiles);
+            var testReport = TestReportUtils.GetTestReport(testFiles);
             var passedTests = testReport.Passed;
             var failedTests = testReport.Failed;
             var skippedTests = testReport.Skipped;
@@ -130,12 +132,12 @@ namespace ricaun.Nuke.Components
         {
             if (resultFiles.IsEmpty()) return;
 
-            var summaryTestReport = TestResultUtil.Markdown.GetSummaryTestReports(resultFiles);
+            var summaryTestReport = TestRunUtil.Markdown.GetSummaryTestReports(resultFiles);
             GitHubSummary(summaryTestReport);
 
             foreach (var resultFile in resultFiles)
             {
-                var testReport = TestResultUtil.Markdown.GetDetailsTestReport(resultFile);
+                var testReport = TestRunUtil.Markdown.GetDetailsTestReport(resultFile);
                 GitHubSummary(testReport);
             }
         }
@@ -152,23 +154,24 @@ namespace ricaun.Nuke.Components
         }
 
         /// <summary>
-        /// ReportTestProject
+        /// CheckReportTestProject
         /// </summary>
         /// <param name="testProject"></param>
         /// <param name="configuration"></param>
         /// <returns>Return if fail some test</returns>
-        bool ReportTestProject(Project testProject, string configuration)
+        bool CheckReportTestProject(Project testProject, string configuration)
         {
             var testResultsDirectory = GetTestDirectory(testProject);
 
             var resultFiles = Globbing.GlobFiles(testResultsDirectory, ProjectTestFileName(testProject, configuration));
-            var testReport = TrxExtension.GetTestReport(resultFiles);
+            var testReport = TestReportUtils.GetTestReport(resultFiles);
+
             var passedTests = testReport.Passed;
             var failedTests = testReport.Failed;
             var skippedTests = testReport.Skipped;
             var totalSeconds = testReport.TotalSeconds;
 
-            var message = $"ReportTest: {testProject.Name} ({configuration}) \t Passed: {passedTests} \t Skipped: {skippedTests} \t Failed: {failedTests} \t TotalSeconds: {totalSeconds}";
+            var message = $"ReportTest: {testProject.Name} ({configuration}) \t Passed: {passedTests} \t Skipped: {skippedTests} \t Failed: {failedTests} \t TotalSeconds: {totalSeconds:0.00}";
             Serilog.Log.Logger.Information(message);
 
             if (failedTests > 0)
