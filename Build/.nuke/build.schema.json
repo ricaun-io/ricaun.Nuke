@@ -135,6 +135,9 @@
             ]
           }
         },
+        "TestBuildStopWhenFailed": {
+          "type": "boolean"
+        },
         "TestProjectName": {
           "type": "string"
         },
