@@ -5,7 +5,7 @@ namespace ricaun.Nuke.Components
     /// <summary>
     /// ITest
     /// </summary>
-    public interface ITest : IHazTest
+    public interface ITest : ICompile, IHazTest
     {
         /// <summary>
         /// TestResults (Default: true)

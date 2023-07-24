@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.5.1] / 2023-07-21 - 2023-07-24
+### Features
+- GitHub Actions with Test Summary
+- `Utils` with `TestReportUtil` and `TestRunUtil`
+### Updated
+- Update `ITest` log file name with `ProjectName` + `Configuration`
+- Update to dotnet `7.0` the `Build` project
+- Update `IHazTest` folder to `TestResults`
+- Update `IHazTest` remove `ICompile`
+### Added
+- Add `Utils` with `TestReportUtil` and `TestRunUtil`
+- Add `IHazGitHubActions`
+### Tests
+- Update `Tests` with fail test, ignore and pass.
+- Add configuration `Ignore` and `Fail`
+- Add `TestCase` in configuration `Release`
+
 ## [1.5.0] / 2023-05-31
 ### Updated
 - Update `Nuke.Common` Version = `7.0.2`
@@ -247,6 +264,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.5.1]: ../../compare/1.5.0...1.5.1
 [1.5.0]: ../../compare/1.4.4...1.5.0
 [1.4.4]: ../../compare/1.4.3...1.4.4
 [1.4.3]: ../../compare/1.4.2...1.4.3

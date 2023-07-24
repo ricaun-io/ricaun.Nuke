@@ -1,9 +1,12 @@
-﻿using Nuke.Common.IO;
+﻿using Nuke.Common;
+using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Utilities.Collections;
 using ricaun.Nuke.Components;
 using ricaun.Nuke.Extensions;
+using ricaun.Nuke.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +16,15 @@ namespace ricaun.Nuke.Components
     /// <summary>
     /// IHazTest
     /// </summary>
-    public interface IHazTest : ICompile, IHazContent
+    public interface IHazTest : IHazSolution, IHazGitHubActions
     {
+        /// <summary>
+        /// GetTestDirectory
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns></returns>
+        public AbsolutePath GetTestDirectory(Project project) => project.Directory / "bin" / "TestResults";
+
         /// <summary>
         /// TestProjects
         /// </summary>
@@ -33,7 +43,7 @@ namespace ricaun.Nuke.Components
 
             foreach (var testProject in testProjects)
             {
-                var testResultsDirectory = GetContentDirectory(testProject);
+                var testResultsDirectory = GetTestDirectory(testProject);
 
                 var configurations = testProject.GetReleases();
                 foreach (var configuration in configurations)
@@ -51,18 +61,23 @@ namespace ricaun.Nuke.Components
                             .EnableNoBuild()
                             .SetCustomDotNetTestSettings(customDotNetTestSettings)
                             .When(testResults, _ => _
-                                .SetLoggers("trx")
+                                .SetLoggers($"trx;LogFileName={ProjectTestFileName(testProject, configuration)}")
                                 .SetResultsDirectory(testResultsDirectory)));
                     }
                     catch (Exception ex)
                     {
-                        Serilog.Log.Logger.Error($"Exception: {ex}");
-                        if (testBuildStopWhenFailed) throw;
+                        Serilog.Log.Logger.Information($"Exception: {ex}");
+                        testFailed = true;
                     }
 
                     if (testResults)
-                        testFailed |= ReportTestCount(testProject, configuration);
+                        testFailed |= CheckReportTestProject(testProject, configuration);
                 }
+            }
+
+            if (testResults)
+            {
+                ReportTestProjects(testProjects);
             }
 
             if (testFailed & testBuildStopWhenFailed)
@@ -72,32 +87,92 @@ namespace ricaun.Nuke.Components
         }
 
         /// <summary>
-        /// ReportTestCount
+        /// ReportTestProjects
+        /// </summary>
+        /// <param name="testProjects"></param>
+        void ReportTestProjects(IEnumerable<Project> testProjects)
+        {
+            var testFiles = testProjects.SelectMany(testProject =>
+                Globbing.GlobFiles(GetTestDirectory(testProject), ProjectTestFileName(testProject, "*"))
+            );
+
+            var testReport = TestReportUtils.GetTestReport(testFiles);
+            var passedTests = testReport.Passed;
+            var failedTests = testReport.Failed;
+            var skippedTests = testReport.Skipped;
+
+            ReportSummary(_ => _
+                .When(failedTests > 0, _ => _
+                    .AddPair("Failed", failedTests.ToString()))
+                .AddPair("Passed", passedTests.ToString())
+                .When(skippedTests > 0, _ => _
+                    .AddPair("Skipped", skippedTests.ToString())));
+
+            foreach (var testFile in testFiles)
+            {
+                Serilog.Log.Logger.Information($"TestFile: {testFile}");
+            }
+
+            try
+            {
+                ReportTestProjectsGitHubSummary(testFiles);
+            }
+            catch (Exception ex)
+            {
+                Serilog.Log.Logger.Warning($"ReportTestProjectsGitHubSummary Fail");
+                Serilog.Log.Logger.Information($"ReportTestProjectsGitHubSummary {ex}");
+            }
+        }
+
+        /// <summary>
+        /// Simple ReportTestProjectsGitHubSummary
+        /// </summary>
+        /// <param name="resultFiles"></param>
+        void ReportTestProjectsGitHubSummary(IEnumerable<AbsolutePath> resultFiles)
+        {
+            if (resultFiles.IsEmpty()) return;
+
+            var summaryTestReport = TestRunUtil.Markdown.GetSummaryTestReports(resultFiles);
+            GitHubSummary(summaryTestReport);
+
+            foreach (var resultFile in resultFiles)
+            {
+                var testReport = TestRunUtil.Markdown.GetDetailsTestReport(resultFile);
+                GitHubSummary(testReport);
+            }
+        }
+
+        /// <summary>
+        /// ProjectTestFileName
+        /// </summary>
+        /// <param name="testProject"></param>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
+        string ProjectTestFileName(Project testProject, string configuration)
+        {
+            return $"{testProject.Name}_{configuration}.trx";
+        }
+
+        /// <summary>
+        /// CheckReportTestProject
         /// </summary>
         /// <param name="testProject"></param>
         /// <param name="configuration"></param>
         /// <returns>Return if fail some test</returns>
-        bool ReportTestCount(Project testProject, string configuration = "")
+        bool CheckReportTestProject(Project testProject, string configuration)
         {
-            var testResultsDirectory = GetContentDirectory(testProject);
+            var testResultsDirectory = GetTestDirectory(testProject);
 
-            IEnumerable<string> GetOutcomes(AbsolutePath file)
-                => XmlTasks.XmlPeek(
-                    file,
-                    "/xn:TestRun/xn:Results/xn:UnitTestResult/@outcome",
-                    ("xn", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010"));
+            var resultFiles = Globbing.GlobFiles(testResultsDirectory, ProjectTestFileName(testProject, configuration));
+            var testReport = TestReportUtils.GetTestReport(resultFiles);
 
-            var resultFiles = Globbing.GlobFiles(testResultsDirectory, "*.trx");
-            var outcomes = resultFiles.SelectMany(GetOutcomes).ToList();
-            var passedTests = outcomes.Count(x => x == "Passed");
-            var failedTests = outcomes.Count(x => x == "Failed");
-            var skippedTests = outcomes.Count(x => x == "NotExecuted");
+            var passedTests = testReport.Passed;
+            var failedTests = testReport.Failed;
+            var skippedTests = testReport.Skipped;
+            var totalSeconds = testReport.TotalSeconds;
 
-            var message = $"ReportTest: {testProject.Name} ({configuration}) \t Passed: {passedTests} \t Skipped: {skippedTests} \t Failed: {failedTests}";
+            var message = $"ReportTest: {testProject.Name} ({configuration}) \t Passed: {passedTests} \t Skipped: {skippedTests} \t Failed: {failedTests} \t TotalSeconds: {totalSeconds:0.00}";
             Serilog.Log.Logger.Information(message);
-
-            if (skippedTests > 0)
-                Serilog.Log.Warning(message);
 
             if (failedTests > 0)
                 Serilog.Log.Error(message);
