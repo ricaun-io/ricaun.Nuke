@@ -48,11 +48,15 @@ namespace ricaun.Nuke.Components
                 var configurations = testProject.GetReleases();
                 foreach (var configuration in configurations)
                 {
+                    var targetVersion = string.Empty;
                     try
                     {
                         Serilog.Log.Logger.Information($"Build: {testProject.Name} {configuration}");
                         testProject.Build(configuration);
-                        Serilog.Log.Logger.Information($"Test: {testProject.Name} {configuration}");
+
+                        targetVersion = testProject.GetLastTargetFrameworkVersion();
+
+                        Serilog.Log.Logger.Information($"Test: {testProject.Name} {configuration} {targetVersion}");
 
                         DotNetTasks.DotNetTest(_ => _
                             .SetProjectFile(testProject)
@@ -61,7 +65,7 @@ namespace ricaun.Nuke.Components
                             .EnableNoBuild()
                             .SetCustomDotNetTestSettings(customDotNetTestSettings)
                             .When(testResults, _ => _
-                                .SetLoggers($"trx;LogFileName={ProjectTestFileName(testProject, configuration)}")
+                                .SetLoggers($"trx;LogFileName={ProjectTestFileName(testProject, configuration, targetVersion)}")
                                 .SetResultsDirectory(testResultsDirectory)));
                     }
                     catch (Exception ex)
@@ -71,7 +75,7 @@ namespace ricaun.Nuke.Components
                     }
 
                     if (testResults)
-                        testFailed |= CheckReportTestProject(testProject, configuration);
+                        testFailed |= CheckReportTestProject(testProject, configuration, targetVersion);
                 }
             }
 
@@ -95,6 +99,12 @@ namespace ricaun.Nuke.Components
             var testFiles = testProjects.SelectMany(testProject =>
                 Globbing.GlobFiles(GetTestDirectory(testProject), ProjectTestFileName(testProject, "*"))
             );
+
+            if (testFiles.IsEmpty())
+            {
+                Serilog.Log.Logger.Error($"ReportTestProjects: TestFiles is Empty!");
+                return;
+            }
 
             var testReport = TestReportUtils.GetTestReport(testFiles);
             var passedTests = testReport.Passed;
@@ -154,18 +164,40 @@ namespace ricaun.Nuke.Components
         }
 
         /// <summary>
+        /// ProjectTestFileName
+        /// </summary>
+        /// <param name="testProject"></param>
+        /// <param name="configuration"></param>
+        /// <param name="targetVersion"></param>
+        /// <returns></returns>
+        string ProjectTestFileName(Project testProject, string configuration, string targetVersion)
+        {
+            if (string.IsNullOrWhiteSpace(targetVersion) == false)
+                configuration += "_" + targetVersion;
+
+            return ProjectTestFileName(testProject, configuration);
+        }
+
+        /// <summary>
         /// CheckReportTestProject
         /// </summary>
         /// <param name="testProject"></param>
         /// <param name="configuration"></param>
+        /// <param name="targetVersion"></param>
         /// <returns>Return if fail some test</returns>
-        bool CheckReportTestProject(Project testProject, string configuration)
+        bool CheckReportTestProject(Project testProject, string configuration, string targetVersion = null)
         {
             var testResultsDirectory = GetTestDirectory(testProject);
 
-            var resultFiles = Globbing.GlobFiles(testResultsDirectory, ProjectTestFileName(testProject, configuration));
-            var testReport = TestReportUtils.GetTestReport(resultFiles);
+            var resultFiles = Globbing.GlobFiles(testResultsDirectory, ProjectTestFileName(testProject, configuration, targetVersion));
 
+            if (resultFiles.IsEmpty())
+            {
+                Serilog.Log.Logger.Error($"CheckReportTestProject: ResultFiles is Empty!");
+                return true;
+            }
+
+            var testReport = TestReportUtils.GetTestReport(resultFiles);
             var passedTests = testReport.Passed;
             var failedTests = testReport.Failed;
             var skippedTests = testReport.Skipped;

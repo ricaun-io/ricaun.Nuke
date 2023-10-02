@@ -1,4 +1,5 @@
 ﻿using Nuke.Common.IO;
+using Nuke.Common.Utilities.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +55,9 @@ namespace ricaun.Nuke.Utils
         /// <returns></returns>
         public static TestReport GetTestReport(IEnumerable<AbsolutePath> testFiles)
         {
+            if (testFiles.IsEmpty())
+                return new TestReport();
+
             return testFiles.Select(GetTestReport).Aggregate((a, b) => new TestReport
             {
                 Passed = a.Passed + b.Passed,

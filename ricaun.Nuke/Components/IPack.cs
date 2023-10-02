@@ -10,7 +10,7 @@ namespace ricaun.Nuke.Components
     /// <summary>
     /// IPack
     /// </summary>
-    public interface IPack : IHazPack, IHazContent, ISign, IHazGitRepository, INukeBuild
+    public interface IPack : IHazPack, IHazRelease, ISign, IHazGitRepository, INukeBuild
     {
         /// <summary>
         /// Target Pack
@@ -23,7 +23,8 @@ namespace ricaun.Nuke.Components
             .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch())
             .Executes(() =>
             {
-                Globbing.GlobFiles(ContentDirectory, "**/*.nupkg")
+                var releaseDirectory = GetReleaseDirectory(MainProject);
+                Globbing.GlobFiles(releaseDirectory, "**/*.nupkg")
                    .ForEach(x =>
                    {
                        DotNetTasks.DotNetNuGetPush(s => s

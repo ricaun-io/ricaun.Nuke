@@ -189,6 +189,18 @@ namespace ricaun.Nuke.Extensions
             //Serilog.Log.Information($"-");
         }
 
+        /// <summary>
+        /// Get Last TargetFramework using <see cref="GetAssemblyLastCreated(Project)"/> and <see cref="GetTargetFramework"/>
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns></returns>
+        public static string GetLastTargetFrameworkVersion(this Project project)
+        {
+            var target = project.GetAssemblyLastCreated().GetTargetFramework();
+            var targetVersion = target?.Split('=').LastOrDefault();
+            return targetVersion;
+        }
+
         #endregion
 
         #region Assembly
@@ -239,67 +251,107 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
+        /// GetAssemblyLastCreated
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns></returns>
+        public static Assembly GetAssemblyLastCreated(this Project project)
+        {
+            return GetAssemblyLastCreated(project.Directory, $"*{project.Name}*.dll");
+        }
+
+        /// <summary>
+        /// GetAssemblyLastCreated
+        /// </summary>
+        /// <param name="sourceDir"></param>
+        /// <param name="searchPattern"></param>
+        /// <returns></returns>
+        private static Assembly GetAssemblyLastCreated(string sourceDir, string searchPattern = "*.dll")
+        {
+            Assembly assembly = null;
+            var dllFiles = Directory.GetFiles(sourceDir, searchPattern, SearchOption.AllDirectories);
+            foreach (var dll in dllFiles.OrderByDescending(e => File.GetCreationTime(e)))
+            {
+                try
+                {
+                    var assemblyTest = Assembly.Load(File.ReadAllBytes(dll));
+                    assembly = assemblyTest;
+                    break;
+                }
+                catch { }
+            }
+            return assembly;
+        }
+
+        /// <summary>
         /// Get InformationalVersion
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        private static string GetInformationalVersion(this Assembly assembly) => assembly.GetValue<AssemblyInformationalVersionAttribute>(assembly.GetVersion());
+        public static string GetInformationalVersion(this Assembly assembly) => assembly.GetValue<AssemblyInformationalVersionAttribute>(assembly.GetVersion());
 
         /// <summary>
         /// Get FileVersion
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        private static string GetFileVersion(this Assembly assembly) => assembly.GetValue<AssemblyFileVersionAttribute>(assembly.GetVersion());
+        public static string GetFileVersion(this Assembly assembly) => assembly.GetValue<AssemblyFileVersionAttribute>(assembly.GetVersion());
 
         /// <summary>
         /// Get Title
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        private static string GetTitle(this Assembly assembly) => assembly.GetValue<AssemblyTitleAttribute>();
+        public static string GetTitle(this Assembly assembly) => assembly.GetValue<AssemblyTitleAttribute>();
 
         /// <summary>
         /// Get Description
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        private static string GetDescription(this Assembly assembly) => assembly.GetValue<AssemblyDescriptionAttribute>();
+        public static string GetDescription(this Assembly assembly) => assembly.GetValue<AssemblyDescriptionAttribute>();
 
         /// <summary>
         /// Get Company
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        private static string GetCompany(this Assembly assembly) => assembly.GetValue<AssemblyCompanyAttribute>();
+        public static string GetCompany(this Assembly assembly) => assembly.GetValue<AssemblyCompanyAttribute>();
 
         /// <summary>
         /// Get Product
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        private static string GetProduct(this Assembly assembly) => assembly.GetValue<AssemblyProductAttribute>();
+        public static string GetProduct(this Assembly assembly) => assembly.GetValue<AssemblyProductAttribute>();
 
         /// <summary>
         /// Get Copyright
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        private static string GetCopyright(this Assembly assembly) => assembly.GetValue<AssemblyCopyrightAttribute>();
+        public static string GetCopyright(this Assembly assembly) => assembly.GetValue<AssemblyCopyrightAttribute>();
 
         /// <summary>
         /// Get Trademark
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        private static string GetTrademark(this Assembly assembly) => assembly.GetValue<AssemblyTrademarkAttribute>();
+        public static string GetTrademark(this Assembly assembly) => assembly.GetValue<AssemblyTrademarkAttribute>();
 
         /// <summary>
         /// Get Configuration
         /// </summary>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        private static string GetConfiguration(this Assembly assembly) => assembly.GetValue<AssemblyConfigurationAttribute>();
+        public static string GetConfiguration(this Assembly assembly) => assembly.GetValue<AssemblyConfigurationAttribute>();
+
+        /// <summary>
+        /// Get TargetFramework
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <returns></returns>
+        public static string GetTargetFramework(this Assembly assembly) => assembly.GetValue<System.Runtime.Versioning.TargetFrameworkAttribute>();
 
         /// <summary>
         /// GetValue of CustomAttributeType 
@@ -308,7 +360,7 @@ namespace ricaun.Nuke.Extensions
         /// <param name="assembly"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        private static string GetValue<TCustomAttributeType>(this Assembly assembly, string defaultValue = "")
+        public static string GetValue<TCustomAttributeType>(this Assembly assembly, string defaultValue = "")
         {
             try
             {
