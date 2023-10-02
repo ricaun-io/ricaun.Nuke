@@ -6,9 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [1.6.1] / 2023-10-02
 ### Fixed
-- Fix test file with multi target framework
+- Fix test file with multi target framework (Fix: #60)
 ### Updated
-- Update `LogfileName` to `LogFilePrefix`
+- Update `LogfileName` to `LogFilePrefix` (Fix: #60)
 ### Tests
 - Add `ricaun.Nuke.Tests` with multi target framework
 
