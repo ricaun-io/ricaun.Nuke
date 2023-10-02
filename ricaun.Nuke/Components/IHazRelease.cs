@@ -14,7 +14,7 @@ namespace ricaun.Nuke.Components
         /// Folder Release 
         /// </summary>
         [Parameter]
-        string Folder => TryGetValue(() => Folder) ?? "ReleaseFiles";
+        string ReleaseFolder => TryGetValue(() => ReleaseFolder) ?? "ReleaseFiles";
 
         /// <summary>
         /// Add Version in the Release Zip File (default: false)
@@ -32,7 +32,7 @@ namespace ricaun.Nuke.Components
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public AbsolutePath GetReleaseDirectory(Project project) => project.Directory / "bin" / Folder;
+        public AbsolutePath GetReleaseDirectory(Project project) => project.Directory / "bin" / ReleaseFolder;
 
         /// <summary>
         /// GetReleaseFileNameVersion

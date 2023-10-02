@@ -78,6 +78,9 @@
         "ReleaseExample": {
           "type": "boolean"
         },
+        "ReleaseFolder": {
+          "type": "string"
+        },
         "ReleaseNameVersion": {
           "type": "boolean"
         },

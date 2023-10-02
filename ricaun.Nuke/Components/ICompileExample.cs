@@ -1,5 +1,4 @@
 ﻿using Nuke.Common;
-using ricaun.Nuke.Extensions;
 
 namespace ricaun.Nuke.Components
 {
@@ -16,27 +15,7 @@ namespace ricaun.Nuke.Components
             .Before(Sign)
             .Executes(() =>
             {
-                foreach (var example in GetExampleProjects())
-                {
-                    Solution.BuildProject(example, (project) =>
-                    {
-                        project.ShowInformation();
-
-                        SignProject(project);
-
-                        var exampleDirectory = GetExampleDirectory(project);
-                        var fileName = project.Name;
-                        var version = project.GetInformationalVersion();
-
-                        if (ReleaseExample)
-                        {
-                            var releaseFileName = CreateReleaseFromDirectory(exampleDirectory, fileName, version);
-                            Serilog.Log.Information($"Release: {releaseFileName}");
-                            //var zipFile = ReleaseDirectory / $"{fileName}.zip";
-                            //ZipExtension.CreateFromDirectory(folder, zipFile);
-                        }
-                    });
-                }
+                BuildProjectsAndRelease(GetExampleProjects(), ReleaseExample, ReleaseExample);
             });
     }
 }
