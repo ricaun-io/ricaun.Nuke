@@ -5,11 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [1.5.2] / 2023-10-02
+### Features
+- TestResult with `TargetFramework` in name. (Fix: #60)
+- `IPack` releases all packages in the `ReleaseFiles` folder. (Fix: #58)
 ### Updated
 - Tests files with `TargetFramework` in name
 - Update `Nuke.Common` version to `7.0.6`
 - Update `AssemblyExtension` with `GetAssemblyLastCreated`
 - Update `IHazTest` to make TestResults with `TargetFramework`
+- Update `IPack` to releases all packages in the `ReleaseFiles` folder.
 ### Tests
 - Add diferent `TargetFramework` in each configuration
 
