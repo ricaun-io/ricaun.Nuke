@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Change `IHazExample` Name to wildcard pattern `*.Example`
 - Move `ISign` methods to `IHazSign`
 - Change `IHazRelease` Folder to ReleaseFolder
+- Add `ReportSummaryProjectNames` in `IHazExample`
 
 ## [1.5.2] / 2023-10-02
 ### Features

@@ -5,6 +5,7 @@ using Nuke.Common.Utilities.Collections;
 using ricaun.Nuke.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ricaun.Nuke.Components
 {
@@ -81,6 +82,18 @@ namespace ricaun.Nuke.Components
                     }
                 });
             }
+        }
+
+        /// <summary>
+        /// ReportSummaryProjectNames
+        /// </summary>
+        /// <param name="projects"></param>
+        public void ReportSummaryProjectNames(IEnumerable<Project> projects)
+        {
+            var names = string.Join(" | ", projects.Select(e => e.Name).ToArray());
+            ReportSummary(_ => _
+                .AddPair("Projects", names)
+            );
         }
     }
 }

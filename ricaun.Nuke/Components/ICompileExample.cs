@@ -1,4 +1,6 @@
 ﻿using Nuke.Common;
+using Nuke.Common.Utilities.Collections;
+using System.Linq;
 
 namespace ricaun.Nuke.Components
 {
@@ -15,6 +17,7 @@ namespace ricaun.Nuke.Components
             .Before(Sign)
             .Executes(() =>
             {
+                ReportSummaryProjectNames(GetExampleProjects());
                 BuildProjectsAndRelease(GetExampleProjects(), ReleaseExample, ReleaseExample);
             });
     }
