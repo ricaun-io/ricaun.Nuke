@@ -1,6 +1,7 @@
 ﻿using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Utilities.Collections;
 using System;
@@ -163,9 +164,9 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <param name="project"></param>
         /// <param name="configuration"></param>
-        public static void Rebuild(this Project project, string configuration)
+        public static IReadOnlyCollection<Output> Rebuild(this Project project, string configuration)
         {
-            MSBuildTasks.MSBuild(s => s
+            return MSBuildTasks.MSBuild(s => s
                 .SetTargets("Rebuild")
                 .SetTargetPath(project)
                 .SetConfiguration(configuration)
@@ -181,9 +182,9 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <param name="project"></param>
         /// <param name="configuration"></param>
-        public static void Build(this Project project, string configuration)
+        public static IReadOnlyCollection<Output> Build(this Project project, string configuration)
         {
-            MSBuildTasks.MSBuild(s => s
+            return MSBuildTasks.MSBuild(s => s
                 .SetTargets("Build")
                 .SetTargetPath(project)
                 .SetConfiguration(configuration)

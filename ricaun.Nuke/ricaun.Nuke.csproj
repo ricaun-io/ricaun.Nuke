@@ -7,7 +7,7 @@
 
   <PropertyGroup>
     <PackageId>ricaun.Nuke</PackageId>
-    <Version>1.5.1</Version>
+    <Version>1.5.2</Version>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -37,6 +37,7 @@
     <RepositoryUrl>https://github.com/$(GitHubRepositoryOwner)/$(PackageId)</RepositoryUrl>
     <RepositoryType>github</RepositoryType>
     <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageIconUrl />
   </PropertyGroup>
 
@@ -68,9 +69,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitVersion.CommandLine" Version="*"/>
+    <PackageReference Include="GitVersion.CommandLine" Version="*" />
     <PackageReference Include="NuGet.CommandLine" Version="*" />
-    <PackageReference Include="Nuke.Common" Version="7.0.2" />
+    <PackageReference Include="Nuke.Common" Version="7.0.6" />
   </ItemGroup>
 
 </Project>
