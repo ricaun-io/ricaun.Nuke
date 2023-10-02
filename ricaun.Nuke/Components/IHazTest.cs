@@ -48,15 +48,11 @@ namespace ricaun.Nuke.Components
                 var configurations = testProject.GetReleases();
                 foreach (var configuration in configurations)
                 {
-                    var targetVersion = string.Empty;
                     try
                     {
                         Serilog.Log.Logger.Information($"Build: {testProject.Name} {configuration}");
                         testProject.Build(configuration);
-
-                        targetVersion = testProject.GetLastTargetFrameworkVersion();
-
-                        Serilog.Log.Logger.Information($"Test: {testProject.Name} {configuration} {targetVersion}");
+                        Serilog.Log.Logger.Information($"Test: {testProject.Name} {configuration}");
 
                         DotNetTasks.DotNetTest(_ => _
                             .SetProjectFile(testProject)
@@ -65,7 +61,7 @@ namespace ricaun.Nuke.Components
                             .EnableNoBuild()
                             .SetCustomDotNetTestSettings(customDotNetTestSettings)
                             .When(testResults, _ => _
-                                .SetLoggers($"trx;LogFileName={ProjectTestFileName(testProject, configuration, targetVersion)}")
+                                .SetLoggers($"trx;LogFilePrefix={ProjectTestFilePrefix(testProject, configuration)}")
                                 .SetResultsDirectory(testResultsDirectory)));
                     }
                     catch (Exception ex)
@@ -75,7 +71,7 @@ namespace ricaun.Nuke.Components
                     }
 
                     if (testResults)
-                        testFailed |= CheckReportTestProject(testProject, configuration, targetVersion);
+                        testFailed |= CheckReportTestProject(testProject, configuration);
                 }
             }
 
@@ -97,7 +93,7 @@ namespace ricaun.Nuke.Components
         void ReportTestProjects(IEnumerable<Project> testProjects)
         {
             var testFiles = testProjects.SelectMany(testProject =>
-                Globbing.GlobFiles(GetTestDirectory(testProject), ProjectTestFileName(testProject, "*"))
+                Globbing.GlobFiles(GetTestDirectory(testProject), ProjectTestFilePrefix(testProject, "*"))
             );
 
             if (testFiles.IsEmpty())
@@ -153,29 +149,14 @@ namespace ricaun.Nuke.Components
         }
 
         /// <summary>
-        /// ProjectTestFileName
+        /// ProjectTestFilePrefix to use with 'LogFilePrefix'
         /// </summary>
         /// <param name="testProject"></param>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        string ProjectTestFileName(Project testProject, string configuration)
+        string ProjectTestFilePrefix(Project testProject, string configuration)
         {
-            return $"{testProject.Name}_{configuration}.trx";
-        }
-
-        /// <summary>
-        /// ProjectTestFileName
-        /// </summary>
-        /// <param name="testProject"></param>
-        /// <param name="configuration"></param>
-        /// <param name="targetVersion"></param>
-        /// <returns></returns>
-        string ProjectTestFileName(Project testProject, string configuration, string targetVersion)
-        {
-            if (string.IsNullOrWhiteSpace(targetVersion) == false)
-                configuration += "_" + targetVersion;
-
-            return ProjectTestFileName(testProject, configuration);
+            return $"{testProject.Name}_{configuration}";
         }
 
         /// <summary>
@@ -183,13 +164,12 @@ namespace ricaun.Nuke.Components
         /// </summary>
         /// <param name="testProject"></param>
         /// <param name="configuration"></param>
-        /// <param name="targetVersion"></param>
         /// <returns>Return if fail some test</returns>
-        bool CheckReportTestProject(Project testProject, string configuration, string targetVersion = null)
+        bool CheckReportTestProject(Project testProject, string configuration)
         {
             var testResultsDirectory = GetTestDirectory(testProject);
 
-            var resultFiles = Globbing.GlobFiles(testResultsDirectory, ProjectTestFileName(testProject, configuration, targetVersion));
+            var resultFiles = Globbing.GlobFiles(testResultsDirectory, ProjectTestFilePrefix(testProject, configuration) + "*");
 
             if (resultFiles.IsEmpty())
             {
