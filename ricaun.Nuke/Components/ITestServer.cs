@@ -4,7 +4,7 @@ namespace ricaun.Nuke.Components
     /// <summary>
     /// ITestServer
     /// </summary>
-    public interface ITestServer : ICompile, IHazTest
+    public interface ITestServer : ICompile, IRelease, IHazTest
     {
         /// <summary>
         /// TestServerResults (Default: true)
@@ -29,6 +29,7 @@ namespace ricaun.Nuke.Components
         /// </summary>
         Target TestServer => _ => _
             .TriggeredBy(Compile)
+            .Before(Release)
             .OnlyWhenStatic(() => IsServerBuild)
             .Executes(() =>
             {
