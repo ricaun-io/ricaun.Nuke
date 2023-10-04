@@ -5,7 +5,7 @@ This package is to simplify the build automation system using [Nuke.Common](http
 [![Visual Studio 2022](https://img.shields.io/badge/Visual%20Studio-2022-blue)](../..)
 [![Nuke](https://img.shields.io/badge/Nuke-Build-blue)](https://nuke.build/)
 [![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Publish](../../actions/workflows/Publish.yml/badge.svg)](../../actions)
+[![Publish](https://github.com/ricaun-io/ricaun.Nuke/actions/workflows/Publish.yml/badge.svg)](https://github.com/ricaun-io/ricaun.Nuke/actions)
 [![Release](https://img.shields.io/nuget/v/ricaun.Nuke?logo=nuget&label=release&color=blue)](https://www.nuget.org/packages/ricaun.Nuke)
 
 # Examples
