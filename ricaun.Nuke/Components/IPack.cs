@@ -26,15 +26,7 @@ namespace ricaun.Nuke.Components
             {
                 var releaseDirectory = GetReleaseDirectory(MainProject);
                 Globbing.GlobFiles(releaseDirectory, "**/*.nupkg")
-                   .ForEach(x =>
-                   {
-                       DotNetTasks.DotNetNuGetPush(s => s
-                            .SetTargetPath(x)
-                            .SetSource(NugetApiUrl)
-                            .SetApiKey(NugetApiKey)
-                            .EnableSkipDuplicate()
-                       );
-                   });
+                   .ForEach(DotNetNuGetPush);
             });
     }
 }

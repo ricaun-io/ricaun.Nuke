@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update `IGitRelease` with custom method to create release and pre-release.
 - Update `GitHubExtension` to release or pre-release.
 - Update order of `Targets`
+- Update `IGitRelease` to fail if MainProject is prerelease.
+- Update `IHazPack` with base package methods.
 ### Added
 - Add `IGitPreRelease` with custom method to create pre-release when version is pre-release.
 - Add `IPrePack` with custom method to create pre-release when version is pre-release.

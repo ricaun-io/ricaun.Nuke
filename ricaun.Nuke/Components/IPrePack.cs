@@ -1,6 +1,8 @@
 ﻿using Nuke.Common;
+using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.Utilities.Collections;
+using ricaun.Nuke.Extensions;
 using System.Linq;
 
 namespace ricaun.Nuke.Components
@@ -17,10 +19,10 @@ namespace ricaun.Nuke.Components
             .TriggeredBy(Release)
             .After(Pack)
             .After(GitPreRelease)
-            //.OnlyWhenStatic(() => NugetApiUrl.SkipEmpty())
-            //.OnlyWhenStatic(() => NugetApiKey.SkipEmpty())
-            //.OnlyWhenStatic(() => IsServerBuild)
-            //.OnlyWhenDynamic(() => GitRepository.IsOnDevelopBranch())
+            .OnlyWhenStatic(() => NugetApiUrl.SkipEmpty())
+            .OnlyWhenStatic(() => NugetApiKey.SkipEmpty())
+            .OnlyWhenStatic(() => IsServerBuild)
+            .OnlyWhenDynamic(() => GitRepository.IsOnDevelopBranch())
             .Executes(() =>
             {
                 var releaseDirectory = GetReleaseDirectory(MainProject);
@@ -36,20 +38,8 @@ namespace ricaun.Nuke.Components
                 }
 
                 ReportSummary(_ => _.AddPair("Prerelease", message));
-                prerelease.ForEach(x =>
-                {
-                    //DotNetTasks.DotNetNuGetPush(s => s
-                    //     .SetTargetPath(x)
-                    //     .SetSource(NugetApiUrl)
-                    //     .SetApiKey(NugetApiKey)
-                    //     .EnableSkipDuplicate()
-                    //);
-                });
-            });
 
-        private bool IsPrePackFile(AbsolutePath absolutePath)
-        {
-            return absolutePath.Name.Contains("-");
-        }
+                prerelease.ForEach(DotNetNuGetPush);
+            });
     }
 }

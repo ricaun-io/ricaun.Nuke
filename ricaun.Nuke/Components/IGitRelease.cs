@@ -3,6 +3,7 @@ using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.GitHub;
+using Nuke.Common.Utilities.Collections;
 using ricaun.Nuke.Extensions;
 using System;
 using System.IO;
@@ -27,6 +28,15 @@ namespace ricaun.Nuke.Components
             .Executes(() =>
             {
                 var project = MainProject;
+
+                if (project.IsVersionPreRelease())
+                {
+                    ReportSummary(_ => _.AddPair("Prerelease", project.GetInformationalVersion()));
+                    var errorMessage = $"The project {project.Name} is a pre-release";
+                    Serilog.Log.Error(errorMessage);
+                    throw new Exception(errorMessage);
+                }
+
                 ReleaseGithubProject(project);
             });
 
