@@ -73,10 +73,11 @@ namespace ricaun.Nuke.Extensions
         /// <param name="gitHubOwner"></param>
         /// <param name="gitHubName"></param>
         /// <param name="draft"></param>
-        public static void ReleaseDraft(string gitHubOwner, string gitHubName, Release draft)
+        /// <param name="prerelease"></param>
+        public static void ReleaseDraft(string gitHubOwner, string gitHubName, Release draft, bool prerelease = false)
         {
             var _ = GitHubTasks.GitHubClient.Repository.Release
-                .Edit(gitHubOwner, gitHubName, draft.Id, new ReleaseUpdate { Draft = false })
+                .Edit(gitHubOwner, gitHubName, draft.Id, new ReleaseUpdate { Draft = false, Prerelease = prerelease })
                 .Result;
         }
         #endregion

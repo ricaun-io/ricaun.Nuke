@@ -30,8 +30,8 @@ namespace ricaun.Nuke.Components
                     ReportSummary(_ => _.AddPair("Ignore", message));
                     return;
                 }
-                ReportSummary(_ => _.AddPair("PreRelease", message));
-                ReleaseGithubProject(MainProject, false);
+                ReportSummary(_ => _.AddPair("Prerelease", message));
+                ReleaseGithubProject(MainProject, true);
             });
     }
 }

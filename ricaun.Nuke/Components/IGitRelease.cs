@@ -34,8 +34,8 @@ namespace ricaun.Nuke.Components
         /// Release Github project with release notes
         /// </summary>
         /// <param name="project"></param>
-        /// <param name="releaseDraft"></param>
-        void ReleaseGithubProject(Project project, bool releaseDraft = true)
+        /// <param name="releaseAsPrerelease"></param>
+        void ReleaseGithubProject(Project project, bool releaseAsPrerelease = false)
         {
             if (Directory.Exists(ReleaseDirectory) == false)
             {
@@ -74,11 +74,7 @@ namespace ricaun.Nuke.Components
 
             var draft = GitHubExtension.CreatedDraft(gitHubOwner, gitHubName, newRelease);
             GitHubExtension.UploadReleaseFiles(draft, releaseFiles);
-
-            if (releaseDraft)
-            {
-                GitHubExtension.ReleaseDraft(gitHubOwner, gitHubName, draft);
-            }
+            GitHubExtension.ReleaseDraft(gitHubOwner, gitHubName, draft, releaseAsPrerelease);
         }
     }
 }

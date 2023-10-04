@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update `AssemblyExtension` to fix `GetVersion` prerelease key work.
 - Update `ITest` to runs before `Release`
 - Update `IGitRelease` with custom method to create release and pre-release.
+- Update `GitHubExtension` to release or pre-release.
 ### Added
 - Add `IGitPreRelease` with custom method to create pre-release when version is pre-release.
 
