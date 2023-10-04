@@ -24,7 +24,7 @@ namespace ricaun.Nuke.Extensions
         {
             var version = project.GetFileVersionInfo()?.ProductVersion;
             if (version == null) version = "0.0.0.0";
-            return new Version(version);
+            return new Version(version.Split('-').First());
         }
 
         /// <summary>
