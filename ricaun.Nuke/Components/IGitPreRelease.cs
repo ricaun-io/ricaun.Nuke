@@ -15,6 +15,7 @@ namespace ricaun.Nuke.Components
         /// </summary>
         Target GitPreRelease => _ => _
             .TriggeredBy(Release)
+            .After(GitRelease)
             .Requires(() => GitRepository)
             .Requires(() => GitVersion)
             .OnlyWhenStatic(() => GitHubToken.SkipEmpty())
@@ -23,12 +24,13 @@ namespace ricaun.Nuke.Components
             .Executes(() =>
             {
                 var project = MainProject;
+                var message = $"{project.GetInformationalVersion()}";
                 if (project.IsVersionPreRelease() == false)
                 {
-                    ReportSummary(_ => _.AddPair("Ignore", $"{MainProject.Name} {MainProject.GetInformationalVersion()}"));
+                    ReportSummary(_ => _.AddPair("Ignore", message));
                     return;
                 }
-                ReportSummary(_ => _.AddPair("PreRelease", $"{MainProject.Name} {MainProject.GetInformationalVersion()}"));
+                ReportSummary(_ => _.AddPair("PreRelease", message));
                 ReleaseGithubProject(MainProject, false);
             });
     }

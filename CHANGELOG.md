@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.6.2] / 2023-10-04
+## [1.7.0] / 2023-10-04
 ### Features
 - Prerelease feature for Github and Nuget.
 ### Updated
@@ -304,7 +304,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
-[1.6.2]: ../../compare/1.6.1...1.6.2
+[1.7.0]: ../../compare/1.6.1...1.7.0
 [1.6.1]: ../../compare/1.6.0...1.6.1
 [1.6.0]: ../../compare/1.5.2...1.6.0
 [1.5.2]: ../../compare/1.5.1...1.5.2
