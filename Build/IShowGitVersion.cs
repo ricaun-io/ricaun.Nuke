@@ -2,10 +2,11 @@
 using ricaun.Nuke.Components;
 using ricaun.Nuke.Extensions;
 
-public interface IShowGitVersion : IHazGitVersion, IHazChangelog, IClean
+public interface IShowGitVersion : IHazGitVersion, IHazChangelog, IClean, ICompile
 {
     Target ShowGitVersion => _ => _
         .TriggeredBy(Clean)
+        .Before(Compile)
         .Executes(() =>
         {
             // GitVersion.BranchName

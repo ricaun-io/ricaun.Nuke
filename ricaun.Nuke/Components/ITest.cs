@@ -5,7 +5,7 @@ namespace ricaun.Nuke.Components
     /// <summary>
     /// ITest
     /// </summary>
-    public interface ITest : ICompile, IHazTest
+    public interface ITest : ICompile, IRelease, IHazTest
     {
         /// <summary>
         /// TestResults (Default: true)
@@ -30,6 +30,7 @@ namespace ricaun.Nuke.Components
         /// </summary>
         Target Test => _ => _
             .TriggeredBy(Compile)
+            .Before(Release)
             .Executes(() =>
             {
                 TestProjects(TestProjectName, TestResults, TestBuildStopWhenFailed);

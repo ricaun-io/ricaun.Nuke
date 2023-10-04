@@ -4,7 +4,7 @@ namespace ricaun.Nuke.Components
     /// <summary>
     /// ITestLocal
     /// </summary>
-    public interface ITestLocal : ICompile, IHazTest
+    public interface ITestLocal : ICompile, IRelease, IHazTest
     {
         /// <summary>
         /// TestLocalResults (Default: true)
@@ -29,6 +29,7 @@ namespace ricaun.Nuke.Components
         /// </summary>
         Target TestLocal => _ => _
             .TriggeredBy(Compile)
+            .Before(Release)
             .OnlyWhenStatic(() => IsLocalBuild)
             .Executes(() =>
             {

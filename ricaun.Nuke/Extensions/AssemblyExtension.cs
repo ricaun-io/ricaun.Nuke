@@ -20,11 +20,23 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
+        /// <remarks>The version with '-' is ignored in the ProductVersion</remarks>
         public static Version GetVersion(this Project project)
         {
-            var version = project.GetFileVersionInfo()?.ProductVersion;
+            var version = project.GetInformationalVersion(); // ProductVersion
             if (version == null) version = "0.0.0.0";
             return new Version(version.Split('-').First());
+        }
+
+        /// <summary>
+        /// The project has version with a Pre-release tag (ex: 1.0.0-alpha)
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns></returns>
+        public static bool IsVersionPreRelease(this Project project)
+        {
+            var version = project.GetInformationalVersion();
+            return version.Contains("-");
         }
 
         /// <summary>
