@@ -41,7 +41,7 @@ namespace ricaun.Nuke.Extensions
         /// <returns></returns>
         public static bool IsSourceNugetOrg(string source)
         {
-            return source.StartsWith("https://api.nuget.org");
+            return source.Contains("api.nuget.org");
         }
 
         /// <summary>
@@ -54,7 +54,8 @@ namespace ricaun.Nuke.Extensions
         /// <remarks>https://learn.microsoft.com/en-us/nuget/reference/cli-reference/cli-ref-delete</remarks>
         public static bool NuGetUnlist(string source, string apiKey, string packageFileName)
         {
-            Serilog.Log.Information($"NuGetUnlist: {source}");
+            Serilog.Log.Warning($"NuGetUnlist: {packageFileName} {IsSourceNugetOrg(source)}");
+
             //if (IsSourceNugetOrg(source) == false)
             //{
             //    return false;
