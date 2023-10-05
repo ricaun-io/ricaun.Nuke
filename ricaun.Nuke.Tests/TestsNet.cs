@@ -9,10 +9,12 @@ namespace ricaun.Nuke.Tests
         public void Test1()
         {
             var packages = new[] {
-                "ricaun.Nuke.1.7.1.30.0.0-alpha.nupkg",
-                "ricaun.Nuke.1.7.1-alpha.nupkg",
-                "example.1.2.3-test.nupkg",
+                "ricaun.example.1.2.3.nupkg",
+                "ricaun.example.1.2.3-alpha.nupkg",
+                "ricaun.example.1.2.3-alpha.1.nupkg",
+                "ricaun.example.1.2.3.30.0.0-alpha.nupkg",
                 "example.1.2.3.nupkg",
+                "example.1.2.3-test.nupkg",
                 "example.1.2.3-alpha.nupkg"
             };
 

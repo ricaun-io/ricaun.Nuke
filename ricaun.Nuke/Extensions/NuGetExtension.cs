@@ -54,14 +54,12 @@ namespace ricaun.Nuke.Extensions
         /// <remarks>https://learn.microsoft.com/en-us/nuget/reference/cli-reference/cli-ref-delete</remarks>
         public static bool NuGetUnlist(string source, string apiKey, string packageFileName)
         {
-            Serilog.Log.Warning($"NuGetUnlist: {packageFileName} {IsSourceNugetOrg(source)}");
+            if (IsSourceNugetOrg(source) == false)
+                return false;
 
-            //if (IsSourceNugetOrg(source) == false)
-            //{
-            //    return false;
-            //}
+            Serilog.Log.Information($"NuGetUnlist: {packageFileName}");
 
-            if (TryGetPackageNameAndVersion(packageFileName, out string packageName, out string packageVersion))
+            if (TryGetPackageNameAndVersion(packageFileName, out string packageName, out string packageVersion) == false)
                 return false;
 
             Serilog.Log.Information($"NuGet delete: {packageName} {packageVersion}");
