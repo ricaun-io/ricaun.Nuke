@@ -1,5 +1,4 @@
 ﻿using Nuke.Common;
-using Nuke.Common.Tools.NuGet;
 using Nuke.Common.Tools.SignTool;
 using System;
 using System.IO;
@@ -135,24 +134,12 @@ namespace ricaun.Nuke.Extensions
 
             foreach (var timestampServer in timestampServers)
             {
-                try
+                if (NuGetExtension.NugetSign(binaryPath, certPath, certPassword, timestampServer))
                 {
-                    NuGetTasks.NuGet(
-                        $"sign \"{binaryPath}\"" +
-                        $" -CertificatePath {certPath}" +
-                        $" -CertificatePassword {certPassword}" +
-                        $" -Timestamper {timestampServer} -NonInteractive",
-                        logOutput: false,
-                        logInvocation: false
-                        ); // don't print to std out/err
-
                     Serilog.Log.Information($"Signing done with {timestampServer}");
                     return;
                 }
-                catch (Exception)
-                {
-                    Serilog.Log.Warning($"Failed to sign file with {timestampServer}");
-                }
+                Serilog.Log.Warning($"Failed to sign file with {timestampServer}");
             }
 
             Serilog.Log.Error($"Failed to sign nuget package {binaryPath}");
@@ -167,19 +154,7 @@ namespace ricaun.Nuke.Extensions
         {
             if (fileInfo.EndsWith(".nupkg"))
             {
-                try
-                {
-                    NuGetTasks.NuGet(
-                        $"verify -Signatures \"{fileInfo}\"",
-                        logOutput: false,
-                        logInvocation: false
-                        ); // don't print to std out/err
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
+                return NuGetExtension.NuGetVerifySignatures(fileInfo);
             }
 
             try

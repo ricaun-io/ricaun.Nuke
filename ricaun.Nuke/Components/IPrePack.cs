@@ -3,6 +3,7 @@ using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.Utilities.Collections;
 using ricaun.Nuke.Extensions;
+using System;
 using System.Linq;
 
 namespace ricaun.Nuke.Components
@@ -25,6 +26,13 @@ namespace ricaun.Nuke.Components
             .OnlyWhenDynamic(() => GitRepository.IsOnDevelopBranch())
             .Executes(() =>
             {
+                var version = MainProject.GetInformationalVersion();
+                if (HasPreReleaseFilter(version) == false)
+                {
+                    ReportSummary(_ => _.AddPair("Skipped", version));
+                    return;
+                }
+
                 var releaseDirectory = GetReleaseDirectory(MainProject);
                 var prerelease = Globbing.GlobFiles(releaseDirectory, "**/*.nupkg")
                    .Where(IsPrePackFile);
@@ -39,7 +47,18 @@ namespace ricaun.Nuke.Components
 
                 ReportSummary(_ => _.AddPair("Prerelease", message));
 
-                prerelease.ForEach(DotNetNuGetPush);
+                prerelease.ForEach(DotNetNuGetPrerelease);
             });
+
+        /// <summary>
+        /// DotNetNuGetPrerelease
+        /// </summary>
+        /// <param name="packageFilePath"></param>
+        public void DotNetNuGetPrerelease(AbsolutePath packageFilePath)
+        {
+            var packageNameVersion = packageFilePath.Name;
+            NuGetExtension.DotNetNuGetPush(NugetApiUrl, NugetApiKey, packageFilePath);
+            NuGetExtension.NuGetUnlist(NugetApiUrl, NugetApiKey, packageNameVersion);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using Nuke.Common.Git;
 using Nuke.Common.Utilities.Collections;
 using ricaun.Nuke.Extensions;
+using System.Linq;
 
 namespace ricaun.Nuke.Components
 {
@@ -10,6 +11,22 @@ namespace ricaun.Nuke.Components
     /// </summary>
     public interface IGitPreRelease : IGitRelease
     {
+        /// <summary>
+        /// PreReleaseFilter (default: ["alpha", "beta", "rc"])
+        /// </summary>
+        [Parameter]
+        string[] PreReleaseFilter => TryGetValue(() => PreReleaseFilter) ?? new[] { "alpha", "beta", "rc" };
+
+        /// <summary>
+        /// HasPreReleaseFilter
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        public bool HasPreReleaseFilter(string version)
+        {
+            return PreReleaseFilter.Any(e => e.Contains(version));
+        }
+
         /// <summary>
         /// Target GitRelease
         /// </summary>
@@ -24,13 +41,19 @@ namespace ricaun.Nuke.Components
             .Executes(() =>
             {
                 var project = MainProject;
-                var message = $"{project.GetInformationalVersion()}";
-                if (project.IsVersionPreRelease() == false)
+                var version = project.GetInformationalVersion();
+                if (HasPreReleaseFilter(version) == false)
                 {
-                    ReportSummary(_ => _.AddPair("Ignore", message));
+                    ReportSummary(_ => _.AddPair("Skipped", version));
                     return;
                 }
-                ReportSummary(_ => _.AddPair("Prerelease", message));
+
+                if (project.IsVersionPreRelease() == false)
+                {
+                    ReportSummary(_ => _.AddPair("Ignore", version));
+                    return;
+                }
+                ReportSummary(_ => _.AddPair("Prerelease", version));
                 ReleaseGithubProject(MainProject, true);
             });
     }
