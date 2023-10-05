@@ -24,7 +24,7 @@ namespace ricaun.Nuke.Components
         /// <returns></returns>
         public bool HasPreReleaseFilter(string version)
         {
-            return PreReleaseFilter.Any(e => e.Contains(version));
+            return PreReleaseFilter.Any(e => version.Contains(e));
         }
 
         /// <summary>
