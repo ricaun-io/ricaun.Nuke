@@ -22,7 +22,7 @@ namespace ricaun.Nuke.Extensions
             packageName = null;
             packageVersion = null;
 
-            string pattern = @"^(.*?)\.((?:\.?[0-9]+){3,}(?:[-a-z0-9]+?\.?)*)\.nupkg$";
+            string pattern = @"^(.*?)\.((?:\.?[0-9]+){3,}(?:[-a-z0-9]+?\.?)*)\.nupkg";
 
             var match = System.Text.RegularExpressions.Regex.Match(packageFileName, pattern);
             if (match.Success)

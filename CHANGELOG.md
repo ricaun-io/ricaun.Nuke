@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Updated
 - Create `NuGetExtension` with methods for dotnet/nuget.
 - Update `IPrePack` and `IGitPreRelease` to filter prerelease.
+### Tests
+- Test `TryGetPackageNameAndVersion`
 
 ## [1.7.0] / 2023-10-04
 ### Features
