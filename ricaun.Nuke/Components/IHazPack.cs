@@ -1,6 +1,7 @@
 ﻿using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.Tools.DotNet;
+using ricaun.Nuke.Extensions;
 
 namespace ricaun.Nuke.Components
 {
@@ -21,15 +22,10 @@ namespace ricaun.Nuke.Components
         /// <summary>
         /// DotNetNuGetPush
         /// </summary>
-        /// <param name="absolutePath"></param>
-        void DotNetNuGetPush(AbsolutePath absolutePath)
+        /// <param name="packageFilePath"></param>
+        void DotNetNuGetPush(AbsolutePath packageFilePath)
         {
-            DotNetTasks.DotNetNuGetPush(s => s
-                .SetTargetPath(absolutePath)
-                .SetSource(NugetApiUrl)
-                .SetApiKey(NugetApiKey)
-                .EnableSkipDuplicate()
-            );
+            NuGetExtension.DotNetNuGetPush(NugetApiUrl, NugetApiKey, packageFilePath);
         }
 
         /// <summary>
