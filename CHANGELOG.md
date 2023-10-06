@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.7.2] / 2023-10-05
+### Features
+- Enable `SignBinary` with `PathTooLong` path.
+### Updated
+- Create `PathTooLongUtils` to prevent `PathTooLongException`
+
 ## [1.7.1] / 2023-10-05
 ### Features
 - Prerelease Nuget force to unlist.
@@ -319,6 +325,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.7.2]: ../../compare/1.7.1...1.7.2
 [1.7.1]: ../../compare/1.7.0...1.7.1
 [1.7.0]: ../../compare/1.6.1...1.7.0
 [1.6.1]: ../../compare/1.6.0...1.6.1
