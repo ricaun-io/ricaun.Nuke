@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Enable `SignBinary` with `PathTooLong` path.
 ### Updated
 - Create `PathTooLongUtils` to prevent `PathTooLongException`
+### Fix
+- Add `+` split with fix `GetInformationalVersion` with `+` in version. (Fix: #67)
 
 ## [1.7.1] / 2023-10-05
 ### Features

@@ -78,7 +78,7 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public static string GetInformationalVersion(this Project project) => project.GetFileVersionInfo()?.ProductVersion;
+        public static string GetInformationalVersion(this Project project) => project.GetFileVersionInfo()?.ProductVersion.Split('+').First();
 
         /// <summary>
         /// GetCompany => CompanyName
