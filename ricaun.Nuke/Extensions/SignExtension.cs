@@ -71,7 +71,6 @@ namespace ricaun.Nuke.Extensions
             if (File.Exists(cert)) return true;
             return CreateCertificatesCer(fileNamePfx, passwordPfx, cert);
         }
-
         /// <summary>
         /// https://github.com/DataDog/dd-trace-dotnet/blob/master/tracer/build/_build/Build.Gitlab.cs
         /// </summary>
@@ -80,44 +79,48 @@ namespace ricaun.Nuke.Extensions
         /// <param name="binaryPath"></param>
         public static void SignBinary(string certPath, string certPassword, string binaryPath)
         {
-            if (binaryPath.Length > 260)
+            using (var utils = new PathTooLongUtils.FileMoveToTemp(binaryPath))
             {
-                var messageError = $"FilePath.Length to big: {binaryPath}";
-                Serilog.Log.Error(messageError);
-                throw new PathTooLongException(messageError);
-            }
-
-            if (HasSignature(binaryPath)) return;
-
-            Serilog.Log.Information($"Signing: {binaryPath}");
-
-            if (!SignToolTasks.SignToolPath.SkipEmpty())
-            {
-                Serilog.Log.Error($"SignToolPath is not found, set SIGNTOOL_EXE enviroment variable path... {SignToolTasks.SignToolPath}");
-                return;
-            }
-
-            foreach (var timestampServer in timestampServers)
-            {
-                try
+                var filePath = utils.GetFilePath();
+                if (utils.IsPathTooLong())
                 {
-                    SignToolTasks.SignTool(x => x
-                        .SetFiles(binaryPath)
-                        .SetFile(certPath)
-                        .SetPassword(certPassword)
-                        .SetTimestampServerUrl(timestampServer)
-                        .SetFileDigestAlgorithm(SignToolDigestAlgorithm.SHA256)
-                        .EnableQuiet()
-                    );
-                    Serilog.Log.Information($"Signing done with {timestampServer}");
+                    var messageError = $"FilePath.Length too long: {filePath}";
+                    Serilog.Log.Error(messageError);
+                    throw new PathTooLongException(messageError);
+                }
+
+                if (HasSignature(filePath)) return;
+
+                Serilog.Log.Information($"Signing [{utils.GetFilePathLong()}]: {filePath}");
+
+                if (!SignToolTasks.SignToolPath.SkipEmpty())
+                {
+                    Serilog.Log.Error($"SignToolPath is not found, set SIGNTOOL_EXE enviroment variable path... {SignToolTasks.SignToolPath}");
                     return;
                 }
-                catch (Exception)
+
+                foreach (var timestampServer in timestampServers)
                 {
-                    Serilog.Log.Warning($"Failed to sign file with {timestampServer}");
+                    try
+                    {
+                        SignToolTasks.SignTool(x => x
+                            .SetFiles(filePath)
+                            .SetFile(certPath)
+                            .SetPassword(certPassword)
+                            .SetTimestampServerUrl(timestampServer)
+                            .SetFileDigestAlgorithm(SignToolDigestAlgorithm.SHA256)
+                            .EnableQuiet()
+                        );
+                        Serilog.Log.Information($"Signing done with {timestampServer}");
+                        return;
+                    }
+                    catch (Exception)
+                    {
+                        Serilog.Log.Warning($"Failed to sign file with {timestampServer}");
+                    }
                 }
+                Serilog.Log.Error($"Failed to sign file {filePath}");
             }
-            Serilog.Log.Error($"Failed to sign file {binaryPath}");
         }
 
         /// <summary>
