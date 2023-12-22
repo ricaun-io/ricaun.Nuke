@@ -20,6 +20,7 @@ using ricaun.Nuke.Components;
 
 class Build : NukeBuild, IPublish
 {
+    // string IHazMainProject.MainName => "ProjectName";
     public static int Main() => Execute<Build>(x => x.From<IPublish>().Build);
 }
 ```
@@ -43,6 +44,7 @@ using ricaun.Nuke.Components;
 
 class Build : NukeBuild, IPublishPack
 {
+    // string IHazMainProject.MainName => "ProjectName";
     public static int Main() => Execute<Build>(x => x.From<IPublishPack>().Build);
 }
 ```
