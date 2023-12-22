@@ -13,6 +13,13 @@ namespace ricaun.Nuke.Components
     public interface IPack : IHazPack, IGitRelease
     {
         /// <summary>
+        /// UnlistNuget (Default: false)
+        /// </summary>
+        /// <remarks>This feature only works on 'api.nuget.org' to unlist package.</remarks>
+        [Parameter]
+        bool UnlistNuget => TryGetValue<bool?>(() => UnlistNuget) ?? false;
+
+        /// <summary>
         /// Target Pack
         /// </summary>
         Target Pack => _ => _
@@ -25,8 +32,15 @@ namespace ricaun.Nuke.Components
             .Executes(() =>
             {
                 var releaseDirectory = GetReleaseDirectory(MainProject);
-                Globbing.GlobFiles(releaseDirectory, "**/*.nupkg")
-                   .ForEach(DotNetNuGetPush);
+                var packages = Globbing.GlobFiles(releaseDirectory, "**/*.nupkg");
+
+                if (UnlistNuget)
+                {
+                    packages.ForEach(DotNetNuGetPrerelease);
+                    return;
+                }
+
+                packages.ForEach(DotNetNuGetPush);
             });
     }
 }

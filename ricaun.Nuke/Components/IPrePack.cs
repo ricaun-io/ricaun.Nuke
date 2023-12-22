@@ -49,16 +49,5 @@ namespace ricaun.Nuke.Components
 
                 prerelease.ForEach(DotNetNuGetPrerelease);
             });
-
-        /// <summary>
-        /// DotNetNuGetPrerelease
-        /// </summary>
-        /// <param name="packageFilePath"></param>
-        public void DotNetNuGetPrerelease(AbsolutePath packageFilePath)
-        {
-            var packageNameVersion = packageFilePath.Name;
-            NuGetExtension.DotNetNuGetPush(NugetApiUrl, NugetApiKey, packageFilePath);
-            NuGetExtension.NuGetUnlist(NugetApiUrl, NugetApiKey, packageNameVersion);
-        }
     }
 }
