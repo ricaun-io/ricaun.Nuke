@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.7.4]  / 2023-02-08
+### Features
+- Update `GetInformationalVersion` to find `nupkg` files.
+### Added
+- Add `NugetVersionInfo` to parse `nupkg` files by name.
+
 ## [1.7.3] / 2023-12-18
 ### Features
 - `IPack` with `UnlistNuget` to unlist nuget package.
@@ -331,6 +337,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.7.4]: ../../compare/1.7.3...1.7.4
 [1.7.3]: ../../compare/1.7.2...1.7.3
 [1.7.2]: ../../compare/1.7.1...1.7.2
 [1.7.1]: ../../compare/1.7.0...1.7.1
