@@ -2,9 +2,45 @@
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.NuGet;
 using System;
+using System.IO;
 
 namespace ricaun.Nuke.Extensions
 {
+    /// <summary>
+    /// NugetVersionInfo
+    /// </summary>
+    public class NugetVersionInfo
+    {
+        /// <summary>
+        /// ProductName
+        /// </summary>
+        public string ProductName { get; private set; }
+        /// <summary>
+        /// ProductVersion
+        /// </summary>
+        public string ProductVersion { get; private set; }
+
+        /// <summary>
+        /// Parse <paramref name="packageFileName"/> and return a new instance of <see cref="NugetVersionInfo"/>
+        /// </summary>
+        /// <param name="packageFileName"></param>
+        /// <returns></returns>
+        public static NugetVersionInfo Parse(string packageFileName)
+        {
+            string packageName;
+            string packageVersion;
+            if (NuGetExtension.TryGetPackageNameAndVersion(packageFileName, out packageName, out packageVersion))
+            {
+                return new NugetVersionInfo
+                {
+                    ProductName = packageName,
+                    ProductVersion = packageVersion
+                };
+            }
+            return null;
+        }
+    }
+
     /// <summary>
     /// NuGetExtension
     /// </summary>
@@ -31,6 +67,7 @@ namespace ricaun.Nuke.Extensions
                 packageVersion = match.Groups[2].Value;
                 return true;
             }
+
             return false;
         }
 

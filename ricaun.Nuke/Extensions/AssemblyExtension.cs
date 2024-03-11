@@ -78,7 +78,19 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public static string GetInformationalVersion(this Project project) => project.GetFileVersionInfo()?.ProductVersion.Split('+').First();
+        /// <remarks>Works with .dll and .nupkg</remarks>
+        public static string GetInformationalVersion(this Project project)
+        {
+            if (project.GetFileVersionInfo() is FileVersionInfo fileVersionInfo)
+            {
+                return fileVersionInfo?.ProductVersion.Split('+').First();
+            }
+            if (project.GetNugetVersionInfo() is NugetVersionInfo nugetVersionInfo)
+            {
+                return nugetVersionInfo?.ProductVersion.Split('+').First();
+            }
+            return null;
+        }
 
         /// <summary>
         /// GetCompany => CompanyName
@@ -132,6 +144,25 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
+        /// Get NugetVersionInfo of the first nupkg file found
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns></returns>
+        public static NugetVersionInfo GetNugetVersionInfo(this Project project)
+        {
+            var sourceDir = project.Directory;
+            var searchPattern = $"*{project.Name}*.nupkg";
+            var nupkgFiles = Directory.GetFiles(sourceDir, searchPattern, SearchOption.AllDirectories);
+            foreach (var nupkgFile in nupkgFiles)
+            {
+                var nugetVersionInfo = NugetVersionInfo.Parse(nupkgFile);
+                if (nugetVersionInfo is NugetVersionInfo) return nugetVersionInfo;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// GetFileVersionInfoGreater
         /// </summary>
         /// <param name="sourceDir"></param>
@@ -169,8 +200,8 @@ namespace ricaun.Nuke.Extensions
             Serilog.Log.Information($"Name: {project.Name}");
             Serilog.Log.Information($"GetAppId: {project.GetAppId()}");
 
-            if (project.GetFileVersionInfo() == null)
-                Serilog.Log.Warning($"GetFileVersionInfo: {project.Name} not found!");
+            if (project.GetInformationalVersion() == null)
+                Serilog.Log.Warning($"GetInformationalVersion: {project.Name} not found!");
 
             Serilog.Log.Information($"GetInformationalVersion: {project.GetInformationalVersion()}");
             Serilog.Log.Information($"GetAssemblyName: {project.GetAssemblyName()}");

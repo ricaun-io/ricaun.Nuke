@@ -5,7 +5,7 @@ using ricaun.Nuke.Components;
 
 class Build : NukeBuild, IPublishPack, ICompileExample, ITest, IShowGitVersion, IPrePack
 {
-    bool IPack.UnlistNuget => true;
+    //bool IPack.UnlistNuget => true;
     bool ITest.TestBuildStopWhenFailed => false;
     public static int Main() => Execute<Build>(x => x.From<IPublishPack>().Build);
 }
