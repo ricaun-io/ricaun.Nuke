@@ -14,7 +14,6 @@ namespace ricaun.Nuke.Components
         Target Clean => _ => _
             .Executes(() =>
             {
-                System.AppContext.SetSwitch("System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization", true);
                 Solution.ClearSolution(BuildProjectDirectory);
             });
     }
