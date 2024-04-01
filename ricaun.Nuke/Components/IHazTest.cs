@@ -57,7 +57,7 @@ namespace ricaun.Nuke.Components
                         DotNetTasks.DotNetTest(_ => _
                             .SetProjectFile(testProject)
                             .SetConfiguration(configuration)
-                            .SetVerbosity(DotNetVerbosity.Normal)
+                            .SetVerbosity(DotNetVerbosity.normal)
                             .EnableNoBuild()
                             .SetCustomDotNetTestSettings(customDotNetTestSettings)
                             .When(testResults, _ => _
