@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.8.0]  / 2023-03-11
 ### Updated
 - Update `Nuke.Common` Version = `8.0.0`
+- Force enable `EnableUnsafeBinaryFormatterSerialization` to support `net8.0`.
 
 ## [1.7.4]  / 2023-02-08
 ### Features
