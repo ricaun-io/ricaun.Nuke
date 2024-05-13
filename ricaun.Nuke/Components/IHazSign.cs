@@ -28,18 +28,19 @@ namespace ricaun.Nuke.Components
         public bool SignProject(Project project)
         {
             var projectFolder = project.Directory / "bin";
-            return SignFolder(projectFolder);
+            return SignFolder(projectFolder, $"*{project.Name}*") || SignFolder(projectFolder, $"*{project.GetAssemblyName()}*") || SignFolder(projectFolder);
         }
 
         /// <summary>
         /// Sign Files on the Folder
         /// </summary>
         /// <param name="folder"></param>
+        /// <param name="namePattern"></param>
         /// <param name="dllSign"></param>
         /// <param name="nupkgSign"></param>
         /// <param name="exeSign"></param>
         /// <returns></returns>
-        public bool SignFolder(string folder, bool dllSign = true, bool nupkgSign = true, bool exeSign = true)
+        public bool SignFolder(string folder, string namePattern = "*", bool dllSign = true, bool nupkgSign = true, bool exeSign = true)
         {
             if (!SignFile.SkipEmpty()) return false;
             if (!SignPassword.SkipEmpty()) return false;
@@ -49,19 +50,21 @@ namespace ricaun.Nuke.Components
 
             SignExtension.CreateCerFile(certPath, certPassword, BuildAssemblyDirectory);
 
+            Serilog.Log.Information($"SignFolder [{namePattern}]: {folder}");
+
             if (dllSign)
-                Globbing.GlobFiles(folder, "**/*.dll")
+                Globbing.GlobFiles(folder, $"**/{namePattern}.dll")
                     .ForEach(file => SignExtension.SignBinary(certPath, certPassword, file));
 
             if (nupkgSign)
-                Globbing.GlobFiles(folder, "**/*.nupkg")
+                Globbing.GlobFiles(folder, $"**/{namePattern}.nupkg")
                     .ForEach(file => SignExtension.SignNuGet(certPath, certPassword, file));
 
             if (exeSign)
-                Globbing.GlobFiles(folder, "**/*.exe")
+                Globbing.GlobFiles(folder, $"**/{namePattern}.exe")
                     .ForEach(file => SignExtension.SignBinary(certPath, certPassword, file));
 
-            return true;
+            return Globbing.GlobFiles(folder, $"**/{namePattern}").Count > 0;
         }
     }
 }
