@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.8.1]  / 2023-05-13
+### Updated
+- Update `GetFileVersionInfo` to find `exe` file.
+
 ## [1.8.0]  / 2023-03-11
 ### Updated
 - Update `Nuke.Common` Version = `8.0.0`
@@ -342,6 +346,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.8.1]: ../../compare/1.8.0...1.8.1
 [1.8.0]: ../../compare/1.7.4...1.8.0
 [1.7.4]: ../../compare/1.7.3...1.7.4
 [1.7.3]: ../../compare/1.7.2...1.7.3

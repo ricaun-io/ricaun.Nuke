@@ -134,13 +134,14 @@ namespace ricaun.Nuke.Extensions
         public static string GetAppId(this Project project) => project.ProjectId.ToString();
 
         /// <summary>
-        /// Get FileVersionInfo of Greater Dlls
+        /// Get FileVersionInfo of Greater Dlls or Exe
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
         public static FileVersionInfo GetFileVersionInfo(this Project project)
         {
-            return GetFileVersionInfoGreater(project.Directory, $"*{project.Name}*.dll");
+            return GetFileVersionInfoGreater(project.Directory, $"*{project.Name}*.dll") ?? 
+                GetFileVersionInfoGreater(project.Directory, $"*{project.Name}*.exe");
         }
 
         /// <summary>
@@ -172,12 +173,12 @@ namespace ricaun.Nuke.Extensions
         {
             FileVersionInfo fileVersionInfo = null;
             Version version = new Version();
-            var dllFiles = Directory.GetFiles(sourceDir, searchPattern, SearchOption.AllDirectories);
-            foreach (var dll in dllFiles)
+            var files = Directory.GetFiles(sourceDir, searchPattern, SearchOption.AllDirectories);
+            foreach (var file in files)
             {
                 try
                 {
-                    var fileVersionInfoTest = FileVersionInfo.GetVersionInfo(dll);
+                    var fileVersionInfoTest = FileVersionInfo.GetVersionInfo(file);
                     var fileVersion = new Version(fileVersionInfoTest.FileVersion);
                     if (version < fileVersion)
                     {
