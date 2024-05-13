@@ -218,19 +218,6 @@ namespace ricaun.Nuke.Extensions
             Serilog.Log.Information($"GetFileDescription: {project.GetFileDescription()}");
             Serilog.Log.Information($"-");
 
-            //var ass = project.GetAssemblyGreaterVersion();
-
-            //Serilog.Log.Information($"-");
-            //Serilog.Log.Information($"GetInformationalVersion: {ass.GetInformationalVersion()}");
-            //Serilog.Log.Information($"GetVersion: {ass.GetVersion()}");
-            //Serilog.Log.Information($"GetFileVersion: {ass.GetFileVersion()}");
-            //Serilog.Log.Information($"GetTitle: {ass.GetTitle()}");
-            //Serilog.Log.Information($"GetTrademark: {ass.GetTrademark()}");
-            //Serilog.Log.Information($"GetCompany: {ass.GetCompany()}");
-            //Serilog.Log.Information($"GetProduct: {ass.GetProduct()}");
-            //Serilog.Log.Information($"GetCopyright: {ass.GetCopyright()}");
-            //Serilog.Log.Information($"GetDescription: {ass.GetDescription()}");
-            //Serilog.Log.Information($"-");
         }
 
         /// <summary>
@@ -238,6 +225,7 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
+        [Obsolete("This method uses `Assembly` and will be remove.")]
         public static string GetLastTargetFrameworkVersion(this Project project)
         {
             var target = project.GetAssemblyLastCreated().GetTargetFramework();
@@ -261,6 +249,7 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
+        [Obsolete("This method uses `Assembly` and will be remove.")]
         public static Assembly GetAssemblyGreaterVersion(this Project project)
         {
             return GetAssemblyGreaterVersion(project.Directory, $"*{project.Name}*.dll");
@@ -299,6 +288,7 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
+        [Obsolete("This method uses `Assembly` and will be remove.")]
         public static Assembly GetAssemblyLastCreated(this Project project)
         {
             return GetAssemblyLastCreated(project.Directory, $"*{project.Name}*.dll");

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Updated
 - Update `GetFileVersionInfo` to find `exe` file.
 - Update `SignProject` to sign `Name`, `AssemblyName`, or `*`.
+- Update `AssemblyExtension` methods to `Obsolete`.
 
 ## [1.8.0]  / 2023-03-11
 ### Updated
