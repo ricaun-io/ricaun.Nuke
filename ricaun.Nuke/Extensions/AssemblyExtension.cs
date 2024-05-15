@@ -134,13 +134,14 @@ namespace ricaun.Nuke.Extensions
         public static string GetAppId(this Project project) => project.ProjectId.ToString();
 
         /// <summary>
-        /// Get FileVersionInfo of Greater Dlls
+        /// Get FileVersionInfo of Greater Dlls or Exe
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
         public static FileVersionInfo GetFileVersionInfo(this Project project)
         {
-            return GetFileVersionInfoGreater(project.Directory, $"*{project.Name}*.dll");
+            return GetFileVersionInfoGreater(project.Directory, $"*{project.Name}*.dll") ?? 
+                GetFileVersionInfoGreater(project.Directory, $"*{project.Name}*.exe");
         }
 
         /// <summary>
@@ -172,12 +173,12 @@ namespace ricaun.Nuke.Extensions
         {
             FileVersionInfo fileVersionInfo = null;
             Version version = new Version();
-            var dllFiles = Directory.GetFiles(sourceDir, searchPattern, SearchOption.AllDirectories);
-            foreach (var dll in dllFiles)
+            var files = Directory.GetFiles(sourceDir, searchPattern, SearchOption.AllDirectories);
+            foreach (var file in files)
             {
                 try
                 {
-                    var fileVersionInfoTest = FileVersionInfo.GetVersionInfo(dll);
+                    var fileVersionInfoTest = FileVersionInfo.GetVersionInfo(file);
                     var fileVersion = new Version(fileVersionInfoTest.FileVersion);
                     if (version < fileVersion)
                     {
@@ -217,19 +218,6 @@ namespace ricaun.Nuke.Extensions
             Serilog.Log.Information($"GetFileDescription: {project.GetFileDescription()}");
             Serilog.Log.Information($"-");
 
-            //var ass = project.GetAssemblyGreaterVersion();
-
-            //Serilog.Log.Information($"-");
-            //Serilog.Log.Information($"GetInformationalVersion: {ass.GetInformationalVersion()}");
-            //Serilog.Log.Information($"GetVersion: {ass.GetVersion()}");
-            //Serilog.Log.Information($"GetFileVersion: {ass.GetFileVersion()}");
-            //Serilog.Log.Information($"GetTitle: {ass.GetTitle()}");
-            //Serilog.Log.Information($"GetTrademark: {ass.GetTrademark()}");
-            //Serilog.Log.Information($"GetCompany: {ass.GetCompany()}");
-            //Serilog.Log.Information($"GetProduct: {ass.GetProduct()}");
-            //Serilog.Log.Information($"GetCopyright: {ass.GetCopyright()}");
-            //Serilog.Log.Information($"GetDescription: {ass.GetDescription()}");
-            //Serilog.Log.Information($"-");
         }
 
         /// <summary>
@@ -237,6 +225,7 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
+        [Obsolete("This method uses `Assembly` and will be remove.")]
         public static string GetLastTargetFrameworkVersion(this Project project)
         {
             var target = project.GetAssemblyLastCreated().GetTargetFramework();
@@ -260,6 +249,7 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
+        [Obsolete("This method uses `Assembly` and will be remove.")]
         public static Assembly GetAssemblyGreaterVersion(this Project project)
         {
             return GetAssemblyGreaterVersion(project.Directory, $"*{project.Name}*.dll");
@@ -298,6 +288,7 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
+        [Obsolete("This method uses `Assembly` and will be remove.")]
         public static Assembly GetAssemblyLastCreated(this Project project)
         {
             return GetAssemblyLastCreated(project.Directory, $"*{project.Name}*.dll");
