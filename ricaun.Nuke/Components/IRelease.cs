@@ -44,14 +44,14 @@ namespace ricaun.Nuke.Components
             var fileNameVersion = GetReleaseFileNameVersion(project.Name, version);
             var ProjectDirectory = ReleaseDirectory / fileNameVersion;
 
-            var nupkgs = Globbing.GlobFiles(ContentDirectory, "**/*.nupkg");
+            var nupkgs = Globbing.GlobFiles(ContentDirectory, "**/*.*nupkg");
             if (nupkgs.Count > 0)
             {
-                nupkgs.ForEach(file => FileSystemTasks.CopyFileToDirectory(file, ProjectDirectory));
+                nupkgs.ForEach(file => AbsolutePathExtensions.CopyToDirectory(file, ProjectDirectory));
             }
             else
             {
-                FileSystemTasks.CopyDirectoryRecursively(ContentDirectory, ProjectDirectory);
+                AbsolutePathExtensions.Copy(ContentDirectory, ProjectDirectory);
             }
 
             var releaseFileName = CreateReleaseFromDirectory(ProjectDirectory, fileName, version);
