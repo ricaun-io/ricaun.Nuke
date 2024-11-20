@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Update
 - Update `Nuke.Common` to `8.1.4`.
 - Update `FileSystemTasks.CopyDirectoryRecursively` to `AbsolutePathExtensions.CopyToDirectory`.
+- Add `SymbolPackageFormat` and `IncludeSymbols` in the package.
+- Update release `*.nupkg` to `*.*nupkg` to copy symbol package format. (Fix: #75)
 
 ## [1.8.1]  / 2024-05-13
 ### Updated

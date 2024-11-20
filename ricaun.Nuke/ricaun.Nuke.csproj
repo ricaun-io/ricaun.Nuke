@@ -43,6 +43,8 @@
 
   <PropertyGroup Condition="!$(Configuration.Contains('Debug'))">
     <DocumentationFile>bin\Release\$(AssemblyName).xml</DocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>

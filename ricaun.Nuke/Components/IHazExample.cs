@@ -73,7 +73,7 @@ namespace ricaun.Nuke.Components
 
                     if (releasePackages)
                     {
-                        Globbing.GlobFiles(exampleDirectory, "**/*.nupkg")
+                        Globbing.GlobFiles(exampleDirectory, "**/*.*nupkg")
                             .ForEach(file =>
                             {
                                 Serilog.Log.Information($"Copy nupkg: {file} to {ReleaseDirectory}");
