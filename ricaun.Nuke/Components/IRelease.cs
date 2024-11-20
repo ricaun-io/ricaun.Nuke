@@ -51,7 +51,7 @@ namespace ricaun.Nuke.Components
             }
             else
             {
-                AbsolutePathExtensions.CopyToDirectory(ContentDirectory, ProjectDirectory);
+                AbsolutePathExtensions.Copy(ContentDirectory, ProjectDirectory);
             }
 
             var releaseFileName = CreateReleaseFromDirectory(ProjectDirectory, fileName, version);
