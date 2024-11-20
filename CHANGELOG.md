@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add `SymbolPackageFormat` and `IncludeSymbols` in the package.
 - Update release `*.nupkg` to `*.*nupkg` to copy symbol package format. (Fix: #75)
 - Add `WarningSignFile` to show warning when sign file is empty. (Fix: #74)
-- Update build project with `Configuration` and `TargetFramework` in `Build` and `Rebuild`. (Fix: $73)
+- Update build project with `Configuration` and `TargetFramework` in `Build` and `Rebuild`. (Fix: #73)
 
 ## [1.8.1] / 2024-05-13
 ### Updated
