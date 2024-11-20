@@ -47,11 +47,11 @@ namespace ricaun.Nuke.Components
             var nupkgs = Globbing.GlobFiles(ContentDirectory, "**/*.nupkg");
             if (nupkgs.Count > 0)
             {
-                nupkgs.ForEach(file => FileSystemTasks.CopyFileToDirectory(file, ProjectDirectory));
+                nupkgs.ForEach(file => AbsolutePathExtensions.CopyToDirectory(file, ProjectDirectory));
             }
             else
             {
-                FileSystemTasks.CopyDirectoryRecursively(ContentDirectory, ProjectDirectory);
+                AbsolutePathExtensions.CopyToDirectory(ContentDirectory, ProjectDirectory);
             }
 
             var releaseFileName = CreateReleaseFromDirectory(ProjectDirectory, fileName, version);

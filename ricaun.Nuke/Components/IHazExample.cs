@@ -77,7 +77,7 @@ namespace ricaun.Nuke.Components
                             .ForEach(file =>
                             {
                                 Serilog.Log.Information($"Copy nupkg: {file} to {ReleaseDirectory}");
-                                FileSystemTasks.CopyFileToDirectory(file, ReleaseDirectory, FileExistsPolicy.OverwriteIfNewer);
+                                AbsolutePathExtensions.CopyToDirectory(file, ReleaseDirectory, ExistsPolicy.MergeAndOverwriteIfNewer);
                             });
                     }
                 });

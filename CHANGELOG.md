@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.8.2] / 2024-11-20
 ### Update
 - Update `Nuke.Common` to `8.1.4`.
+- Update `FileSystemTasks.CopyDirectoryRecursively` to `AbsolutePathExtensions.CopyToDirectory`.
 
 ## [1.8.1]  / 2024-05-13
 ### Updated
