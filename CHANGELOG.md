@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.8.2] / 2024-11-20
 ### Update
 - Update `Nuke.Common` to `8.1.4`.
-- Update `FileSystemTasks.CopyDirectoryRecursively` to `AbsolutePathExtensions.CopyToDirectory`.
+- Update `FileSystemTasks.CopyFileToDirectory` to `AbsolutePathExtensions.CopyToDirectory`.
+- Update `FileSystemTasks.CopyDirectoryRecursively` to `AbsolutePathExtensions.Copy`.
 - Add `SymbolPackageFormat` and `IncludeSymbols` in the package.
 - Update release `*.nupkg` to `*.*nupkg` to copy symbol package format. (Fix: #75)
 - Add `WarningSignFile` to show warning when sign file is empty. (Fix: #74)
