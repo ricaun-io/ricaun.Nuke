@@ -96,7 +96,7 @@ namespace ricaun.Nuke.Extensions
         /// <returns>The outputs of the build.</returns>
         public static IReadOnlyCollection<Output> Build(this Project project, ConfigurationTargetPlatform value)
         {
-            Serilog.Log.Information($"Build {project.Name} - {value}");
+            Serilog.Log.Information($"Build: {project.Name} - {value}");
             return project.Build(value.Configuration, value.TargetPlatform);
         }
 
@@ -108,7 +108,7 @@ namespace ricaun.Nuke.Extensions
         /// <returns>The outputs of the rebuild.</returns>
         public static IReadOnlyCollection<Output> Rebuild(this Project project, ConfigurationTargetPlatform value)
         {
-            Serilog.Log.Information($"Rebuild {project.Name} - {value}");
+            Serilog.Log.Information($"Rebuild: {project.Name} - {value}");
             return project.Rebuild(value.Configuration, value.TargetPlatform);
         }
 
