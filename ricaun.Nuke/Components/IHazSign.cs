@@ -31,6 +31,14 @@ namespace ricaun.Nuke.Components
             return SignFolder(projectFolder, $"*{project.Name}*") || SignFolder(projectFolder, $"*{project.GetAssemblyName()}*") || SignFolder(projectFolder);
         }
 
+        internal static bool _waningSignFile = false;
+        internal void WarningSignFile(string message)
+        {
+            if (_waningSignFile) return;
+            _waningSignFile = true;
+            Serilog.Log.Warning(message);
+        }
+
         /// <summary>
         /// Sign Files on the Folder
         /// </summary>
@@ -42,8 +50,16 @@ namespace ricaun.Nuke.Components
         /// <returns></returns>
         public bool SignFolder(string folder, string namePattern = "*", bool dllSign = true, bool nupkgSign = true, bool exeSign = true)
         {
-            if (!SignFile.SkipEmpty()) return false;
-            if (!SignPassword.SkipEmpty()) return false;
+            if (!SignFile.SkipEmpty())
+            {
+                WarningSignFile("SignFile is empty, SignFolder will be skipped. Configure environment variables 'SIGN_FILE' and 'SIGN_PASSWORD'.");
+                return false;
+            }
+            if (!SignPassword.SkipEmpty())
+            {
+                WarningSignFile("SignPassword is empty, SignFolder will be skipped. Configure environment variables 'SIGN_FILE' and 'SIGN_PASSWORD'.");
+                return false;
+            }
 
             var certPath = SignExtension.VerifySignFile(SignFile, BuildAssemblyDirectory);
             var certPassword = SignPassword;

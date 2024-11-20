@@ -10,19 +10,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update `FileSystemTasks.CopyDirectoryRecursively` to `AbsolutePathExtensions.CopyToDirectory`.
 - Add `SymbolPackageFormat` and `IncludeSymbols` in the package.
 - Update release `*.nupkg` to `*.*nupkg` to copy symbol package format. (Fix: #75)
+- Add `WarningSignFile` to show warning when sign file is empty. (Fix: #74)
 
-## [1.8.1]  / 2024-05-13
+## [1.8.1] / 2024-05-13
 ### Updated
 - Update `GetFileVersionInfo` to find `exe` file.
 - Update `SignProject` to sign `Name`, `AssemblyName`, or `*`.
 - Update `AssemblyExtension` methods to `Obsolete`.
 
-## [1.8.0]  / 2024-03-11
+## [1.8.0] / 2024-03-11
 ### Updated
 - Update `Nuke.Common` Version = `8.0.0`
 - Force enable `EnableUnsafeBinaryFormatterSerialization` to support `net8.0`.
 
-## [1.7.4]  / 2024-02-08
+## [1.7.4] / 2024-02-08
 ### Features
 - Update `GetInformationalVersion` to find `nupkg` files.
 ### Added
