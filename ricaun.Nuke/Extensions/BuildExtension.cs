@@ -22,39 +22,132 @@ namespace ricaun.Nuke.Extensions
         private const string CONFIGURATION_DEBUG = "Debug";
         #endregion
 
-        #region Solution
+        #region ConfigurationTargetPlatform
         /// <summary>
-        /// Get all Configuration With no Debug
+        /// Configuration Target Platform
         /// </summary>
-        /// <param name="Solution"></param>
-        /// <returns></returns>
-        public static IEnumerable<string> GetReleases(this Solution Solution)
+        public class ConfigurationTargetPlatform
         {
-            return Solution.GetConfigurations(CONFIGURATION_DEBUG, true);
+            /// <summary>
+            /// Configuration
+            /// </summary>
+            public string Configuration { get; set; }
+            /// <summary>
+            /// TargetPlatform
+            /// </summary>
+            public string TargetPlatform { get; set; }
+            /// <summary>
+            /// ToString
+            /// </summary>
+            /// <returns></returns>
+            public override string ToString() => $"{Configuration}|{TargetPlatform}";
+            /// <summary>
+            /// ConfigurationTargetPlatform
+            /// </summary>
+            /// <param name="value"></param>
+            public static implicit operator ConfigurationTargetPlatform(string value)
+            {
+                var values = value.Split('|');
+                return new ConfigurationTargetPlatform
+                {
+                    Configuration = values.FirstOrDefault(),
+                    TargetPlatform = values.LastOrDefault()
+                };
+            }
         }
 
         /// <summary>
-        /// Get Configurations
+        /// Gets the release target platforms for the specified project.
         /// </summary>
-        /// <param name="Solution"></param>
-        /// <param name="contain"></param>
-        /// <param name="notContain"></param>
-        /// <returns></returns>
-        public static IEnumerable<string> GetConfigurations(this Solution Solution, string contain, bool notContain = false)
+        /// <param name="project">The project.</param>
+        /// <returns>The release target platforms.</returns>
+        public static IEnumerable<ConfigurationTargetPlatform> GetReleaseTargetPlatforms(this Project project)
         {
-            var configurations = Solution.GetConfigurations()
+            return project.GetConfigurationsTargetPlatform(CONFIGURATION_DEBUG, true);
+        }
+
+        /// <summary>
+        /// Gets the configuration target platforms for the specified project.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <returns>The configuration target platforms.</returns>
+        public static IEnumerable<ConfigurationTargetPlatform> GetConfigurationTargetPlatforms(this Project project)
+        {
+            return project.Configurations.Values.Distinct().Select(e => (ConfigurationTargetPlatform)e);
+        }
+
+        /// <summary>
+        /// Gets the configurations target platform for the specified project.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="contain">The string to contain in the configuration.</param>
+        /// <param name="notContain">A flag indicating whether the configuration should not contain the specified string.</param>
+        /// <returns>The configurations target platform.</returns>
+        public static IEnumerable<ConfigurationTargetPlatform> GetConfigurationsTargetPlatform(this Project project, string contain, bool notContain = false)
+        {
+            return project.GetConfigurationTargetPlatforms().Where(e => e.Configuration.Contains(contain, StringComparison.OrdinalIgnoreCase) != notContain);
+        }
+
+        /// <summary>
+        /// Builds the project with the specified configuration target platform.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="value">The configuration target platform.</param>
+        /// <returns>The outputs of the build.</returns>
+        public static IReadOnlyCollection<Output> Build(this Project project, ConfigurationTargetPlatform value)
+        {
+            return project.Build(value.Configuration, value.TargetPlatform);
+        }
+
+        /// <summary>
+        /// Rebuilds the project with the specified configuration target platform.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="value">The configuration target platform.</param>
+        /// <returns>The outputs of the rebuild.</returns>
+        public static IReadOnlyCollection<Output> Rebuild(this Project project, ConfigurationTargetPlatform value)
+        {
+            return project.Rebuild(value.Configuration, value.TargetPlatform);
+        }
+
+        #endregion
+
+        #region Solution
+        /// <summary>
+        /// Gets all the release configurations for the specified solution.
+        /// </summary>
+        /// <param name="solution">The solution.</param>
+        /// <returns>The release configurations.</returns>
+        [Obsolete($"Use {nameof(BuildExtension)}.{nameof(BuildExtension.GetReleaseTargetPlatforms)}")]
+        public static IEnumerable<string> GetReleases(this Solution solution)
+        {
+            return solution.GetConfigurations(CONFIGURATION_DEBUG, true);
+        }
+
+        /// <summary>
+        /// Gets the configurations for the specified solution.
+        /// </summary>
+        /// <param name="solution">The solution.</param>
+        /// <param name="contain">The string to contain in the configuration.</param>
+        /// <param name="notContain">A flag indicating whether the configuration should not contain the specified string.</param>
+        /// <returns>The configurations.</returns>
+        [Obsolete($"Use {nameof(BuildExtension)}.{nameof(BuildExtension.GetConfigurationsTargetPlatform)}")]
+        public static IEnumerable<string> GetConfigurations(this Solution solution, string contain, bool notContain = false)
+        {
+            var configurations = solution.GetConfigurations()
                 .Where(s => s.Contains(contain, StringComparison.OrdinalIgnoreCase) != notContain);
             return configurations;
         }
 
         /// <summary>
-        /// Get Configurations
+        /// Gets the configurations for the specified solution.
         /// </summary>
-        /// <param name="Solution"></param>
-        /// <returns></returns>
-        public static IEnumerable<string> GetConfigurations(this Solution Solution)
+        /// <param name="solution">The solution.</param>
+        /// <returns>The configurations.</returns>
+        [Obsolete($"Use {nameof(BuildExtension)}.{nameof(BuildExtension.GetConfigurationTargetPlatforms)}")]
+        public static IEnumerable<string> GetConfigurations(this Solution solution)
         {
-            var configurations = Solution.Configurations
+            var configurations = solution.Configurations
                     .Select(pair => pair.Value.Split("|").First())
                     .Distinct();
             return configurations;
@@ -63,16 +156,16 @@ namespace ricaun.Nuke.Extensions
 
         #region BuildMainProject
         /// <summary>
-        /// Build Project
+        /// Builds the specified project.
         /// </summary>
-        /// <param name="Solution"></param>
-        /// <param name="project"></param>
-        /// <param name="afterBuild"></param>
-        public static void BuildProject(this Solution Solution, Project project, Action<Project> afterBuild = null)
+        /// <param name="solution">The solution.</param>
+        /// <param name="project">The project.</param>
+        /// <param name="afterBuild">The action to perform after the build.</param>
+        public static void BuildProject(this Solution solution, Project project, Action<Project> afterBuild = null)
         {
             if (project is Project)
             {
-                foreach (var configuration in project.GetReleases())
+                foreach (var configuration in project.GetReleaseTargetPlatforms())
                 {
                     project.Build(configuration);
                 }
@@ -81,16 +174,16 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
-        /// Rebuild Project
+        /// Rebuilds the specified project.
         /// </summary>
-        /// <param name="Solution"></param>
-        /// <param name="project"></param>
-        /// <param name="afterBuild"></param>
-        public static void RebuildProject(this Solution Solution, Project project, Action<Project> afterBuild = null)
+        /// <param name="solution">The solution.</param>
+        /// <param name="project">The project.</param>
+        /// <param name="afterBuild">The action to perform after the rebuild.</param>
+        public static void RebuildProject(this Solution solution, Project project, Action<Project> afterBuild = null)
         {
             if (project is Project)
             {
-                foreach (var configuration in project.GetReleases())
+                foreach (var configuration in project.GetReleaseTargetPlatforms())
                 {
                     project.Rebuild(configuration);
                 }
@@ -99,14 +192,14 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
-        /// Delete All bin / obj folder
+        /// Deletes all the bin/obj folders except for the ones in the specified build project directory.
         /// </summary>
-        /// <param name="Solution"></param>
-        /// <param name="BuildProjectDirectory"></param>
-        public static void ClearSolution(this Solution Solution, AbsolutePath BuildProjectDirectory)
+        /// <param name="solution">The solution.</param>
+        /// <param name="buildProjectDirectory">The build project directory.</param>
+        public static void ClearSolution(this Solution solution, AbsolutePath buildProjectDirectory)
         {
-            Globbing.GlobDirectories(Solution.Directory, "**/bin", "**/obj")
-                .Where(x => !PathConstruction.IsDescendantPath(BuildProjectDirectory, x))
+            Globbing.GlobDirectories(solution.Directory, "**/bin", "**/obj")
+                .Where(x => !PathConstruction.IsDescendantPath(buildProjectDirectory, x))
                 .ForEach((file) =>
                 {
                     try
@@ -123,22 +216,22 @@ namespace ricaun.Nuke.Extensions
 
         #region Project
         /// <summary>
-        /// Get Project Configurations with no Debug
+        /// Gets the release configurations for the specified project.
         /// </summary>
-        /// <param name="project"></param>
-        /// <returns></returns>
+        /// <param name="project">The project.</param>
+        /// <returns>The release configurations.</returns>
         public static IEnumerable<string> GetReleases(this Project project)
         {
             return project.GetConfigurations(CONFIGURATION_DEBUG, true);
         }
 
         /// <summary>
-        /// Get Project Configurations
+        /// Gets the configurations for the specified project.
         /// </summary>
-        /// <param name="project"></param>
-        /// <param name="contain"></param>
-        /// <param name="notContain"></param>
-        /// <returns></returns>
+        /// <param name="project">The project.</param>
+        /// <param name="contain">The string to contain in the configuration.</param>
+        /// <param name="notContain">A flag indicating whether the configuration should not contain the specified string.</param>
+        /// <returns>The configurations.</returns>
         public static IEnumerable<string> GetConfigurations(this Project project, string contain, bool notContain = false)
         {
             var configurations = project.GetConfigurations()
@@ -147,10 +240,10 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
-        /// Get Project Configurations
+        /// Gets the configurations for the specified project.
         /// </summary>
-        /// <param name="project"></param>
-        /// <returns></returns>
+        /// <param name="project">The project.</param>
+        /// <returns>The configurations.</returns>
         public static IEnumerable<string> GetConfigurations(this Project project)
         {
             var configurations = project.Configurations
@@ -160,16 +253,19 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
-        /// Rebuild Project
+        /// Rebuilds the project with the specified configuration and target platform.
         /// </summary>
-        /// <param name="project"></param>
-        /// <param name="configuration"></param>
-        public static IReadOnlyCollection<Output> Rebuild(this Project project, string configuration)
+        /// <param name="project">The project.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="targetPlatform">The target platform.</param>
+        /// <returns>The outputs of the rebuild.</returns>
+        public static IReadOnlyCollection<Output> Rebuild(this Project project, string configuration, string targetPlatform = null)
         {
             return MSBuildTasks.MSBuild(s => s
                 .SetTargets("Rebuild")
                 .SetTargetPath(project)
                 .SetConfiguration(configuration)
+                .TrySetTargetPlatform(targetPlatform)
                 .SetVerbosity(MSBuildVerbosity.Minimal)
                 .SetMaxCpuCount(Environment.ProcessorCount)
                 .DisableNodeReuse()
@@ -178,30 +274,52 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
-        /// Build Project
+        /// Builds the project with the specified configuration and target platform.
         /// </summary>
-        /// <param name="project"></param>
-        /// <param name="configuration"></param>
-        public static IReadOnlyCollection<Output> Build(this Project project, string configuration)
+        /// <param name="project">The project.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="targetPlatform">The target platform.</param>
+        /// <returns>The outputs of the build.</returns>
+        public static IReadOnlyCollection<Output> Build(this Project project, string configuration, string targetPlatform = null)
         {
             return MSBuildTasks.MSBuild(s => s
                 .SetTargets("Build")
                 .SetTargetPath(project)
                 .SetConfiguration(configuration)
+                .TrySetTargetPlatform(targetPlatform)
                 .SetVerbosity(MSBuildVerbosity.Minimal)
                 .SetMaxCpuCount(Environment.ProcessorCount)
                 .DisableNodeReuse()
                 .EnableRestore()
                 );
         }
+
+        private static MSBuildSettings TrySetTargetPlatform(this MSBuildSettings settings, MSBuildTargetPlatform targetPlatform)
+        {
+            if (string.IsNullOrWhiteSpace(targetPlatform)) return settings;
+
+            var validPlatforms = new[] {
+                MSBuildTargetPlatform.MSIL,
+                MSBuildTargetPlatform.x86,
+                MSBuildTargetPlatform.x64,
+                MSBuildTargetPlatform.arm,
+                MSBuildTargetPlatform.Win32
+            };
+            if (validPlatforms.Contains(targetPlatform))
+            {
+                return settings.SetTargetPlatform(targetPlatform);
+            }
+
+            return settings;
+        }
         #endregion
 
         #region String
         /// <summary>
-        /// Return false if <paramref name="str"/> empty or null
+        /// Returns false if the specified string is empty or null.
         /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
+        /// <param name="str">The string.</param>
+        /// <returns><c>true</c> if the string is not empty or null; otherwise, <c>false</c>.</returns>
         public static bool SkipEmpty(this string str)
         {
             if (str == null) return false;
