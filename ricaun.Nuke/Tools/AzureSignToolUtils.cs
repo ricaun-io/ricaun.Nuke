@@ -113,30 +113,35 @@ namespace ricaun.Nuke.Tools
             _ = NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignToolPath;
         }
 
-        private static void DownloadNuGetKeyVaultSignTool_()
+private static void DownloadNuGetKeyVaultSignTool_()
+{
+    try
+    {
+        _ = NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignToolPath;
+    }
+    catch (Exception)
+    {
+        var toolFolder = GetToolInstallationPath();
+        var packageId = NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignToolPackageId;
+
+        if (Globbing.GlobFiles(toolFolder, $"{packageId}.exe").FirstOrDefault() is AbsolutePath packageToolPathExists)
         {
-            try
-            {
-                _ = NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignToolPath;
-            }
-            catch (Exception)
-            {
-                var toolFolder = GetToolInstallationPath();
-                var packageId = NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignToolPackageId;
-
-                DotNetTasks.DotNetToolInstall(x => x
-                    .SetPackageName(packageId)
-                    .SetToolInstallationPath(toolFolder)
-                );
-
-                if (Globbing.GlobFiles(toolFolder, $"{packageId}.exe").FirstOrDefault() is AbsolutePath packageToolPath)
-                {
-                    Environment.SetEnvironmentVariable(packageId.ToUpper() + "_EXE", packageToolPath);
-                }
-            }
-
-            _ = NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignToolPath;
+            Environment.SetEnvironmentVariable(packageId.ToUpper() + "_EXE", packageToolPathExists);
         }
+
+        DotNetTasks.DotNetToolInstall(x => x
+            .SetPackageName(packageId)
+            .SetToolInstallationPath(toolFolder)
+        );
+
+        if (Globbing.GlobFiles(toolFolder, $"{packageId}.exe").FirstOrDefault() is AbsolutePath packageToolPath)
+        {
+            Environment.SetEnvironmentVariable(packageId.ToUpper() + "_EXE", packageToolPath);
+        }
+    }
+
+    _ = NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignToolPath;
+}
 
         /// <summary>
         /// Signs the specified file using Azure Sign Tool or NuGet Key Vault Sign Tool.
