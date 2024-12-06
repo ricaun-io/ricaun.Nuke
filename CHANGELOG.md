@@ -9,12 +9,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Enable sign files using `Azure Key Vault`.
 ### Build
 - Add `IAzureSignTool` to check if `AzureSignToolUtils` is installed.
-- Add import `build` with `.targets`
+- [ ] Add import `build` with `.targets`
 ### Updates
 - Add `AzureSignToolUtils` to sign files using `AzureSignToolTasks` or `NuGetKeyVaultSignToolTasks`.
 - Add `NuGetKeyVaultSignTool` for nuke version `8.*`.
 - Add `AzureKeyVaultConfig` with json file with `Azure Key Vault` without secrets.
-- Add `build` with `.targets` to install packages `AzureSignTool` and `NuGetKeyVaultSignTool`.
+- [ ] Add `build` with `.targets` to install packages `AzureSignTool` and `NuGetKeyVaultSignTool`.
+- Add `PackageDownload` to download `AzureSignTool` and `NuGetKeyVaultSignTool` on the fly.
 ### Tests
 - Update `NuGetExtensionTests`
 - Add `AzureKeyVaultConfigTests`

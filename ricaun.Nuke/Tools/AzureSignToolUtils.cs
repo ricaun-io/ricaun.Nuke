@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using ricaun.Nuke.Tools.NuGetKeyVaultSignTool;
 using Nuke.Common.Tools.AzureSignTool;
 using System.IO;
+using Nuke.Common.Tools.DotNet;
+using Nuke.Common.IO;
 
 namespace ricaun.Nuke.Tools
 {
@@ -24,6 +26,9 @@ namespace ricaun.Nuke.Tools
         /// <exception cref="Exception">Thrown when the required packages are missing.</exception>
         public static void EnsureAzureToolIsInstalled()
         {
+            DownloadAzureSignTool();
+            DownloadNuGetKeyVaultSignTool();
+
             try
             {
                 _ = AzureSignToolTasks.AzureSignToolPath;
@@ -41,6 +46,93 @@ namespace ricaun.Nuke.Tools
             }
         }
 
+        private static AbsolutePath GetToolInstallationPath()
+        {
+            AbsolutePath folder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            return folder / "Tools";
+        }
+
+        private static string PackageDownload(string packageId)
+        {
+            var toolFolder = GetToolInstallationPath();
+
+            DotNetTasks.DotNetToolInstall(x => x
+                .SetPackageName(packageId)
+                .SetToolInstallationPath(toolFolder)
+            );
+
+            if (Globbing.GlobFiles(toolFolder, $"{packageId}.exe").FirstOrDefault() is AbsolutePath absolutePath)
+            {
+                return absolutePath;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Download AzureSignTool if not already installed.
+        /// </summary>
+        public static void DownloadAzureSignTool()
+        {
+            try
+            {
+                _ = AzureSignToolTasks.AzureSignToolPath;
+            }
+            catch (Exception)
+            {
+                var packageId = AzureSignToolTasks.AzureSignToolPackageId;
+                var packageToolExe = PackageDownload(packageId);
+
+                Environment.SetEnvironmentVariable(packageId.ToUpper() + "_EXE", packageToolExe);
+            }
+
+            _ = AzureSignToolTasks.AzureSignToolPath;
+        }
+
+        /// <summary>
+        /// Download NuGetKeyVaultSignTool if not already installed.
+        /// </summary>
+        public static void DownloadNuGetKeyVaultSignTool()
+        {
+            try
+            {
+                _ = NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignToolPath;
+            }
+            catch (Exception)
+            {
+                var packageId = NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignToolPackageId;
+                var packageToolExe = PackageDownload(packageId);
+
+                Environment.SetEnvironmentVariable(packageId.ToUpper() + "_EXE", packageToolExe);
+            }
+
+            _ = NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignToolPath;
+        }
+
+        private static void DownloadNuGetKeyVaultSignTool_()
+        {
+            try
+            {
+                _ = NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignToolPath;
+            }
+            catch (Exception)
+            {
+                var toolFolder = GetToolInstallationPath();
+                var packageId = NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignToolPackageId;
+
+                DotNetTasks.DotNetToolInstall(x => x
+                    .SetPackageName(packageId)
+                    .SetToolInstallationPath(toolFolder)
+                );
+
+                if (Globbing.GlobFiles(toolFolder, $"{packageId}.exe").FirstOrDefault() is AbsolutePath packageToolPath)
+                {
+                    Environment.SetEnvironmentVariable(packageId.ToUpper() + "_EXE", packageToolPath);
+                }
+            }
+
+            _ = NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignToolPath;
+        }
+
         /// <summary>
         /// Signs the specified file using Azure Sign Tool or NuGet Key Vault Sign Tool.
         /// </summary>
@@ -56,6 +148,7 @@ namespace ricaun.Nuke.Tools
         {
             if (Path.GetExtension(fileName) == NugetPackageExtension)
             {
+                DownloadNuGetKeyVaultSignTool();
                 NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignTool(x => x
                     .SetFile(fileName)
                     .SetKeyVaultCertificateName(azureKeyVaultConfig.AzureKeyVaultCertificate)
@@ -69,6 +162,7 @@ namespace ricaun.Nuke.Tools
                 return;
             }
 
+            DownloadAzureSignTool();
             AzureSignToolTasks.AzureSignTool(x => x
                 .SetFiles(fileName)
                 .SetKeyVaultCertificateName(azureKeyVaultConfig.AzureKeyVaultCertificate)

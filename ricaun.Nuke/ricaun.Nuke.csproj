@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <PackageId>ricaun.Nuke</PackageId>
-    <Version>1.9.0-alpha.1</Version>
+    <Version>1.9.0-alpha.2</Version>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -78,8 +78,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="build\" />
-    <None Include="build\$(MSBuildProjectName).targets" PackagePath="build" Pack="true" />
+    <!--<None Include="build\$(MSBuildProjectName).targets" PackagePath="build" Pack="true" />-->
   </ItemGroup>
 
 </Project>
