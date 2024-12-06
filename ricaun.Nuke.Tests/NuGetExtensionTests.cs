@@ -2,11 +2,10 @@
 
 namespace ricaun.Nuke.Tests
 {
-#if NET
-    public class TestsNet
+    public class NuGetExtensionTests
     {
         [Test]
-        public void Test1()
+        public void Test_PackageNameAndVersion()
         {
             var packages = new[] {
                 "ricaun.example.1.2.3.nupkg",
@@ -26,5 +25,4 @@ namespace ricaun.Nuke.Tests
             }
         }
     }
-#endif
 }

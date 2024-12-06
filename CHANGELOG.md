@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add `NuGetKeyVaultSignTool` for nuke version `8.*`.
 - Add `AzureKeyVaultConfig` with json file with `Azure Key Vault` without secrets.
 - Add `build` with `.targets` to install packages `AzureSignTool` and `NuGetKeyVaultSignTool`.
+### Tests
+- Update `NuGetExtensionTests`
+- Add `AzureKeyVaultConfigTests`
 
 ## [1.8.2] / 2024-11-20
 ### Updates
