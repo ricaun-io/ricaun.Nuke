@@ -1,0 +1,15 @@
+<Project>
+
+  <!-- Install the Packeges to allow using AzureSignTool and NuGetKeyVaultSignTool -->
+  
+  <ItemGroup>
+    <PackageDownload Include="AzureSignTool" Version="[6.0.0]" />
+    <PackageDownload Include="NuGetKeyVaultSignTool" Version="[3.2.3]" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <!-- Ignore Warn Duplicate 'PackageDownload'-->
+    <NoWarn>$(NoWarn);NU1505</NoWarn>
+  </PropertyGroup>
+
+</Project>

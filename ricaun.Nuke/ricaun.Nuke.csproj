@@ -3,11 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <LangVersion>Latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageId>ricaun.Nuke</PackageId>
-    <Version>1.8.2</Version>
+    <Version>1.9.0-alpha</Version>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -74,6 +75,11 @@
     <PackageReference Include="GitVersion.CommandLine" Version="*" />
     <PackageReference Include="NuGet.CommandLine" Version="*" />
     <PackageReference Include="Nuke.Common" Version="8.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="build\" />
+    <None Include="build\$(MSBuildProjectName).targets" PackagePath="build" Pack="true" />
   </ItemGroup>
 
 </Project>

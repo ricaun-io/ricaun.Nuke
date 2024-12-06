@@ -4,8 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] / 2024-12-06
+### Features
+- Enable sign files using `Azure Key Vault`.
+### Build
+- Add `IAzureSignTool` to check if `AzureSignToolUtils` is installed.
+- Add import `build` with `.targets`
+### Updates
+- Add `AzureSignToolUtils` to sign files using `AzureSignToolTasks` or `NuGetKeyVaultSignToolTasks`.
+- Add `NuGetKeyVaultSignTool` for nuke version `8.*`.
+- Add `AzureKeyVaultConfig` with json file with `Azure Key Vault` without secrets.
+- Add `build` with `.targets` to install packages `AzureSignTool` and `NuGetKeyVaultSignTool`.
+
 ## [1.8.2] / 2024-11-20
-### Update
+### Updates
 - Update `Nuke.Common` to `8.1.4`.
 - Update `FileSystemTasks.CopyFileToDirectory` to `AbsolutePathExtensions.CopyToDirectory`.
 - Update `FileSystemTasks.CopyDirectoryRecursively` to `AbsolutePathExtensions.Copy`.
@@ -358,6 +370,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.9.0]: ../../compare/1.8.2...1.9.0
 [1.8.2]: ../../compare/1.8.1...1.8.2
 [1.8.1]: ../../compare/1.8.0...1.8.1
 [1.8.0]: ../../compare/1.7.4...1.8.0

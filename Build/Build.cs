@@ -3,7 +3,7 @@ using Nuke.Common.Execution;
 using ricaun.Nuke;
 using ricaun.Nuke.Components;
 
-class Build : NukeBuild, IPublishPack, ICompileExample, ITest, IShowGitVersion, IPrePack
+class Build : NukeBuild, IPublishPack, ICompileExample, ITest, IShowGitVersion, IAzureSignTool, IPrePack
 {
     //bool IPack.UnlistNuget => true;
     bool ITest.TestBuildStopWhenFailed => false;
