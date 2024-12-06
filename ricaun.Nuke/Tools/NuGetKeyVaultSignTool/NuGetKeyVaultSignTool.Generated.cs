@@ -14,7 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Nuke.Common.Tools.NuGetKeyVaultSignTool;
+namespace ricaun.Nuke.Tools.NuGetKeyVaultSignTool;
 
 /// <summary>
 ///   <p>NuGet Key Vault Sign Tool is similar to <c>nuget sign</c>, with the major difference being that it uses Azure Key Vault for performing the signing process. Similar usage configuration like <c>AzureSignTool</c>, except is used to sign nuget package.</p>

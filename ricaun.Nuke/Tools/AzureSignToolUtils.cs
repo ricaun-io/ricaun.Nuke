@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Nuke.Common.Tools.NuGetKeyVaultSignTool;
+using ricaun.Nuke.Tools.NuGetKeyVaultSignTool;
 using Nuke.Common.Tools.AzureSignTool;
 using System.IO;
 
