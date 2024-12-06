@@ -56,14 +56,19 @@ namespace ricaun.Nuke.Tools
         {
             var toolFolder = GetToolInstallationPath();
 
+            if (Globbing.GlobFiles(toolFolder, $"{packageId}.exe").FirstOrDefault() is AbsolutePath packageToolExeExists)
+            {
+                return packageToolExeExists;
+            }
+
             DotNetTasks.DotNetToolInstall(x => x
                 .SetPackageName(packageId)
                 .SetToolInstallationPath(toolFolder)
             );
 
-            if (Globbing.GlobFiles(toolFolder, $"{packageId}.exe").FirstOrDefault() is AbsolutePath absolutePath)
+            if (Globbing.GlobFiles(toolFolder, $"{packageId}.exe").FirstOrDefault() is AbsolutePath packageToolExe)
             {
-                return absolutePath;
+                return packageToolExe;
             }
             return null;
         }
