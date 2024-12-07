@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <PackageId>ricaun.Nuke</PackageId>
-    <Version>1.9.0-alpha.4</Version>
+    <Version>1.9.0-alpha.5</Version>
   </PropertyGroup>
 
   <PropertyGroup>

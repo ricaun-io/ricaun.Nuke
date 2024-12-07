@@ -9,8 +9,11 @@ public interface IAzureSignTool : IClean, ICompile
         .Executes(() =>
         {
             ricaun.Nuke.Tools.AzureSignToolUtils.DownloadAzureSignTool();
+            Serilog.Log.Information("DownloadAzureSignTool");
             ricaun.Nuke.Tools.AzureSignToolUtils.DownloadNuGetKeyVaultSignTool();
+            Serilog.Log.Information("DownloadNuGetKeyVaultSignTool");
 
             ricaun.Nuke.Tools.AzureSignToolUtils.EnsureAzureToolIsInstalled();
+            Serilog.Log.Information("EnsureAzureToolIsInstalled");
         });
 }
