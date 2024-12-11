@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add `PackageDownload` to download `AzureSignTool` and `NuGetKeyVaultSignTool` on the fly.
 - Update `IClear` with `CreateTemporaryIgnore`.
 - Update `ISign` with `Requires`.
+- Add `HttpAuthTasks` to get/post files.
 ### Tests
 - Update `NuGetExtensionTests`
 - Add `AzureKeyVaultConfigTests`
