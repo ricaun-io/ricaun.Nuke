@@ -579,6 +579,7 @@ public static class HttpAuthTasks
         return content;
     }
     #endregion
+
     #region Json
     internal static string ToJson(this object obj)
     {
