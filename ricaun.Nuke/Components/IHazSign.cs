@@ -3,6 +3,8 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Utilities.Collections;
 using ricaun.Nuke.Extensions;
+using ricaun.Nuke.Tools;
+using System;
 
 namespace ricaun.Nuke.Components
 {
@@ -61,24 +63,44 @@ namespace ricaun.Nuke.Components
                 return false;
             }
 
-            var certPath = SignExtension.VerifySignFile(SignFile, BuildAssemblyDirectory);
-            var certPassword = SignPassword;
+            Action<string> signFile = null;
 
-            SignExtension.CreateCerFile(certPath, certPassword, BuildAssemblyDirectory);
+            if (AzureKeyVaultConfig.Create(SignFile) is AzureKeyVaultConfig azureKeyVaultConfig)
+            {
+                var azureKeyVaultClientSecret = SignPassword;
+                void SignUsingAzureKeyVault(string file)
+                {
+                    AzureSignToolUtils.Sign(file, azureKeyVaultConfig, azureKeyVaultClientSecret);
+                }
+                signFile = SignUsingAzureKeyVault;
+            }
+            else
+            {
+                var certPath = SignExtension.VerifySignFile(SignFile, BuildAssemblyDirectory);
+                var certPassword = SignPassword;
+
+                SignExtension.CreateCerFile(certPath, certPassword, BuildAssemblyDirectory);
+
+                void SignUsingCerFile(string file)
+                {
+                    SignExtension.Sign(certPath, certPassword, file);
+                }
+                signFile = SignUsingCerFile;
+            }
 
             Serilog.Log.Information($"SignFolder [{namePattern}]: {folder}");
 
             if (dllSign)
                 Globbing.GlobFiles(folder, $"**/{namePattern}.dll")
-                    .ForEach(file => SignExtension.Sign(certPath, certPassword, file));
+                    .ForEach(signFile);
 
             if (nupkgSign)
                 Globbing.GlobFiles(folder, $"**/{namePattern}.nupkg")
-                    .ForEach(file => SignExtension.Sign(certPath, certPassword, file));
+                    .ForEach(signFile);
 
             if (exeSign)
                 Globbing.GlobFiles(folder, $"**/{namePattern}.exe")
-                    .ForEach(file => SignExtension.Sign(certPath, certPassword, file));
+                    .ForEach(signFile);
 
             return Globbing.GlobFiles(folder, $"**/{namePattern}").Count > 0;
         }
