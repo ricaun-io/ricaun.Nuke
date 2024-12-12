@@ -15,7 +15,7 @@ namespace ricaun.Nuke.Components
         Target Clean => _ => _
             .Executes(() =>
             {
-                CreateTemporaryIgnore();
+                //CreateTemporaryIgnore();
                 Solution.ClearSolution(BuildProjectDirectory);
             });
 
