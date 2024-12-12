@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Build
 - Add `IAzureSignTool` to check if `AzureSignToolUtils` is installed.
 - [ ] Update `IAzureSignTool` with `Requires`.
-- [ ] Add import `build` with `.targets`
+- Add import `build` with `.targets`
 ### Updates
 - Add `AzureSignToolUtils` to sign files using `AzureSignToolTasks` or `NuGetKeyVaultSignToolTasks`.
 - Add `NuGetKeyVaultSignTool` for nuke version `8.*`.
