@@ -18,8 +18,8 @@ namespace ricaun.Nuke.Components
         /// </summary>
         Target Sign => _ => _
             .TriggeredBy(Compile)
-            .Requires<NuGetKeyVaultSignToolTasks>()
-            .Requires<AzureSignToolTasks>()
+            //.Requires<NuGetKeyVaultSignToolTasks>()
+            //.Requires<AzureSignToolTasks>()
             .Executes(() =>
             {
                 SignProject(MainProject);

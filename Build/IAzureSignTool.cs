@@ -12,14 +12,15 @@ public interface IAzureSignTool : IClean, ICompile
         .Before(Compile)
         //.Requires<NuGetKeyVaultSignToolTasks>()
         //.Requires<AzureSignToolTasks>()
-        .Requires<GitVersionTasks>()
-        .Requires<NuGetTasks>()
+        //.Requires<GitVersionTasks>()
+        //.Requires<NuGetTasks>()
         .Executes(() =>
         {
+            ricaun.Nuke.Tools.AzureSignToolUtils.EnsureAzureToolIsInstalled();
+
             Serilog.Log.Information(AzureSignToolTasks.AzureSignToolPath);
             Serilog.Log.Information(NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignToolPath);
 
-            //ricaun.Nuke.Tools.AzureSignToolUtils.DownloadAzureSignTool();
             //Serilog.Log.Information("DownloadAzureSignTool");
             //ricaun.Nuke.Tools.AzureSignToolUtils.DownloadNuGetKeyVaultSignTool();
             //Serilog.Log.Information("DownloadNuGetKeyVaultSignTool");
