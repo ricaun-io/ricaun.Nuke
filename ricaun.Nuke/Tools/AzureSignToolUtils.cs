@@ -123,7 +123,7 @@ namespace ricaun.Nuke.Tools
         {
             if (Path.GetExtension(fileName) == NugetPackageExtension)
             {
-                DownloadNuGetKeyVaultSignTool();
+                //DownloadNuGetKeyVaultSignTool();
                 NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignTool(x => x
                     .SetFile(fileName)
                     .SetKeyVaultCertificateName(azureKeyVaultConfig.AzureKeyVaultCertificate)
@@ -137,7 +137,7 @@ namespace ricaun.Nuke.Tools
                 return;
             }
 
-            DownloadAzureSignTool();
+            //DownloadAzureSignTool();
             AzureSignToolTasks.AzureSignTool(x => x
                 .SetFiles(fileName)
                 .SetKeyVaultCertificateName(azureKeyVaultConfig.AzureKeyVaultCertificate)
