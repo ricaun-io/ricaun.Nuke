@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update `IClear` with `CreateTemporaryIgnore`.
 - [ ] Update `ISign` with `Requires`.
 - Add `HttpAuthTasks` to get/post files.
+- Update `IsPathTooLong` to equal or greater than `260`.
 ### Tests
 - Update `NuGetExtensionTests`
 - Add `AzureKeyVaultConfigTests`
