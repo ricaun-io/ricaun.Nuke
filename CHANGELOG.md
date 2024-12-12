@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add `HttpAuthTasks` to get/post files.
 - Update `HttpAuthTasks` docs.
 - Update `IsPathTooLong` to equal or greater than `260`.
+- Update `SignExtension.Sign` to sign NuGet or files.
 ### Tests
 - Update `NuGetExtensionTests`
 - Add `AzureKeyVaultConfigTests`

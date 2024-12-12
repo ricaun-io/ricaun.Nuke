@@ -70,15 +70,15 @@ namespace ricaun.Nuke.Components
 
             if (dllSign)
                 Globbing.GlobFiles(folder, $"**/{namePattern}.dll")
-                    .ForEach(file => SignExtension.SignBinary(certPath, certPassword, file));
+                    .ForEach(file => SignExtension.Sign(certPath, certPassword, file));
 
             if (nupkgSign)
                 Globbing.GlobFiles(folder, $"**/{namePattern}.nupkg")
-                    .ForEach(file => SignExtension.SignNuGet(certPath, certPassword, file));
+                    .ForEach(file => SignExtension.Sign(certPath, certPassword, file));
 
             if (exeSign)
                 Globbing.GlobFiles(folder, $"**/{namePattern}.exe")
-                    .ForEach(file => SignExtension.SignBinary(certPath, certPassword, file));
+                    .ForEach(file => SignExtension.Sign(certPath, certPassword, file));
 
             return Globbing.GlobFiles(folder, $"**/{namePattern}").Count > 0;
         }

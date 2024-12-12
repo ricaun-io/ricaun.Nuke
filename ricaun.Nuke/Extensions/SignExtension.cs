@@ -71,6 +71,24 @@ namespace ricaun.Nuke.Extensions
             if (File.Exists(cert)) return true;
             return CreateCertificatesCer(fileNamePfx, passwordPfx, cert);
         }
+
+        /// <summary>
+        /// Sign the specified file using the provided certificate.
+        /// </summary>
+        /// <param name="certPath">The path to the certificate file.</param>
+        /// <param name="certPassword">The password for the certificate.</param>
+        /// <param name="filePath">The path to the file to be signed.</param>
+        /// <remarks>NuGet files use <see cref="NuGetExtension.NugetSign"/>.</remarks>
+        public static void Sign(string certPath, string certPassword, string filePath)
+        {
+            if (Path.GetExtension(filePath) == ".nupkg")
+            {
+                SignNuGet(certPath, certPassword, filePath);
+                return;
+            }
+            SignBinary(certPath, certPassword, filePath);
+        }
+
         /// <summary>
         /// https://github.com/DataDog/dd-trace-dotnet/blob/master/tracer/build/_build/Build.Gitlab.cs
         /// </summary>
@@ -124,7 +142,7 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
-        /// Sign Nuget
+        /// Sign NuGet
         /// </summary>
         /// <param name="certPath"></param>
         /// <param name="certPassword"></param>
