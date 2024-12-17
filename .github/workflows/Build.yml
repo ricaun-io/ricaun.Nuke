@@ -27,5 +27,7 @@ jobs:
           NugetApiUrl: ${{ secrets.NUGET_API_URL }}
           NugetApiKey: ${{ secrets.NUGET_API_KEY }}
 
-          SignFile: ${{ secrets.SIGN_FILE }}
-          SignPassword: ${{ secrets.SIGN_PASSWORD }}
+          # SignFile: ${{ secrets.SIGN_FILE }}
+          # SignPassword: ${{ secrets.SIGN_PASSWORD }}
+          SignFile: ${{ secrets.AZURE_KEY_VAULT_FILE }}
+          SignPassword: ${{ secrets.AZURE_KEY_VAULT_PASSWORD }}
