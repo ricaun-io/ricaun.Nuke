@@ -253,9 +253,9 @@ namespace ricaun.Nuke.Utils
             }
 
             #region Utils
-            const string IconFailed = ":x:";
-            const string IconSkipped = ":warning:";
-            const string IconPassed = ":heavy_check_mark:";
+            const string IconFailed = ":red_circle:";
+            const string IconSkipped = ":yellow_circle:";
+            const string IconPassed = ":green_circle:";
             /// <summary>
             /// GetIcon
             /// </summary>

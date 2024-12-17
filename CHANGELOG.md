@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update `SignExtension.Sign` to sign NuGet or files.
 - Update `SignProject` to sign files using `Azure Key Vault` if available.
 - Update `GetToolInstallationPath` to use user temp folder.
+- Update `TestRunUtil` icons to circle with color.
 ### Tests
 - Update `NuGetExtensionTests`
 - Add `AzureKeyVaultConfigTests`
