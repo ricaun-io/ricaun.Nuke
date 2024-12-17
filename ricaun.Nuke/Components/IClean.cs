@@ -1,5 +1,4 @@
 ﻿using Nuke.Common;
-using Nuke.Common.IO;
 using ricaun.Nuke.Extensions;
 
 namespace ricaun.Nuke.Components
@@ -15,16 +14,7 @@ namespace ricaun.Nuke.Components
         Target Clean => _ => _
             .Executes(() =>
             {
-                //CreateTemporaryIgnore();
                 Solution.ClearSolution(BuildProjectDirectory);
             });
-
-
-        private void CreateTemporaryIgnore()
-        {
-            var tempIgnore = TemporaryDirectory / ".." / ".gitignore";
-            if (!tempIgnore.FileExists())
-                tempIgnore.WriteAllText("temp");
-        }
     }
 }
