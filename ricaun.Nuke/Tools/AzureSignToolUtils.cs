@@ -122,11 +122,27 @@ namespace ricaun.Nuke.Tools
             string timestampUrlDefault = TimestampUrlDefault,
             string timestampDigestDefault = TimestampDigestDefault)
         {
-            if (Path.GetExtension(fileName) == NugetPackageExtension)
+            try
             {
-                DownloadNuGetKeyVaultSignTool();
-                NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignTool(x => x
-                    .SetFile(fileName)
+                if (Path.GetExtension(fileName) == NugetPackageExtension)
+                {
+                    DownloadNuGetKeyVaultSignTool();
+                    NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignTool(x => x
+                        .SetFile(fileName)
+                        .SetKeyVaultCertificateName(azureKeyVaultConfig.AzureKeyVaultCertificate)
+                        .SetKeyVaultUrl(azureKeyVaultConfig.AzureKeyVaultUrl)
+                        .SetKeyVaultClientId(azureKeyVaultConfig.AzureKeyVaultClientId)
+                        .SetKeyVaultTenantId(azureKeyVaultConfig.AzureKeyVaultTenantId)
+                        .SetKeyVaultClientSecret(azureKeyVaultClientSecret)
+                        .SetTimestampRfc3161Url(azureKeyVaultConfig.TimestampUrl ?? timestampUrlDefault)
+                        .SetTimestampDigest(azureKeyVaultConfig.TimestampDigest ?? timestampDigestDefault)
+                    );
+                    return;
+                }
+
+                DownloadAzureSignTool();
+                AzureSignToolTasks.AzureSignTool(x => x
+                    .SetFiles(fileName)
                     .SetKeyVaultCertificateName(azureKeyVaultConfig.AzureKeyVaultCertificate)
                     .SetKeyVaultUrl(azureKeyVaultConfig.AzureKeyVaultUrl)
                     .SetKeyVaultClientId(azureKeyVaultConfig.AzureKeyVaultClientId)
@@ -135,20 +151,12 @@ namespace ricaun.Nuke.Tools
                     .SetTimestampRfc3161Url(azureKeyVaultConfig.TimestampUrl ?? timestampUrlDefault)
                     .SetTimestampDigest(azureKeyVaultConfig.TimestampDigest ?? timestampDigestDefault)
                 );
-                return;
             }
-
-            DownloadAzureSignTool();
-            AzureSignToolTasks.AzureSignTool(x => x
-                .SetFiles(fileName)
-                .SetKeyVaultCertificateName(azureKeyVaultConfig.AzureKeyVaultCertificate)
-                .SetKeyVaultUrl(azureKeyVaultConfig.AzureKeyVaultUrl)
-                .SetKeyVaultClientId(azureKeyVaultConfig.AzureKeyVaultClientId)
-                .SetKeyVaultTenantId(azureKeyVaultConfig.AzureKeyVaultTenantId)
-                .SetKeyVaultClientSecret(azureKeyVaultClientSecret)
-                .SetTimestampRfc3161Url(azureKeyVaultConfig.TimestampUrl ?? timestampUrlDefault)
-                .SetTimestampDigest(azureKeyVaultConfig.TimestampDigest ?? timestampDigestDefault)
-            );
+            catch (Exception ex)
+            {
+                Serilog.Log.Error($"Azure Sign Error: {Path.GetFileName(fileName)} - {ex.Message}");
+                Serilog.Log.Information(ex.ToString());
+            }
         }
     }
 

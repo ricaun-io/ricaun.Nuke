@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update `SignProject` to sign files using `Azure Key Vault` if available.
 - Update `GetToolInstallationPath` to use user temp folder.
 - Update `TestRunUtil` icons to circle with color.
+- Update `AzureSignToolUtils` sign to ignore exception.
 ### Example
 - Add `Resource` and `Resource.pt-BR` to test sign files.
 ### Tests
