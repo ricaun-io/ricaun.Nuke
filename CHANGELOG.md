@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update `TestRunUtil` icons to circle with color.
 - Update `AzureSignToolUtils` sign to ignore exception.
 - Update `AzureSignToolUtils` to ignore if file is already signed.
+- Update `HasSignature` to use `PathTooLongUtils` to check if file is signed. (Fix: #77)
 ### Example
 - Add `Resource` and `Resource.pt-BR` to test sign files.
 ### Tests

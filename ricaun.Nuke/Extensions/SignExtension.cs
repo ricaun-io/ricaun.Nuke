@@ -180,7 +180,11 @@ namespace ricaun.Nuke.Extensions
 
             try
             {
-                System.Security.Cryptography.X509Certificates.X509Certificate.CreateFromSignedFile(filePath);
+                using (var utils = new PathTooLongUtils.FileMoveToTemp(filePath))
+                {
+                    filePath = utils.GetFilePath();
+                    System.Security.Cryptography.X509Certificates.X509Certificate.CreateFromSignedFile(filePath);
+                }
                 return true;
             }
             catch
