@@ -1,21 +1,20 @@
 # ------------------------------------------------------------------------------
-# Develop.yml
+# Build.yml
 # ------------------------------------------------------------------------------
 
-name: Develop
+name: Build
 
 on:
   push:
-    branches-ignore:
-      - master
   pull_request:
     branches-ignore:
       - master
+      - main
   workflow_dispatch:
 
 jobs:
-  Develop:
-    name: Develop
+  Build:
+    name: Build
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v1
