@@ -51,7 +51,14 @@ class Build : NukeBuild, IPublishPack
 
 ## Environment Variables
 
-### Publish Package Github
+### Publish Github
+
+```yml
+env:
+    GitHubToken: ${{ secrets.GITHUB_TOKEN }}
+```
+
+### SignFile and SignPassword
 
 ```yml
 env:
@@ -59,6 +66,41 @@ env:
     SignFile: ${{ secrets.SIGN_FILE }}
     SignPassword: ${{ secrets.SIGN_PASSWORD }}
 ```
+
+`SignFile` could be a `file/url/Base64` to the certificate file. 
+`SignPassword` is the password to the certificate file.
+
+#### SignFile using `Azure Key Vault`
+
+To simplify the configuration to sign with `Azure Key Vault` using the same environment variables are used `SignFile` and `SignPassword`.
+
+```yml
+env:
+    GitHubToken: ${{ secrets.GITHUB_TOKEN }}
+    SignFile: ${{ secrets.AZURE_KEY_VAULT_FILE }}
+    SignPassword: ${{ secrets.AZURE_KEY_VAULT_PASSWORD }}
+```
+
+##### AZURE_KEY_VAULT_FILE
+
+The `AZURE_KEY_VAULT_FILE` is a `json` with the base configuration of the certificated in the `Azure Key Vault`:
+
+```json
+{
+    "AzureKeyVaultCertificate": "AzureKeyVaultCertificate",
+    "AzureKeyVaultUrl": "AzureKeyVaultUrl",
+    "AzureKeyVaultClientId": "AzureKeyVaultClientId",
+    "AzureKeyVaultTenantId": "AzureKeyVaultTenantId",
+    "TimestampUrl" : "http://timestamp.digicert.com"
+    "TimestampDigest" : "sha256"
+}
+```
+
+The `TimestampUrl` and `TimestampDigest` are optional.
+
+##### AZURE_KEY_VAULT_PASSWORD
+
+The `AZURE_KEY_VAULT_PASSWORD` is the `AzureKeyVaultClientSecret` of the `Azure Key Vault` certificate.
 
 ### Publish Package Nuget
 
