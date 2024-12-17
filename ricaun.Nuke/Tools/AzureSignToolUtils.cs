@@ -49,7 +49,8 @@ namespace ricaun.Nuke.Tools
 
         private static AbsolutePath GetToolInstallationPath()
         {
-            AbsolutePath folder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            var assemblyName = typeof(AzureSignToolUtils).Assembly.GetName();
+            AbsolutePath folder = (AbsolutePath) Path.GetTempPath() / assemblyName.Name / assemblyName.Version.ToString(3);
             return folder / "Tools";
         }
 
