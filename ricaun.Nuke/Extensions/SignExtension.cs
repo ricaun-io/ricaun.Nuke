@@ -81,7 +81,7 @@ namespace ricaun.Nuke.Extensions
         /// <remarks>NuGet files use <see cref="NuGetExtension.NugetSign"/>.</remarks>
         public static void Sign(string certPath, string certPassword, string filePath)
         {
-            if (Path.GetExtension(filePath) == ".nupkg")
+            if (NuGetExtension.IsNuGetFile(filePath))
             {
                 SignNuGet(certPath, certPassword, filePath);
                 return;
@@ -167,20 +167,20 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
-        /// Has Signature
+        /// Has Signature in the file or NuGet
         /// </summary>
-        /// <param name="fileInfo"></param>
+        /// <param name="filePath"></param>
         /// <returns></returns>
-        static bool HasSignature(string fileInfo)
+        public static bool HasSignature(string filePath)
         {
-            if (fileInfo.EndsWith(".nupkg"))
+            if (NuGetExtension.IsNuGetFile(filePath))
             {
-                return NuGetExtension.NuGetVerifySignatures(fileInfo);
+                return NuGetExtension.NuGetVerifySignatures(filePath);
             }
 
             try
             {
-                System.Security.Cryptography.X509Certificates.X509Certificate.CreateFromSignedFile(fileInfo);
+                System.Security.Cryptography.X509Certificates.X509Certificate.CreateFromSignedFile(filePath);
                 return true;
             }
             catch

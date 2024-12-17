@@ -9,6 +9,7 @@ using System.IO;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.IO;
 using Nuke.Common.Tooling;
+using ricaun.Nuke.Extensions;
 
 namespace ricaun.Nuke.Tools
 {
@@ -19,7 +20,6 @@ namespace ricaun.Nuke.Tools
     {
         private const string TimestampUrlDefault = "http://timestamp.digicert.com";
         private const string TimestampDigestDefault = "sha256";
-        private const string NugetPackageExtension = ".nupkg";
 
         /// <summary>
         /// Ensures that Azure Sign Tool and NuGet Key Vault Sign Tool are installed.
@@ -112,23 +112,26 @@ namespace ricaun.Nuke.Tools
         /// <summary>
         /// Signs the specified file using Azure Sign Tool or NuGet Key Vault Sign Tool.
         /// </summary>
-        /// <param name="fileName">The name of the file to sign.</param>
+        /// <param name="filePath">The name of the file to sign.</param>
         /// <param name="azureKeyVaultConfig">The Azure Key Vault configuration.</param>
         /// <param name="azureKeyVaultClientSecret">The Azure Key Vault client secret.</param>
         /// <param name="timestampUrlDefault">The default timestamp URL.</param>
         /// <param name="timestampDigestDefault">The default timestamp digest.</param>
-        public static void Sign(string fileName,
+        public static void Sign(string filePath,
             AzureKeyVaultConfig azureKeyVaultConfig, string azureKeyVaultClientSecret,
             string timestampUrlDefault = TimestampUrlDefault,
             string timestampDigestDefault = TimestampDigestDefault)
         {
             try
             {
-                if (Path.GetExtension(fileName) == NugetPackageExtension)
+                if (SignExtension.HasSignature(filePath))
+                    return;
+
+                if (NuGetExtension.IsNuGetFile(filePath))
                 {
                     DownloadNuGetKeyVaultSignTool();
                     NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignTool(x => x
-                        .SetFile(fileName)
+                        .SetFile(filePath)
                         .SetKeyVaultCertificateName(azureKeyVaultConfig.AzureKeyVaultCertificate)
                         .SetKeyVaultUrl(azureKeyVaultConfig.AzureKeyVaultUrl)
                         .SetKeyVaultClientId(azureKeyVaultConfig.AzureKeyVaultClientId)
@@ -142,7 +145,7 @@ namespace ricaun.Nuke.Tools
 
                 DownloadAzureSignTool();
                 AzureSignToolTasks.AzureSignTool(x => x
-                    .SetFiles(fileName)
+                    .SetFiles(filePath)
                     .SetKeyVaultCertificateName(azureKeyVaultConfig.AzureKeyVaultCertificate)
                     .SetKeyVaultUrl(azureKeyVaultConfig.AzureKeyVaultUrl)
                     .SetKeyVaultClientId(azureKeyVaultConfig.AzureKeyVaultClientId)
@@ -154,7 +157,7 @@ namespace ricaun.Nuke.Tools
             }
             catch (Exception ex)
             {
-                Serilog.Log.Error($"Azure Sign Error: {Path.GetFileName(fileName)} - {ex.Message}");
+                Serilog.Log.Error($"Azure Sign Error: {Path.GetFileName(filePath)} - {ex.Message}");
                 Serilog.Log.Information(ex.ToString());
             }
         }
