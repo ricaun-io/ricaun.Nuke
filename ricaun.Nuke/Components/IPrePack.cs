@@ -24,6 +24,7 @@ namespace ricaun.Nuke.Components
             .OnlyWhenStatic(() => NugetApiKey.SkipEmpty())
             .OnlyWhenStatic(() => IsServerBuild)
             .OnlyWhenDynamic(() => GitRepository.IsOnDevelopBranch())
+            .OnlyWhenDynamic(() => SkipForked())
             .Executes(() =>
             {
                 var version = MainProject.GetInformationalVersion();

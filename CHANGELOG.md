@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Features
 - Enable sign files using `Azure Key Vault`.
 - Enable `IAssetRelease` to release assets before `GitRelease` and `GitPreRelease`.
+- Enable `SkipForked` to skip release if forked repository.
 ### Build
 - Add `IAzureSignTool` to check if `AzureSignToolUtils` is installed.
 - Add `ILocalAssetRelease` to test `AssetRelease` assets before release.

@@ -111,6 +111,9 @@
   "allOf": [
     {
       "properties": {
+        "EnableForkedRepository": {
+          "type": "boolean"
+        },
         "Folder": {
           "type": "string"
         },

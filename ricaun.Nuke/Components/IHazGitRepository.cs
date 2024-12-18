@@ -1,5 +1,6 @@
 ﻿using Nuke.Common;
 using Nuke.Common.Git;
+using ricaun.Nuke.Extensions;
 
 namespace ricaun.Nuke.Components
 {
@@ -40,6 +41,32 @@ namespace ricaun.Nuke.Components
         {
             if (GitRepository == null) return "";
             return GitRepository.Identifier?.Split("/")[0];
+        }
+
+        /// <summary>
+        /// Indicates whether the forked repository is enabled.
+        /// </summary>
+        [Parameter]
+        bool EnableForkedRepository => TryGetValue<bool?>(() => EnableForkedRepository) ?? false;
+
+        /// <summary>
+        /// Determines if the forked repository should be skipped.
+        /// </summary>
+        /// <returns>True if the forked repository should be skipped; otherwise, false.</returns>
+        public bool SkipForked()
+        {
+            if (EnableForkedRepository)
+                return false;
+
+            return IsGitRepositoryForked();
+        }
+        /// <summary>
+        /// IsGitRepositoryForked
+        /// </summary>
+        /// <returns></returns>
+        public bool IsGitRepositoryForked()
+        {
+            return GitRepository.IsForked();
         }
     }
 }

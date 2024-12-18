@@ -38,6 +38,7 @@ namespace ricaun.Nuke.Components
             .OnlyWhenStatic(() => GitHubToken.SkipEmpty())
             .OnlyWhenStatic(() => IsServerBuild)
             .OnlyWhenDynamic(() => GitRepository.IsOnDevelopBranch())
+            .OnlyWhenDynamic(() => SkipForked())
             .Executes(() =>
             {
                 var project = MainProject;

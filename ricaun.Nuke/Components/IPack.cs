@@ -29,6 +29,7 @@ namespace ricaun.Nuke.Components
             .OnlyWhenStatic(() => NugetApiKey.SkipEmpty())
             .OnlyWhenStatic(() => IsServerBuild)
             .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch())
+            .OnlyWhenDynamic(() => SkipForked())
             .Executes(() =>
             {
                 var releaseDirectory = GetReleaseDirectory(MainProject);
