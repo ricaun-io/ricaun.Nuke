@@ -86,7 +86,7 @@ namespace ricaun.Nuke.Components
                 Prerelease = releaseAsPrerelease
             };
 
-            ReleaseAsset(releaseAssets);
+            ExecuteReleaseAsset(releaseAssets);
 
             var newRelease = new Octokit.NewRelease(version)
             {

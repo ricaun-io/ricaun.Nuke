@@ -17,7 +17,7 @@ class AssetRelease : IAssetRelease
     }
 }
 
-public interface ILocalAssetRelease : IClean, ICompile, IHazAssetRelease
+public interface ILocalAssetRelease : IClean, ICompile, IHazAssetRelease, IAssetRelease
 {
     Target LocalAssetRelease => _ => _
         .TriggeredBy(Clean)
@@ -30,6 +30,6 @@ public interface ILocalAssetRelease : IClean, ICompile, IHazAssetRelease
                 Version = "0.0.0",
                 Notes = "Release Notes",
             };
-            ReleaseAsset(releaseAssets);
+            ExecuteReleaseAsset(releaseAssets);
         });
 }

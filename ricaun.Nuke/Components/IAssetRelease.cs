@@ -50,12 +50,17 @@ namespace ricaun.Nuke.Components
         /// Releases the specified assets.
         /// </summary>
         /// <param name="releaseAssets">The assets to be released.</param>
-        public void ReleaseAsset(ReleaseAssets releaseAssets)
+        public void ExecuteReleaseAsset(ReleaseAssets releaseAssets)
         {
             if (AssetRelease is IAssetRelease assetRelease)
             {
                 Serilog.Log.Information($"ReleaseAsset: {assetRelease}");
                 assetRelease.ReleaseAsset(releaseAssets);
+            }
+            if (this is IAssetRelease buildAssetRelease)
+            {
+                Serilog.Log.Information($"ReleaseAsset: {buildAssetRelease}");
+                buildAssetRelease.ReleaseAsset(releaseAssets);
             }
         }
     }
