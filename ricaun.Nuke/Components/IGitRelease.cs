@@ -7,6 +7,7 @@ using Nuke.Common.Utilities.Collections;
 using ricaun.Nuke.Extensions;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace ricaun.Nuke.Components
 {
@@ -80,7 +81,7 @@ namespace ricaun.Nuke.Components
                 Project = project,
                 Version = version,
                 Notes = releaseNotes,
-                Files = releaseFiles,
+                Assets = releaseFiles.ToArray(),
                 Prerelease = releaseAsPrerelease
             };
 

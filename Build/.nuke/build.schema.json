@@ -31,6 +31,7 @@
         "CompileExample",
         "GitPreRelease",
         "GitRelease",
+        "LocalAssetRelease",
         "Pack",
         "PrePack",
         "Release",

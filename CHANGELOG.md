@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Enable `IAssetRelease` to release assets before `GitRelease` and `GitPreRelease`.
 ### Build
 - Add `IAzureSignTool` to check if `AzureSignToolUtils` is installed.
+- Add `ILocalAssetRelease` to test `AssetRelease` assets before release.
 ### Updates
 - Add version `Information` in the `CommonExtension`.
 - Add `AzureSignToolUtils` to sign files using `AzureSignToolTasks` or `NuGetKeyVaultSignToolTasks`.

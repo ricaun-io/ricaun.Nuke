@@ -1,7 +1,7 @@
-﻿using Nuke.Common.IO;
+﻿using Nuke.Common;
+using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using ricaun.Nuke.IO;
-using System.Collections.Generic;
 
 namespace ricaun.Nuke.Components
 {
@@ -28,7 +28,7 @@ namespace ricaun.Nuke.Components
         /// <summary>
         /// Gets the collection of zip files to be released.
         /// </summary>
-        public IReadOnlyCollection<AbsolutePath> Files { get; init; }
+        public AbsolutePath[] Assets { get; init; } = new AbsolutePath[] { };
 
         /// <summary>
         /// Gets a value indicating whether the release is a prerelease.
@@ -54,7 +54,7 @@ namespace ricaun.Nuke.Components
         {
             if (AssetRelease is IAssetRelease assetRelease)
             {
-                Serilog.Log.Information($"Asset Release {assetRelease}");
+                Serilog.Log.Information($"ReleaseAsset: {assetRelease}");
                 assetRelease.ReleaseAsset(releaseAssets);
             }
         }
