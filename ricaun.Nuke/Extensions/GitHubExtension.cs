@@ -27,13 +27,21 @@ namespace ricaun.Nuke.Extensions
             if (gitRepository is null)
                 return false;
 
-            var gitHubOwner = gitRepository.GetGitHubOwner();
-            var gitHubName = gitRepository.GetGitHubName();
-            var repository = GitHubTasks.GitHubClient.Repository
-                .Get(gitHubOwner, gitHubName)
-                .Result;
+            try
+            {
+                var gitHubOwner = gitRepository.GetGitHubOwner();
+                var gitHubName = gitRepository.GetGitHubName();
+                var repository = GitHubTasks.GitHubClient.Repository
+                    .Get(gitHubOwner, gitHubName)
+                    .Result;
 
-            return repository.Fork;
+                return repository.Fork;
+            }
+            catch
+            {
+                // Private repository is not forked.
+                return false;
+            }
         }
 
         #region GitHubUtil
