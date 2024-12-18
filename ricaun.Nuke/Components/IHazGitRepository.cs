@@ -58,7 +58,10 @@ namespace ricaun.Nuke.Components
             if (EnableForkedRepository)
                 return false;
 
-            return IsGitRepositoryForked();
+            if (IsGitRepositoryForked()) 
+                return true;
+            
+            return false;
         }
         /// <summary>
         /// IsGitRepositoryForked
