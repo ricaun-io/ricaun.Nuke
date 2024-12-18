@@ -77,13 +77,13 @@ To simplify the configuration to sign with `Azure Key Vault` using the same envi
 ```yml
 env:
     GitHubToken: ${{ secrets.GITHUB_TOKEN }}
-    SignFile: ${{ secrets.AZURE_KEY_VAULT_FILE }}
-    SignPassword: ${{ secrets.AZURE_KEY_VAULT_PASSWORD }}
+    SignFile: ${{ secrets.SIGN_FILE_AZURE }}
+    SignPassword: ${{ secrets.SIGN_PASSWORD_AZURE }}
 ```
 
-##### AZURE_KEY_VAULT_FILE
+##### SIGN_FILE_AZURE
 
-The `AZURE_KEY_VAULT_FILE` is a `json` with the base configuration of the certificated in the `Azure Key Vault`:
+The `SIGN_FILE_AZURE` is a `json` with the base configuration of the certificated in the `Azure Key Vault`:
 
 ```json
 {
@@ -98,9 +98,9 @@ The `AZURE_KEY_VAULT_FILE` is a `json` with the base configuration of the certif
 
 The `TimestampUrl` and `TimestampDigest` are optional.
 
-##### AZURE_KEY_VAULT_PASSWORD
+##### SIGN_PASSWORD_AZURE
 
-The `AZURE_KEY_VAULT_PASSWORD` is the `AzureKeyVaultClientSecret` of the `Azure Key Vault` certificate.
+The `SIGN_PASSWORD_AZURE` is the `AzureKeyVaultClientSecret` of the `Azure Key Vault` certificate.
 
 ### Publish Package Nuget
 
