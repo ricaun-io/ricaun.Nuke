@@ -52,16 +52,16 @@ namespace ricaun.Nuke.Components
         /// <summary>
         /// Determines if the forked repository should be skipped.
         /// </summary>
-        /// <returns>True if the forked repository should be skipped; otherwise, false.</returns>
+        /// <returns>False if the forked repository should be skipped; otherwise, true.</returns>
         public bool SkipForked()
         {
             if (EnableForkedRepository)
-                return false;
+                return true;
 
             if (IsGitRepositoryForked()) 
-                return true;
+                return false;
             
-            return false;
+            return true;
         }
         /// <summary>
         /// IsGitRepositoryForked
