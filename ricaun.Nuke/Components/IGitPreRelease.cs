@@ -54,7 +54,7 @@ namespace ricaun.Nuke.Components
                     return;
                 }
                 ReportSummary(_ => _.AddPair("Prerelease", version));
-                ReleaseGithubProject(MainProject, true);
+                ReleaseGitHubProject(MainProject, true);
             });
     }
 }
