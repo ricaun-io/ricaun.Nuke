@@ -24,12 +24,14 @@
     "ExecutableTarget": {
       "type": "string",
       "enum": [
+        "AzureSignTool",
         "Build",
         "Clean",
         "Compile",
         "CompileExample",
         "GitPreRelease",
         "GitRelease",
+        "LocalAssetRelease",
         "Pack",
         "PrePack",
         "Release",
@@ -109,6 +111,9 @@
   "allOf": [
     {
       "properties": {
+        "EnableForkedRepository": {
+          "type": "boolean"
+        },
         "Folder": {
           "type": "string"
         },

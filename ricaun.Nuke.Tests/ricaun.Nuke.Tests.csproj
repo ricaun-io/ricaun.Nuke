@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6;net45</TargetFrameworks>
+    <TargetFrameworks>net6</TargetFrameworks>
     <LangVersion>Latest</LangVersion>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -12,7 +12,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(TargetFramework) == net6">
+  <ItemGroup>
     <ProjectReference Include="..\ricaun.Nuke\ricaun.Nuke.csproj" />
   </ItemGroup>
 

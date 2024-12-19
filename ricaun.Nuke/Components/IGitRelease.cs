@@ -7,13 +7,14 @@ using Nuke.Common.Utilities.Collections;
 using ricaun.Nuke.Extensions;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace ricaun.Nuke.Components
 {
     /// <summary>
     /// IGitRelease
     /// </summary>
-    public interface IGitRelease : IRelease, IHazGitRepository, IHazGitVersion, IHazChangelog, INukeBuild
+    public interface IGitRelease : IRelease, IHazGitRepository, IHazGitVersion, IHazChangelog, IHazAssetRelease, INukeBuild
     {
         /// <summary>
         /// Target GitRelease
@@ -25,6 +26,7 @@ namespace ricaun.Nuke.Components
             .OnlyWhenStatic(() => GitHubToken.SkipEmpty())
             .OnlyWhenStatic(() => IsServerBuild)
             .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch())
+            .OnlyWhenDynamic(() => SkipForked())
             .Executes(() =>
             {
                 var project = MainProject;
@@ -37,15 +39,15 @@ namespace ricaun.Nuke.Components
                     throw new Exception(errorMessage);
                 }
 
-                ReleaseGithubProject(project);
+                ReleaseGitHubProject(project);
             });
 
         /// <summary>
-        /// Release Github project with release notes
+        /// Release GitHub project with release notes
         /// </summary>
         /// <param name="project"></param>
         /// <param name="releaseAsPrerelease"></param>
-        void ReleaseGithubProject(Project project, bool releaseAsPrerelease = false)
+        void ReleaseGitHubProject(Project project, bool releaseAsPrerelease = false)
         {
             if (Directory.Exists(ReleaseDirectory) == false)
             {
@@ -74,10 +76,22 @@ namespace ricaun.Nuke.Components
                 return;
             }
 
+            var releaseNotes = GetReleaseNotes();
+            var releaseAssets = new ReleaseAssets
+            {
+                Project = project,
+                Version = version,
+                Notes = releaseNotes,
+                Assets = releaseFiles.ToArray(),
+                Prerelease = releaseAsPrerelease
+            };
+
+            ExecuteReleaseAsset(releaseAssets);
+
             var newRelease = new Octokit.NewRelease(version)
             {
                 Name = version,
-                Body = GetReleaseNotes(),
+                Body = releaseNotes,
                 Draft = true,
                 TargetCommitish = GitVersion.Sha
             };

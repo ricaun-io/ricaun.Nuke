@@ -1,4 +1,5 @@
 ﻿using Nuke.Common;
+using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.Tools.GitHub;
 using Octokit;
@@ -14,6 +15,35 @@ namespace ricaun.Nuke.Extensions
     /// </summary>
     public static class GitHubExtension
     {
+        /// <summary>
+        /// Determines whether the specified Git repository is a fork.
+        /// </summary>
+        /// <param name="gitRepository">The Git repository to check.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified Git repository is a fork; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsForked(this GitRepository gitRepository)
+        {
+            if (gitRepository is null)
+                return false;
+
+            try
+            {
+                var gitHubOwner = gitRepository.GetGitHubOwner();
+                var gitHubName = gitRepository.GetGitHubName();
+                var repository = GitHubTasks.GitHubClient.Repository
+                    .Get(gitHubOwner, gitHubName)
+                    .Result;
+
+                return repository.Fork;
+            }
+            catch
+            {
+                // Private repository is not forked.
+                return false;
+            }
+        }
+
         #region GitHubUtil
         /// <summary>
         /// Check if Tags already exists.

@@ -71,6 +71,24 @@ namespace ricaun.Nuke.Extensions
             if (File.Exists(cert)) return true;
             return CreateCertificatesCer(fileNamePfx, passwordPfx, cert);
         }
+
+        /// <summary>
+        /// Sign the specified file using the provided certificate.
+        /// </summary>
+        /// <param name="certPath">The path to the certificate file.</param>
+        /// <param name="certPassword">The password for the certificate.</param>
+        /// <param name="filePath">The path to the file to be signed.</param>
+        /// <remarks>NuGet files use <see cref="NuGetExtension.NugetSign"/>.</remarks>
+        public static void Sign(string certPath, string certPassword, string filePath)
+        {
+            if (NuGetExtension.IsNuGetFile(filePath))
+            {
+                SignNuGet(certPath, certPassword, filePath);
+                return;
+            }
+            SignBinary(certPath, certPassword, filePath);
+        }
+
         /// <summary>
         /// https://github.com/DataDog/dd-trace-dotnet/blob/master/tracer/build/_build/Build.Gitlab.cs
         /// </summary>
@@ -124,7 +142,7 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
-        /// Sign Nuget
+        /// Sign NuGet
         /// </summary>
         /// <param name="certPath"></param>
         /// <param name="certPassword"></param>
@@ -149,20 +167,24 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
-        /// Has Signature
+        /// Has Signature in the file or NuGet
         /// </summary>
-        /// <param name="fileInfo"></param>
+        /// <param name="filePath"></param>
         /// <returns></returns>
-        static bool HasSignature(string fileInfo)
+        public static bool HasSignature(string filePath)
         {
-            if (fileInfo.EndsWith(".nupkg"))
+            if (NuGetExtension.IsNuGetFile(filePath))
             {
-                return NuGetExtension.NuGetVerifySignatures(fileInfo);
+                return NuGetExtension.NuGetVerifySignatures(filePath);
             }
 
             try
             {
-                System.Security.Cryptography.X509Certificates.X509Certificate.CreateFromSignedFile(fileInfo);
+                using (var utils = new PathTooLongUtils.FileMoveToTemp(filePath))
+                {
+                    filePath = utils.GetFilePath();
+                    System.Security.Cryptography.X509Certificates.X509Certificate.CreateFromSignedFile(filePath);
+                }
                 return true;
             }
             catch

@@ -47,6 +47,21 @@ namespace ricaun.Nuke.Extensions
     public static class NuGetExtension
     {
         /// <summary>
+        /// NuGetFileExtension (.nupkg)
+        /// </summary>
+        public const string NuGetFileExtension = ".nupkg";
+
+        /// <summary>
+        /// Check if file has NuGet extension (.nupkg)
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static bool IsNuGetFile(string filePath)
+        {
+            return Path.GetExtension(filePath).Equals(NuGetFileExtension, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary>
         /// TryGetPackageNameAndVersion
         /// </summary>
         /// <param name="packageFileName"></param>

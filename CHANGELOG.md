@@ -4,8 +4,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] / 2024-12-06 - 2024-12-19
+### Features
+- Enable sign files using `Azure Key Vault`.
+- Enable `IAssetRelease` to release assets before `GitRelease` and `GitPreRelease`.
+- Enable `SkipForked` to skip release if forked repository.
+### Build
+- Add `IAzureSignTool` to check if `AzureSignToolUtils` is installed.
+- Add `ILocalAssetRelease` to test `AssetRelease` assets before release.
+### Updates
+- Add version `Information` in the `CommonExtension`.
+- Add `AzureSignToolUtils` to sign files using `AzureSignToolTasks` or `NuGetKeyVaultSignToolTasks`.
+- Add `NuGetKeyVaultSignTool` for nuke version `8.*`.
+- Add `AzureKeyVaultConfig` with json file with `Azure Key Vault` without secrets.
+- Add `PackageDownload` to download `AzureSignTool` and `NuGetKeyVaultSignTool` on the fly.
+- Add `HttpAuthTasks` to get/post files.
+- Update `HttpAuthTasks` docs.
+- Update `IsPathTooLong` to equal or greater than `260`.
+- Update `SignExtension.Sign` to sign NuGet or files.
+- Update `SignProject` to sign files using `Azure Key Vault` if available.
+- Update `GetToolInstallationPath` to use user temp folder.
+- Update `TestRunUtil` icons to circle with color.
+- Update `AzureSignToolUtils` sign to ignore exception.
+- Update `AzureSignToolUtils` to ignore if file is already signed.
+- Update `HasSignature` to use `PathTooLongUtils` to check if file is signed. (Fix: #77)
+- Update `ExecuteReleaseAsset` to execute `IHazAssetRelease` and build with `IAssetRelease`
+### Example
+- Add `Resource` and `Resource.pt-BR` to test sign files.
+### Tests
+- Update `NuGetExtensionTests`
+- Add `AzureKeyVaultConfigTests`
+
 ## [1.8.2] / 2024-11-20
-### Update
+### Updates
 - Update `Nuke.Common` to `8.1.4`.
 - Update `FileSystemTasks.CopyFileToDirectory` to `AbsolutePathExtensions.CopyToDirectory`.
 - Update `FileSystemTasks.CopyDirectoryRecursively` to `AbsolutePathExtensions.Copy`.
@@ -358,6 +389,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.9.0]: ../../compare/1.8.2...1.9.0
 [1.8.2]: ../../compare/1.8.1...1.8.2
 [1.8.1]: ../../compare/1.8.0...1.8.1
 [1.8.0]: ../../compare/1.7.4...1.8.0

@@ -5,7 +5,7 @@ This package is to simplify the build automation system using [Nuke.Common](http
 [![Visual Studio 2022](https://img.shields.io/badge/Visual%20Studio-2022-blue)](../..)
 [![Nuke](https://img.shields.io/badge/Nuke-Build-blue)](https://nuke.build/)
 [![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Publish](https://github.com/ricaun-io/ricaun.Nuke/actions/workflows/Publish.yml/badge.svg)](https://github.com/ricaun-io/ricaun.Nuke/actions)
+[![Build](https://github.com/ricaun-io/ricaun.Nuke/actions/workflows/Build.yml/badge.svg)](https://github.com/ricaun-io/ricaun.Nuke/actions)
 [![Release](https://img.shields.io/nuget/v/ricaun.Nuke?logo=nuget&label=release&color=blue)](https://www.nuget.org/packages/ricaun.Nuke)
 
 # Examples
@@ -51,7 +51,14 @@ class Build : NukeBuild, IPublishPack
 
 ## Environment Variables
 
-### Publish Package Github
+### Publish Github
+
+```yml
+env:
+    GitHubToken: ${{ secrets.GITHUB_TOKEN }}
+```
+
+### SignFile and SignPassword
 
 ```yml
 env:
@@ -59,6 +66,41 @@ env:
     SignFile: ${{ secrets.SIGN_FILE }}
     SignPassword: ${{ secrets.SIGN_PASSWORD }}
 ```
+
+`SignFile` could be a `file/url/Base64` to the certificate file. 
+`SignPassword` is the password to the certificate file.
+
+#### SignFile using `Azure Key Vault`
+
+To simplify the configuration to sign with `Azure Key Vault` using the same environment variables are used `SignFile` and `SignPassword`.
+
+```yml
+env:
+    GitHubToken: ${{ secrets.GITHUB_TOKEN }}
+    SignFile: ${{ secrets.SIGN_FILE_AZURE }}
+    SignPassword: ${{ secrets.SIGN_PASSWORD_AZURE }}
+```
+
+##### SIGN_FILE_AZURE
+
+The `SIGN_FILE_AZURE` is a `json` with the base configuration of the certificated in the `Azure Key Vault`:
+
+```json
+{
+    "AzureKeyVaultCertificate": "AzureKeyVaultCertificate",
+    "AzureKeyVaultUrl": "AzureKeyVaultUrl",
+    "AzureKeyVaultClientId": "AzureKeyVaultClientId",
+    "AzureKeyVaultTenantId": "AzureKeyVaultTenantId",
+    "TimestampUrl" : "http://timestamp.digicert.com"
+    "TimestampDigest" : "sha256"
+}
+```
+
+The `TimestampUrl` and `TimestampDigest` are optional.
+
+##### SIGN_PASSWORD_AZURE
+
+The `SIGN_PASSWORD_AZURE` is the `AzureKeyVaultClientSecret` of the `Azure Key Vault` certificate.
 
 ### Publish Package Nuget
 

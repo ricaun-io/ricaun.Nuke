@@ -18,4 +18,5 @@
   <ItemGroup>
     <ProjectReference Include="..\ricaun.Nuke\ricaun.Nuke.csproj" />
   </ItemGroup>
+
 </Project>

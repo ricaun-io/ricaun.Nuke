@@ -3,20 +3,18 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <LangVersion>Latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageId>ricaun.Nuke</PackageId>
-    <Version>1.8.2</Version>
+    <Version Condition="'$(Version)' == ''">1.9.0</Version>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageAssemblyVersion></PackageAssemblyVersion>
   </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
-    <PackageAssemblyVersion>.Dev</PackageAssemblyVersion>
-  </PropertyGroup>
-
+  
   <PropertyGroup>
     <Company>ricaun</Company>
     <Authors>Luiz Henrique Cassettari</Authors>

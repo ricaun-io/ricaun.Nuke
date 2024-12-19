@@ -53,7 +53,7 @@ namespace ricaun.Nuke.Extensions
             /// <returns></returns>
             public bool IsPathTooLong()
             {
-                return GetFilePathLong() > MAX_PATH;
+                return GetFilePathLong() >= MAX_PATH;
             }
 
             /// <summary>

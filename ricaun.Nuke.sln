@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{4EED1749-7A3F-47C6-8361-F4E45A143AFA}"
 	ProjectSection(SolutionItems) = preProject
 		CHANGELOG.md = CHANGELOG.md
+		Directory.Build.props = Directory.Build.props
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -19,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ricaun.Nuke.RevitAddin.Exam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ricaun.Nuke.Example.Tests", "ricaun.Nuke.Example.Tests\ricaun.Nuke.Example.Tests.csproj", "{36867697-93A0-4F07-AA4D-78FD70985EDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ricaun.Nuke.Tests", "ricaun.Nuke.Tests\ricaun.Nuke.Tests.csproj", "{80F1FFD0-AB40-40BE-83E6-10E425F41B30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ricaun.Nuke.Tests", "ricaun.Nuke.Tests\ricaun.Nuke.Tests.csproj", "{80F1FFD0-AB40-40BE-83E6-10E425F41B30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

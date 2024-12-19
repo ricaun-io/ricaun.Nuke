@@ -38,6 +38,7 @@ namespace ricaun.Nuke.Components
             .OnlyWhenStatic(() => GitHubToken.SkipEmpty())
             .OnlyWhenStatic(() => IsServerBuild)
             .OnlyWhenDynamic(() => GitRepository.IsOnDevelopBranch())
+            .OnlyWhenDynamic(() => SkipForked())
             .Executes(() =>
             {
                 var project = MainProject;
@@ -54,7 +55,7 @@ namespace ricaun.Nuke.Components
                     return;
                 }
                 ReportSummary(_ => _.AddPair("Prerelease", version));
-                ReleaseGithubProject(MainProject, true);
+                ReleaseGitHubProject(MainProject, true);
             });
     }
 }
