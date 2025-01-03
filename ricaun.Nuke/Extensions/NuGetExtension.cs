@@ -169,6 +169,7 @@ namespace ricaun.Nuke.Extensions
         {
             try
             {
+                Serilog.Log.Information($"NuGet sign: {packageFileName}");
                 NuGetTasks.NuGet(
                     $"sign \"{packageFileName}\"" +
                     $" -CertificatePath {certPath}" +

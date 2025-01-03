@@ -63,6 +63,18 @@ namespace ricaun.Nuke.Tools
                 return packageToolExeExists;
             }
 
+            try
+            {
+                // Force to uninstall to remove cache files if exists.
+                DotNetTasks.DotNetToolUninstall(x => x
+                    .SetPackageName(packageId)
+                    .SetToolInstallationPath(toolFolder)
+                    .DisableProcessLogInvocation()
+                    .DisableProcessLogOutput()
+            );
+            }
+            catch { }
+
             DotNetTasks.DotNetToolInstall(x => x
                 .SetPackageName(packageId)
                 .SetToolInstallationPath(toolFolder)
