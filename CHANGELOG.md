@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [1.9.1] / 2025-01-03
 ### Updated
-- Force to uninstall local `Tools` to remove cache when `.exe` is not found.
+- Force to uninstall local `Tools` to remove cache when `.exe` is not found. (Fix: #79)
 
 ## [1.9.0] / 2024-12-06 - 2024-12-19
 ### Features
