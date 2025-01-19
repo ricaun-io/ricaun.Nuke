@@ -8,9 +8,9 @@ using System.IO;
 namespace ricaun.Nuke.Extensions
 {
     /// <summary>
-    /// NugetVersionInfo
+    /// NuGetVersionInfo
     /// </summary>
-    public class NugetVersionInfo
+    public class NuGetVersionInfo
     {
         /// <summary>
         /// ProductName
@@ -22,17 +22,17 @@ namespace ricaun.Nuke.Extensions
         public string ProductVersion { get; private set; }
 
         /// <summary>
-        /// Parse <paramref name="packageFileName"/> and return a new instance of <see cref="NugetVersionInfo"/>
+        /// Parse <paramref name="packageFileName"/> and return a new instance of <see cref="NuGetVersionInfo"/>
         /// </summary>
         /// <param name="packageFileName"></param>
         /// <returns></returns>
-        public static NugetVersionInfo Parse(string packageFileName)
+        public static NuGetVersionInfo Parse(string packageFileName)
         {
             string packageName;
             string packageVersion;
             if (NuGetExtension.TryGetPackageNameAndVersion(packageFileName, out packageName, out packageVersion))
             {
-                return new NugetVersionInfo
+                return new NuGetVersionInfo
                 {
                     ProductName = packageName,
                     ProductVersion = packageVersion
@@ -88,17 +88,17 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
-        /// IsSourceNugetOrg
+        /// IsSourceNuGetOrg
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static bool IsSourceNugetOrg(string source)
+        public static bool IsSourceNuGetOrg(string source)
         {
             return source.Contains("api.nuget.org");
         }
 
         /// <summary>
-        /// NugetDelete (Only works with 'api.nuget.org' to unlist package)
+        /// NuGetDelete (Only works with 'api.nuget.org' to unlist package)
         /// </summary>
         /// <param name="source"></param>
         /// <param name="apiKey"></param>
@@ -107,7 +107,7 @@ namespace ricaun.Nuke.Extensions
         /// <remarks>https://learn.microsoft.com/en-us/nuget/reference/cli-reference/cli-ref-delete</remarks>
         public static bool NuGetUnlist(string source, string apiKey, string packageFileName)
         {
-            if (IsSourceNugetOrg(source) == false)
+            if (IsSourceNuGetOrg(source) == false)
                 return false;
 
             Serilog.Log.Information($"NuGetUnlist: {packageFileName}");
@@ -159,14 +159,14 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
-        /// NugetSign
+        /// NuGetSign
         /// </summary>
         /// <param name="packageFileName"></param>
         /// <param name="certPath"></param>
         /// <param name="certPassword"></param>
         /// <param name="timestampServer"></param>
         /// <returns></returns>
-        public static bool NugetSign(string packageFileName, string certPath, string certPassword, string timestampServer)
+        public static bool NuGetSign(string packageFileName, string certPath, string certPassword, string timestampServer)
         {
             try
             {

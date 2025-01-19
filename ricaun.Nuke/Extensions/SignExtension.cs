@@ -78,7 +78,7 @@ namespace ricaun.Nuke.Extensions
         /// <param name="certPath">The path to the certificate file.</param>
         /// <param name="certPassword">The password for the certificate.</param>
         /// <param name="filePath">The path to the file to be signed.</param>
-        /// <remarks>NuGet files use <see cref="NuGetExtension.NugetSign"/>.</remarks>
+        /// <remarks>NuGet files use <see cref="NuGetExtension.NuGetSign"/>.</remarks>
         public static void Sign(string certPath, string certPassword, string filePath)
         {
             if (NuGetExtension.IsNuGetFile(filePath))
@@ -155,7 +155,7 @@ namespace ricaun.Nuke.Extensions
 
             foreach (var timestampServer in timestampServers)
             {
-                if (NuGetExtension.NugetSign(binaryPath, certPath, certPassword, timestampServer))
+                if (NuGetExtension.NuGetSign(binaryPath, certPath, certPassword, timestampServer))
                 {
                     Serilog.Log.Information($"Signing done with {timestampServer}");
                     return;
