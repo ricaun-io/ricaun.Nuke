@@ -13,11 +13,11 @@ namespace ricaun.Nuke.Components
     public interface IPack : IHazPack, IGitRelease
     {
         /// <summary>
-        /// UnlistNuget (Default: false)
+        /// UnlistNuGet (Default: false)
         /// </summary>
         /// <remarks>This feature only works on 'api.nuget.org' to unlist package.</remarks>
         [Parameter]
-        bool UnlistNuget => TryGetValue<bool?>(() => UnlistNuget) ?? false;
+        bool UnlistNuGet => TryGetValue<bool?>(() => UnlistNuGet) ?? false;
 
         /// <summary>
         /// Target Pack
@@ -25,8 +25,8 @@ namespace ricaun.Nuke.Components
         Target Pack => _ => _
             .TriggeredBy(Release)
             .After(GitRelease)
-            .OnlyWhenStatic(() => NugetApiUrl.SkipEmpty())
-            .OnlyWhenStatic(() => NugetApiKey.SkipEmpty())
+            .OnlyWhenStatic(() => NuGetApiUrl.SkipEmpty())
+            .OnlyWhenStatic(() => NuGetApiKey.SkipEmpty())
             .OnlyWhenStatic(() => IsServerBuild)
             .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch())
             .OnlyWhenDynamic(() => SkipForked())
@@ -35,7 +35,7 @@ namespace ricaun.Nuke.Components
                 var releaseDirectory = GetReleaseDirectory(MainProject);
                 var packages = Globbing.GlobFiles(releaseDirectory, "**/*.nupkg");
 
-                if (UnlistNuget)
+                if (UnlistNuGet)
                 {
                     packages.ForEach(DotNetNuGetPrerelease);
                     return;

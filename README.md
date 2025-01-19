@@ -102,15 +102,15 @@ The `TimestampUrl` and `TimestampDigest` are optional.
 
 The `SIGN_PASSWORD_AZURE` is the `AzureKeyVaultClientSecret` of the `Azure Key Vault` certificate.
 
-### Publish Package Nuget
+### Publish Package NuGet
 
 ```yml
 env:
     GitHubToken: ${{ secrets.GITHUB_TOKEN }}
     SignFile: ${{ secrets.SIGN_FILE }}
     SignPassword: ${{ secrets.SIGN_PASSWORD }}
-    NugetApiUrl: ${{ secrets.NUGET_API_URL }}
-    NugetApiKey: ${{ secrets.NUGET_API_KEY }}
+    NuGetApiUrl: ${{ secrets.NUGET_API_URL }}
+    NuGetApiKey: ${{ secrets.NUGET_API_KEY }}
 ```
 
 # Build.cs - ITest
