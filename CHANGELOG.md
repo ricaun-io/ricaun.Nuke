@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Updated
 - Add `NuGetTasks` delete, sign and verify.
 ### Fixed
-- Fix `HttpAuthTasks` dispose `CreateFormDataContent`.
+- Fix `HttpAuthTasks` dispose file stream in `CreateFormDataContent`.
 
 ## [1.9.1] / 2025-01-03
 ### Updated
