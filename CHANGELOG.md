@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.9.2] / 2025-01-19
 ### Updated
 - Add `NuGetTasks` delete, sign and verify.
+- Rename `NuGetApiUrl`, `NuGetApiKey` and `UnlistNuGet`.
 ### Fixed
 - Fix `HttpAuthTasks` dispose file stream in `CreateFormDataContent`.
 
