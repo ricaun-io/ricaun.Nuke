@@ -119,7 +119,7 @@ namespace ricaun.Nuke.Extensions
             try
             {
                 NuGetTasks.NuGetDelete(s => s
-                    .SetPackageId(packageFileName)
+                    .SetPackageId(packageName)
                     .SetPackageVersion(packageVersion)
                     .SetSource(source)
                     .SetApiKey(apiKey)
