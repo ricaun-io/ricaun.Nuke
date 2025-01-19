@@ -1,6 +1,7 @@
 ﻿using Nuke.Common.IO;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.NuGet;
+using ricaun.Nuke.Tools.NuGet;
 using System;
 using System.IO;
 
@@ -117,15 +118,22 @@ namespace ricaun.Nuke.Extensions
             Serilog.Log.Information($"NuGet delete: {packageName} {packageVersion}");
             try
             {
-                NuGetTasks.NuGet(
-                    $"delete {packageName} {packageVersion}" +
-                    $" -Source {source}" +
-                    $" -ApiKey {apiKey}" +
-                    $" -NonInteractive",
-                    logOutput: false,
-                    logInvocation: false
-                    ); // don't print to std out/err
-
+                //NuGetTasks.NuGet(
+                //    $"delete {packageName} {packageVersion}" +
+                //    $" -Source {source}" +
+                //    $" -ApiKey {apiKey}" +
+                //    $" -NonInteractive",
+                //    logOutput: false,
+                //    logInvocation: false
+                //    ); // don't print to std out/err
+                NuGetTasks.NuGetDelete(s => s
+                    .SetPackageId(packageFileName)
+                    .SetPackageVersion(packageVersion)
+                    .SetSource(source)
+                    .SetApiKey(apiKey)
+                    .EnableNonInteractive()
+                    .DisableProcessLogInvocation()
+                );
                 return true;
             }
             catch (Exception ex)
@@ -144,11 +152,17 @@ namespace ricaun.Nuke.Extensions
         {
             try
             {
-                NuGetTasks.NuGet(
-                    $"verify -Signatures \"{packageFileName}\"",
-                    logOutput: false,
-                    logInvocation: false
-                    ); // don't print to std out/err
+                //NuGetTasks.NuGet(
+                //    $"verify -Signatures \"{packageFileName}\"",
+                //    logOutput: false,
+                //    logInvocation: false
+                //    ); // don't print to std out/err
+                NuGetTasks.NuGetVerify(s => s
+                    .SetTargetPath(packageFileName)
+                    .DisableProcessLogOutput()
+                    .DisableProcessLogInvocation()
+                );
+                     
                 return true;
             }
             catch
@@ -170,15 +184,23 @@ namespace ricaun.Nuke.Extensions
             try
             {
                 Serilog.Log.Information($"NuGet sign: {packageFileName}");
-                NuGetTasks.NuGet(
-                    $"sign \"{packageFileName}\"" +
-                    $" -CertificatePath {certPath}" +
-                    $" -CertificatePassword {certPassword}" +
-                    $" -Timestamper {timestampServer}" +
-                    $" -NonInteractive",
-                    logOutput: false,
-                    logInvocation: false
-                    ); // don't print to std out/err
+                //NuGetTasks.NuGet(
+                //    $"sign \"{packageFileName}\"" +
+                //    $" -CertificatePath {certPath}" +
+                //    $" -CertificatePassword {certPassword}" +
+                //    $" -Timestamper {timestampServer}" +
+                //    $" -NonInteractive",
+                //    logOutput: false,
+                //    logInvocation: false
+                //    ); // don't print to std out/err
+                NuGetTasks.NuGetSign(s => s
+                    .SetTargetPath(packageFileName)
+                    .SetCertificatePath(certPath)
+                    .SetCertificatePassword(certPassword)
+                    .SetTimestamper(timestampServer)
+                    .EnableNonInteractive()
+                    .DisableProcessLogOutput()
+                );
                 return true;
             }
             catch

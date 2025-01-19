@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.9.2 / 2025-01-19
+### Updated
+- Add `NuGetTasks` delete, sign and verify.
+
 ## [1.9.1] / 2025-01-03
 ### Updated
 - Force to uninstall local `Tools` to remove cache when `.exe` is not found. (Fix: #79)
@@ -393,6 +397,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.9.2]: ../../compare/1.9.1...1.9.2
 [1.9.1]: ../../compare/1.9.0...1.9.1
 [1.9.0]: ../../compare/1.8.2...1.9.0
 [1.8.2]: ../../compare/1.8.1...1.8.2
