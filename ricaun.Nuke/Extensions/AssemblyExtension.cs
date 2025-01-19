@@ -85,7 +85,7 @@ namespace ricaun.Nuke.Extensions
             {
                 return fileVersionInfo?.ProductVersion.Split('+').First();
             }
-            if (project.GetNugetVersionInfo() is NugetVersionInfo nugetVersionInfo)
+            if (project.GetNuGetVersionInfo() is NuGetVersionInfo nugetVersionInfo)
             {
                 return nugetVersionInfo?.ProductVersion.Split('+').First();
             }
@@ -145,19 +145,19 @@ namespace ricaun.Nuke.Extensions
         }
 
         /// <summary>
-        /// Get NugetVersionInfo of the first nupkg file found
+        /// Get NuGetVersionInfo of the first nupkg file found
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public static NugetVersionInfo GetNugetVersionInfo(this Project project)
+        public static NuGetVersionInfo GetNuGetVersionInfo(this Project project)
         {
             var sourceDir = project.Directory;
             var searchPattern = $"*{project.Name}*.nupkg";
             var nupkgFiles = Directory.GetFiles(sourceDir, searchPattern, SearchOption.AllDirectories);
             foreach (var nupkgFile in nupkgFiles)
             {
-                var nugetVersionInfo = NugetVersionInfo.Parse(nupkgFile);
-                if (nugetVersionInfo is NugetVersionInfo) return nugetVersionInfo;
+                var nugetVersionInfo = NuGetVersionInfo.Parse(nupkgFile);
+                if (nugetVersionInfo is NuGetVersionInfo) return nugetVersionInfo;
             }
 
             return null;

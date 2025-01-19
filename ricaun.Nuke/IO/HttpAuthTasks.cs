@@ -36,7 +36,7 @@ public static class HttpAuthTasks
         Configure<HttpClient> clientConfigurator = null,
         Action<HttpRequestHeaders> headerConfigurator = null)
     {
-        var content = CreateFormDataContent(filePath, formData, fileStreamContentName);
+        using var content = CreateFormDataContent(filePath, formData, fileStreamContentName);
         return await HttpPostAsync(uri, content, authorization, clientConfigurator, headerConfigurator);
     }
 
@@ -162,7 +162,7 @@ public static class HttpAuthTasks
         Configure<HttpClient> clientConfigurator = null,
         Action<HttpRequestHeaders> headerConfigurator = null)
     {
-        var content = CreateFormDataContent(filePath, formData, fileStreamContentName);
+        using var content = CreateFormDataContent(filePath, formData, fileStreamContentName);
         return await HttpPostAsync(uri, content, authorization, clientConfigurator, headerConfigurator);
     }
 
@@ -286,7 +286,7 @@ public static class HttpAuthTasks
         Configure<HttpClient> clientConfigurator = null,
         Action<HttpRequestHeaders> headerConfigurator = null)
     {
-        var content = CreateFormDataContent(filePath, formData, fileStreamContentName);
+        using var content = CreateFormDataContent(filePath, formData, fileStreamContentName);
         return await HttpPostAsync(uri, content, authorization, clientConfigurator, headerConfigurator);
     }
 

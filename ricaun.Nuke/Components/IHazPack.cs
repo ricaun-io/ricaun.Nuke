@@ -11,13 +11,13 @@ namespace ricaun.Nuke.Components
     public interface IHazPack : IHazGitRepository, INukeBuild
     {
         /// <summary>
-        /// NugetApiUrl
+        /// NuGetApiUrl
         /// </summary>
-        [Secret][Parameter] public string NugetApiUrl => TryGetValue(() => NugetApiUrl) ?? GetGitRepositoryPackageUrl();
+        [Secret][Parameter] public string NuGetApiUrl => TryGetValue(() => NuGetApiUrl) ?? GetGitRepositoryPackageUrl();
         /// <summary>
-        /// NugetApiKey
+        /// NuGetApiKey
         /// </summary>
-        [Secret][Parameter] public string NugetApiKey => TryGetValue(() => NugetApiKey) ?? GitHubToken;
+        [Secret][Parameter] public string NuGetApiKey => TryGetValue(() => NuGetApiKey) ?? GitHubToken;
 
         /// <summary>
         /// DotNetNuGetPush
@@ -25,7 +25,7 @@ namespace ricaun.Nuke.Components
         /// <param name="packageFilePath"></param>
         void DotNetNuGetPush(AbsolutePath packageFilePath)
         {
-            NuGetExtension.DotNetNuGetPush(NugetApiUrl, NugetApiKey, packageFilePath);
+            NuGetExtension.DotNetNuGetPush(NuGetApiUrl, NuGetApiKey, packageFilePath);
         }
 
         /// <summary>
@@ -35,8 +35,8 @@ namespace ricaun.Nuke.Components
         void DotNetNuGetPrerelease(AbsolutePath packageFilePath)
         {
             var packageNameVersion = packageFilePath.Name;
-            NuGetExtension.DotNetNuGetPush(NugetApiUrl, NugetApiKey, packageFilePath);
-            NuGetExtension.NuGetUnlist(NugetApiUrl, NugetApiKey, packageNameVersion);
+            NuGetExtension.DotNetNuGetPush(NuGetApiUrl, NuGetApiKey, packageFilePath);
+            NuGetExtension.NuGetUnlist(NuGetApiUrl, NuGetApiKey, packageNameVersion);
         }
 
         /// <summary>
