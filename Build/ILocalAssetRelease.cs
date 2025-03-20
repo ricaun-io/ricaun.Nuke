@@ -6,7 +6,7 @@ class AssetRelease : IAssetRelease
 {
     public void ReleaseAsset(ReleaseAssets releaseAssets)
     {
-        Serilog.Log.Information($"Project: {releaseAssets.Project.Name}");
+        Serilog.Log.Information($"Project: {releaseAssets.Project?.Name}");
         Serilog.Log.Information($"Version: {releaseAssets.Version}");
         Serilog.Log.Information($"Notes: {releaseAssets.Notes}");
         Serilog.Log.Information($"Prerelease: {releaseAssets.Prerelease}");
