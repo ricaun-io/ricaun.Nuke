@@ -7,7 +7,7 @@ class Build : NukeBuild, IPublishPack, ICompileExample, ITest, IShowGitVersion, 
 {
     public void ReleaseAsset(ReleaseAssets releaseAssets) { }
     IAssetRelease IHazAssetRelease.AssetRelease => new AssetRelease();
-    //bool IPack.UnlistNuget => true;
+    //bool IPack.UnlistNuGet => true;
     bool ITest.TestBuildStopWhenFailed => false;
     public static int Main() => Execute<Build>(x => x.From<IPublishPack>().Build);
 }

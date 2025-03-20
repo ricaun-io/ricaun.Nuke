@@ -18,7 +18,7 @@ namespace ricaun.Nuke.Components
         /// <summary>
         /// MainProject (default: <seealso cref="MainName"/>)
         /// </summary>
-        public Project MainProject => Solution.GetOtherProject(MainName);
+        public Project MainProject => Solution.GetOtherProject(MainName) ?? throw new System.Exception($"{nameof(MainProject)} is null using '{MainName}', use 'string {nameof(IHazMainProject)}.{nameof(MainName)} => \"YourMainProjectName\"'.");
 
         /// <summary>
         /// MainProject (default: <seealso cref="MainName"/>)
