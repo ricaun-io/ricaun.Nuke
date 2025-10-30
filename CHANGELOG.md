@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.9.4] / 2025-10-30
+### Updated
+- Update `build` to use `LTS`.
+### Tests
+- Update `Tests` to use `net8.0` framework.
+
 ## [1.9.3] / 2025-03-20
 ### Updated
 - Update `MainProject` to exception and message when null.
@@ -404,6 +410,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.9.4]: ../../compare/1.9.3...1.9.4
 [1.9.3]: ../../compare/1.9.2...1.9.3
 [1.9.2]: ../../compare/1.9.1...1.9.2
 [1.9.1]: ../../compare/1.9.0...1.9.1
