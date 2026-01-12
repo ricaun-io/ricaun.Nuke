@@ -1,7 +1,7 @@
 ﻿using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
-using ricaun.Nuke.Tools.NuGet;
+using Nuke.Common.Tools.NuGet;
 using System;
 using System.IO;
 
@@ -124,7 +124,7 @@ namespace ricaun.Nuke.Extensions
                     .SetSource(source)
                     .SetApiKey(apiKey)
                     .EnableNonInteractive()
-                    .DisableProcessLogInvocation()
+                    .DisableProcessInvocationLogging()
                 );
                 return true;
             }
@@ -146,8 +146,8 @@ namespace ricaun.Nuke.Extensions
             {
                 NuGetTasks.NuGetVerify(s => s
                     .SetTargetPath(packageFileName)
-                    .DisableProcessLogOutput()
-                    .DisableProcessLogInvocation()
+                    .DisableProcessOutputLogging()
+                    .DisableProcessInvocationLogging()
                 );
                      
                 return true;
@@ -177,7 +177,7 @@ namespace ricaun.Nuke.Extensions
                     .SetCertificatePassword(certPassword)
                     .SetTimestamper(timestampServer)
                     .EnableNonInteractive()
-                    .DisableProcessLogOutput()
+                    .DisableProcessOutputLogging()
                 );
                 return true;
             }

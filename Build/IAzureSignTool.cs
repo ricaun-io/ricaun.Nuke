@@ -1,7 +1,7 @@
 ﻿using Nuke.Common;
 using Nuke.Common.Tools.AzureSignTool;
+using Nuke.Common.Tools.NuGetKeyVaultSignTool;
 using ricaun.Nuke.Components;
-using ricaun.Nuke.Tools.NuGetKeyVaultSignTool;
 
 public interface IAzureSignTool : IClean, ICompile
 {
