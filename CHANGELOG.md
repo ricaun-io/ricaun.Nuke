@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Updates
 - Remove `NuGetKeyVaultSignTool` and `NuGetTools` to use default tools.
 - Remove `IHazGitVersion` and use only `IHazGitRepository`.
+- Move `BuildProjectsAndRelease` to `IHazRelease`.
 
 ## [1.9.4] / 2025-10-30
 ### Updated
