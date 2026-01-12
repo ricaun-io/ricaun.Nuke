@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <LangVersion>Latest</LangVersion>
   </PropertyGroup>
 
@@ -54,7 +53,12 @@
   <ItemGroup>
     <PackageReference Include="GitVersion.CommandLine" Version="*" />
     <PackageReference Include="NuGet.CommandLine" Version="*" />
-    <PackageReference Include="Nuke.Common" Version="9.0.4" />
+    <PackageReference Include="Nuke.Common" Version="9.0.4" Condition="$(TargetFramework.StartsWith('net8'))" />
+    <PackageReference Include="Nuke.Common" Version="10.1.0" Condition="$(TargetFramework.StartsWith('net10'))" />
   </ItemGroup>
+
+  <!--<PropertyGroup>
+    <NoWarn>NU1903</NoWarn>
+  </PropertyGroup>-->
 
 </Project>

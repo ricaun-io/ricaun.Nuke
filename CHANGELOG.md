@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Features
 - Update Nuke to version `9.0.4`.
 - Update NET Core to `net8.0`.
+- Support `net10.0` using Nuke version `10.1.0`.
 ### Updates
 - Remove `NuGetKeyVaultSignTool` and `NuGetTools` to use default tools.
 - Remove `IHazGitVersion` and use only `IHazGitRepository`.

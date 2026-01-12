@@ -131,7 +131,13 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public static string GetAppId(this Project project) => project.ProjectId.ToString();
+        public static string GetAppId(this Project project) =>
+#if NET8_0
+            project.ProjectId.ToString();
+#else
+            project.GetModel().Id.ToString();
+#endif
+
 
         /// <summary>
         /// Get FileVersionInfo of Greater Dlls or Exe
@@ -233,7 +239,7 @@ namespace ricaun.Nuke.Extensions
             return targetVersion;
         }
 
-        #endregion
+#endregion
 
         #region Assembly
 

@@ -183,7 +183,11 @@ namespace ricaun.Nuke.Extensions
                 using (var utils = new PathTooLongUtils.FileMoveToTemp(filePath))
                 {
                     filePath = utils.GetFilePath();
+#if NET8_0
                     System.Security.Cryptography.X509Certificates.X509Certificate.CreateFromSignedFile(filePath);
+#else
+                    System.Security.Cryptography.X509Certificates.X509CertificateLoader.LoadCertificateFromFile(filePath);
+#endif
                 }
                 return true;
             }
@@ -204,7 +208,11 @@ namespace ricaun.Nuke.Extensions
         {
             try
             {
+#if NET8_0
                 var certificates = new System.Security.Cryptography.X509Certificates.X509Certificate2(fileNamePfx, passwordPfx);
+#else
+                var certificates = System.Security.Cryptography.X509Certificates.X509CertificateLoader.LoadPkcs12FromFile(fileNamePfx, passwordPfx);
+#endif
                 File.WriteAllBytes(outputCer, certificates.Export(System.Security.Cryptography.X509Certificates.X509ContentType.Cert));
                 return true;
             }
@@ -215,6 +223,6 @@ namespace ricaun.Nuke.Extensions
             return false;
         }
 
-        #endregion
+#endregion
     }
 }

@@ -11,7 +11,11 @@ namespace ricaun.Nuke.Components
         /// <summary>
         /// Solution (SuppressBuildProjectCheck = true)
         /// </summary>
-        [Required][Solution(SuppressBuildProjectCheck = true)] Solution Solution => TryGetValue(() => Solution);
+        [Required][Solution(
+#if NET8_0
+            SuppressBuildProjectCheck = true
+#endif
+            )] Solution Solution => TryGetValue(() => Solution);
     }
 
     /// <summary>
