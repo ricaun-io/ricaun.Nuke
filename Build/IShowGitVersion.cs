@@ -1,5 +1,6 @@
 ﻿using Nuke.Common;
 using Nuke.Common.Git;
+using Nuke.Common.Utilities;
 using ricaun.Nuke.Components;
 using ricaun.Nuke.Extensions;
 
@@ -42,5 +43,6 @@ public interface IShowGitVersion : IHazGitRepository, IHazChangelog, IClean, ICo
             Serilog.Log.Information("Https URL = {Value}", GitRepository.HttpsUrl);
             Serilog.Log.Information("SSH URL = {Value}", GitRepository.SshUrl);
 
+            MainProject.ShowInformation();
         });
 }

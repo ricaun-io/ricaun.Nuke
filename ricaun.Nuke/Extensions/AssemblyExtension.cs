@@ -207,6 +207,8 @@ namespace ricaun.Nuke.Extensions
             Serilog.Log.Information($"Name: {project.Name}");
             Serilog.Log.Information($"GetAppId: {project.GetAppId()}");
 
+            Serilog.Log.Information("Configurations: {Value}", string.Join(" ", project.GetConfigurations()));
+
             if (project.GetInformationalVersion() == null)
                 Serilog.Log.Warning($"GetInformationalVersion: {project.Name} not found!");
 
@@ -223,7 +225,6 @@ namespace ricaun.Nuke.Extensions
             Serilog.Log.Information($"GetComments: {project.GetComments()}");
             Serilog.Log.Information($"GetFileDescription: {project.GetFileDescription()}");
             Serilog.Log.Information($"-");
-
         }
 
         /// <summary>

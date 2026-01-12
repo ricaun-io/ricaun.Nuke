@@ -76,12 +76,16 @@ namespace ricaun.Nuke.Extensions
 #if NET8_0
             return project.Configurations.Values.Distinct().Select(e => (ConfigurationTargetPlatform)e);
 #else
+            const string InvalidConfiguration = "?";
             return project.GetModel().ProjectConfigurationRules
-                .Where(e=>e.Dimension == Microsoft.VisualStudio.SolutionPersistence.Model.BuildDimension.BuildType)
-                .Select(e => new ConfigurationTargetPlatform() { 
-                    Configuration = e.SolutionBuildType,
+                .Where(e => e.Dimension == Microsoft.VisualStudio.SolutionPersistence.Model.BuildDimension.BuildType)
+                .Select(e => new ConfigurationTargetPlatform()
+                {
+                    Configuration = e.ProjectValue,
                     TargetPlatform = e.SolutionPlatform,
-                }).Distinct();
+                })
+                .Where(e => e.Configuration != InvalidConfiguration)
+                .Distinct();
 #endif
         }
 
@@ -121,7 +125,7 @@ namespace ricaun.Nuke.Extensions
             return project.Rebuild(value.Configuration, value.TargetPlatform);
         }
 
-#endregion
+        #endregion
 
         #region BuildMainProject
         /// <summary>
