@@ -3,7 +3,7 @@ using Nuke.Common.Execution;
 using ricaun.Nuke;
 using ricaun.Nuke.Components;
 
-class Build : NukeBuild, IPublishPack, ICompileExample, ITest, IShowGitVersion, IAzureSignTool, IPrePack, ILocalAssetRelease
+class Build : NukeBuild, IPublishPack, ICompileExample, ITest, IShowGitVersion, IAzureSignTool, IPrePack, ILocalAssetRelease, ICompileAfter, ICompileBefore
 {
     public void ReleaseAsset(ReleaseAssets releaseAssets) { }
     IAssetRelease IHazAssetRelease.AssetRelease => new AssetRelease();
