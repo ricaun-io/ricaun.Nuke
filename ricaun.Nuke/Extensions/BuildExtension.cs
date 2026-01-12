@@ -77,7 +77,7 @@ namespace ricaun.Nuke.Extensions
             return project.Configurations.Values.Distinct().Select(e => (ConfigurationTargetPlatform)e);
 #else
             const string InvalidConfiguration = "?";
-            return project.GetModel().ProjectConfigurationRules
+            return project.GetModel().ProjectConfigurationRules?
                 .Where(e => e.Dimension == Microsoft.VisualStudio.SolutionPersistence.Model.BuildDimension.BuildType)
                 .Select(e => new ConfigurationTargetPlatform()
                 {
@@ -85,7 +85,7 @@ namespace ricaun.Nuke.Extensions
                     TargetPlatform = e.SolutionPlatform,
                 })
                 .Where(e => e.Configuration != InvalidConfiguration)
-                .Distinct();
+                .Distinct() ?? Enumerable.Empty<ConfigurationTargetPlatform>();
 #endif
         }
 
