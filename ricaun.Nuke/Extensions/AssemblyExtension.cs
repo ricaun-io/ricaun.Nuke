@@ -131,7 +131,13 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public static string GetAppId(this Project project) => project.ProjectId.ToString();
+        public static string GetAppId(this Project project) =>
+#if NET8_0
+            project.ProjectId.ToString();
+#else
+            project.GetModel().Id.ToString();
+#endif
+
 
         /// <summary>
         /// Get FileVersionInfo of Greater Dlls or Exe
@@ -201,6 +207,8 @@ namespace ricaun.Nuke.Extensions
             Serilog.Log.Information($"Name: {project.Name}");
             Serilog.Log.Information($"GetAppId: {project.GetAppId()}");
 
+            Serilog.Log.Information("Configurations: {Value}", string.Join(" ", project.GetConfigurations()));
+
             if (project.GetInformationalVersion() == null)
                 Serilog.Log.Warning($"GetInformationalVersion: {project.Name} not found!");
 
@@ -217,7 +225,6 @@ namespace ricaun.Nuke.Extensions
             Serilog.Log.Information($"GetComments: {project.GetComments()}");
             Serilog.Log.Information($"GetFileDescription: {project.GetFileDescription()}");
             Serilog.Log.Information($"-");
-
         }
 
         /// <summary>
@@ -233,7 +240,7 @@ namespace ricaun.Nuke.Extensions
             return targetVersion;
         }
 
-        #endregion
+#endregion
 
         #region Assembly
 

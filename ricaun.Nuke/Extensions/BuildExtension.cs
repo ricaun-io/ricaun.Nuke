@@ -73,7 +73,20 @@ namespace ricaun.Nuke.Extensions
         /// <returns>The configuration target platforms.</returns>
         public static IEnumerable<ConfigurationTargetPlatform> GetConfigurationTargetPlatforms(this Project project)
         {
+#if NET8_0
             return project.Configurations.Values.Distinct().Select(e => (ConfigurationTargetPlatform)e);
+#else
+            const string InvalidConfiguration = "?";
+            return project.GetModel().ProjectConfigurationRules?
+                .Where(e => e.Dimension == Microsoft.VisualStudio.SolutionPersistence.Model.BuildDimension.BuildType)
+                .Select(e => new ConfigurationTargetPlatform()
+                {
+                    Configuration = e.ProjectValue,
+                    TargetPlatform = e.SolutionPlatform,
+                })
+                .Where(e => e.Configuration != InvalidConfiguration)
+                .Distinct() ?? Enumerable.Empty<ConfigurationTargetPlatform>();
+#endif
         }
 
         /// <summary>
@@ -112,48 +125,6 @@ namespace ricaun.Nuke.Extensions
             return project.Rebuild(value.Configuration, value.TargetPlatform);
         }
 
-        #endregion
-
-        #region Solution
-        /// <summary>
-        /// Gets all the release configurations for the specified solution.
-        /// </summary>
-        /// <param name="solution">The solution.</param>
-        /// <returns>The release configurations.</returns>
-        [Obsolete($"Use {nameof(BuildExtension)}.{nameof(BuildExtension.GetReleaseTargetPlatforms)}")]
-        public static IEnumerable<string> GetReleases(this Solution solution)
-        {
-            return solution.GetConfigurations(CONFIGURATION_DEBUG, true);
-        }
-
-        /// <summary>
-        /// Gets the configurations for the specified solution.
-        /// </summary>
-        /// <param name="solution">The solution.</param>
-        /// <param name="contain">The string to contain in the configuration.</param>
-        /// <param name="notContain">A flag indicating whether the configuration should not contain the specified string.</param>
-        /// <returns>The configurations.</returns>
-        [Obsolete($"Use {nameof(BuildExtension)}.{nameof(BuildExtension.GetConfigurationsTargetPlatform)}")]
-        public static IEnumerable<string> GetConfigurations(this Solution solution, string contain, bool notContain = false)
-        {
-            var configurations = solution.GetConfigurations()
-                .Where(s => s.Contains(contain, StringComparison.OrdinalIgnoreCase) != notContain);
-            return configurations;
-        }
-
-        /// <summary>
-        /// Gets the configurations for the specified solution.
-        /// </summary>
-        /// <param name="solution">The solution.</param>
-        /// <returns>The configurations.</returns>
-        [Obsolete($"Use {nameof(BuildExtension)}.{nameof(BuildExtension.GetConfigurationTargetPlatforms)}")]
-        public static IEnumerable<string> GetConfigurations(this Solution solution)
-        {
-            var configurations = solution.Configurations
-                    .Select(pair => pair.Value.Split("|").First())
-                    .Distinct();
-            return configurations;
-        }
         #endregion
 
         #region BuildMainProject
@@ -248,8 +219,8 @@ namespace ricaun.Nuke.Extensions
         /// <returns>The configurations.</returns>
         public static IEnumerable<string> GetConfigurations(this Project project)
         {
-            var configurations = project.Configurations
-                    .Select(pair => pair.Value.Split("|").First())
+            var configurations = project.GetConfigurationTargetPlatforms()
+                    .Select(e => e.Configuration)
                     .Distinct();
             return configurations;
         }

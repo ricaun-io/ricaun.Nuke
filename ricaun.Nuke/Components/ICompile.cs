@@ -1,4 +1,5 @@
 ﻿using Nuke.Common;
+using Nuke.Common.Utilities.Collections;
 using ricaun.Nuke.Extensions;
 
 namespace ricaun.Nuke.Components
@@ -15,6 +16,7 @@ namespace ricaun.Nuke.Components
             .DependsOn(Clean)
             .Executes(() =>
             {
+                ReportSummary(_ => _.AddPair("Project", MainProject.Name));
                 Solution.BuildProject(MainProject, (project) =>
                     {
                         project.ShowInformation();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ricaun.Nuke.Tools.NuGetKeyVaultSignTool;
+using Nuke.Common.Tools.NuGetKeyVaultSignTool;
 using Nuke.Common.Tools.AzureSignTool;
 using System.IO;
 using Nuke.Common.Tools.DotNet;
@@ -69,8 +69,8 @@ namespace ricaun.Nuke.Tools
                 DotNetTasks.DotNetToolUninstall(x => x
                     .SetPackageName(packageId)
                     .SetToolInstallationPath(toolFolder)
-                    .DisableProcessLogInvocation()
-                    .DisableProcessLogOutput()
+                    .DisableProcessInvocationLogging()
+                    .DisableProcessOutputLogging()
             );
             }
             catch { }
@@ -92,7 +92,7 @@ namespace ricaun.Nuke.Tools
         /// </summary>
         public static void DownloadAzureSignTool()
         {
-            var packageId = AzureSignToolTasks.AzureSignToolPackageId;
+            var packageId = AzureSignToolTasks.PackageId;
             var packageIdExe = packageId.ToUpper() + "_EXE";
 
             if (ToolPathResolver.TryGetEnvironmentExecutable(packageIdExe) is null)
@@ -109,7 +109,7 @@ namespace ricaun.Nuke.Tools
         /// </summary>
         public static void DownloadNuGetKeyVaultSignTool()
         {
-            var packageId = NuGetKeyVaultSignToolTasks.NuGetKeyVaultSignToolPackageId;
+            var packageId = NuGetKeyVaultSignToolTasks.PackageId;
             var packageIdExe = packageId.ToUpper() + "_EXE";
 
             if (ToolPathResolver.TryGetEnvironmentExecutable(packageIdExe) is null)

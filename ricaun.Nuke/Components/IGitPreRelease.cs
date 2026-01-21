@@ -34,7 +34,6 @@ namespace ricaun.Nuke.Components
             .TriggeredBy(Release)
             .After(GitRelease)
             .Requires(() => GitRepository)
-            .Requires(() => GitVersion)
             .OnlyWhenStatic(() => GitHubToken.SkipEmpty())
             .OnlyWhenStatic(() => IsServerBuild)
             .OnlyWhenDynamic(() => GitRepository.IsOnDevelopBranch())

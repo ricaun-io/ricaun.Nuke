@@ -14,7 +14,7 @@ namespace ricaun.Nuke.Components
     /// <summary>
     /// IGitRelease
     /// </summary>
-    public interface IGitRelease : IRelease, IHazGitRepository, IHazGitVersion, IHazChangelog, IHazAssetRelease, INukeBuild
+    public interface IGitRelease : IRelease, IHazGitRepository, IHazChangelog, IHazAssetRelease, INukeBuild
     {
         /// <summary>
         /// Target GitRelease
@@ -22,7 +22,7 @@ namespace ricaun.Nuke.Components
         Target GitRelease => _ => _
             .TriggeredBy(Release)
             .Requires(() => GitRepository)
-            .Requires(() => GitVersion)
+            //.Requires(() => GitVersion)
             .OnlyWhenStatic(() => GitHubToken.SkipEmpty())
             .OnlyWhenStatic(() => IsServerBuild)
             .OnlyWhenDynamic(() => GitRepository.IsOnMainOrMasterBranch())
@@ -93,7 +93,7 @@ namespace ricaun.Nuke.Components
                 Name = version,
                 Body = releaseNotes,
                 Draft = true,
-                TargetCommitish = GitVersion.Sha
+                TargetCommitish = GitRepository.Commit
             };
 
             var draft = GitHubExtension.CreatedDraft(gitHubOwner, gitHubName, newRelease);

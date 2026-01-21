@@ -1,9 +1,10 @@
 ﻿using Nuke.Common;
 using Nuke.Common.Git;
+using Nuke.Common.Utilities;
 using ricaun.Nuke.Components;
 using ricaun.Nuke.Extensions;
 
-public interface IShowGitVersion : IHazGitVersion, IHazGitRepository, IHazChangelog, IClean, ICompile
+public interface IShowGitVersion : IHazGitRepository, IHazChangelog, IClean, ICompile
 {
     Target ShowGitVersion => _ => _
         .TriggeredBy(Clean)
@@ -11,7 +12,7 @@ public interface IShowGitVersion : IHazGitVersion, IHazGitRepository, IHazChange
         .Executes(() =>
         {
             // GitVersion.BranchName
-            Serilog.Log.Information(GitVersion.BranchName);
+            Serilog.Log.Information(GitRepository.Branch);
 
             // GetReleaseNotes
             Serilog.Log.Information(GetReleaseNotes());
