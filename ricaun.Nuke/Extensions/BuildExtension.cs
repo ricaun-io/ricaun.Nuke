@@ -2,6 +2,7 @@
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
+using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Utilities.Collections;
 using System;
@@ -234,16 +235,22 @@ namespace ricaun.Nuke.Extensions
         /// <returns>The outputs of the rebuild.</returns>
         public static IReadOnlyCollection<Output> Rebuild(this Project project, string configuration, string targetPlatform = null)
         {
-            return MSBuildTasks.MSBuild(s => s
-                .SetTargets("Rebuild")
-                .SetTargetPath(project)
+            return DotNetTasks.DotNetBuild(s => s
+                .SetProjectFile(project)
                 .SetConfiguration(configuration)
                 .TrySetTargetPlatform(targetPlatform)
-                .SetVerbosity(MSBuildVerbosity.Minimal)
-                .SetMaxCpuCount(Environment.ProcessorCount)
-                .DisableNodeReuse()
-                .EnableRestore()
-                );
+                .EnableNoIncremental()
+            );
+            //return MSBuildTasks.MSBuild(s => s
+            //    .SetTargets("Rebuild")
+            //    .SetTargetPath(project)
+            //    .SetConfiguration(configuration)
+            //    .TrySetTargetPlatform(targetPlatform)
+            //    .SetVerbosity(MSBuildVerbosity.Minimal)
+            //    .SetMaxCpuCount(Environment.ProcessorCount)
+            //    .DisableNodeReuse()
+            //    .EnableRestore()
+            //);
         }
 
         /// <summary>
@@ -255,19 +262,24 @@ namespace ricaun.Nuke.Extensions
         /// <returns>The outputs of the build.</returns>
         public static IReadOnlyCollection<Output> Build(this Project project, string configuration, string targetPlatform = null)
         {
-            return MSBuildTasks.MSBuild(s => s
-                .SetTargets("Build")
-                .SetTargetPath(project)
+            return DotNetTasks.DotNetBuild(s => s
+                .SetProjectFile(project)
                 .SetConfiguration(configuration)
                 .TrySetTargetPlatform(targetPlatform)
-                .SetVerbosity(MSBuildVerbosity.Minimal)
-                .SetMaxCpuCount(Environment.ProcessorCount)
-                .DisableNodeReuse()
-                .EnableRestore()
-                );
+            );
+            //return MSBuildTasks.MSBuild(s => s
+            //    .SetTargets("Build")
+            //    .SetTargetPath(project)
+            //    .SetConfiguration(configuration)
+            //    .TrySetTargetPlatform(targetPlatform)
+            //    .SetVerbosity(MSBuildVerbosity.Minimal)
+            //    .SetMaxCpuCount(Environment.ProcessorCount)
+            //    .DisableNodeReuse()
+            //    .EnableRestore()
+            //);
         }
 
-        private static MSBuildSettings TrySetTargetPlatform(this MSBuildSettings settings, MSBuildTargetPlatform targetPlatform)
+        private static DotNetBuildSettings TrySetTargetPlatform(this DotNetBuildSettings settings, MSBuildTargetPlatform targetPlatform)
         {
             if (string.IsNullOrWhiteSpace(targetPlatform)) return settings;
 
@@ -280,11 +292,30 @@ namespace ricaun.Nuke.Extensions
             };
             if (validPlatforms.Contains(targetPlatform))
             {
-                return settings.SetTargetPlatform(targetPlatform);
+                return settings.SetPlatform(targetPlatform);
             }
 
             return settings;
         }
+
+        //private static MSBuildSettings TrySetTargetPlatform(this MSBuildSettings settings, MSBuildTargetPlatform targetPlatform)
+        //{
+        //    if (string.IsNullOrWhiteSpace(targetPlatform)) return settings;
+
+        //    var validPlatforms = new[] {
+        //        MSBuildTargetPlatform.MSIL,
+        //        MSBuildTargetPlatform.x86,
+        //        MSBuildTargetPlatform.x64,
+        //        MSBuildTargetPlatform.arm,
+        //        MSBuildTargetPlatform.Win32
+        //    };
+        //    if (validPlatforms.Contains(targetPlatform))
+        //    {
+        //        return settings.SetTargetPlatform(targetPlatform);
+        //    }
+
+        //    return settings;
+        //}
         #endregion
 
         #region String
