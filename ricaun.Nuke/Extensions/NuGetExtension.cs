@@ -2,6 +2,7 @@
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.NuGet;
+using Nuke.Common.Tools.SignTool;
 using System;
 using System.IO;
 
