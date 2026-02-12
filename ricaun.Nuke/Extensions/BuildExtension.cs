@@ -77,18 +77,73 @@ namespace ricaun.Nuke.Extensions
 #if NET8_0
             return project.Configurations.Values.Distinct().Select(e => (ConfigurationTargetPlatform)e);
 #else
-            const string InvalidConfiguration = "?";
-            return project.GetModel().ProjectConfigurationRules?
-                .Where(e => e.Dimension == Microsoft.VisualStudio.SolutionPersistence.Model.BuildDimension.BuildType)
-                .Select(e => new ConfigurationTargetPlatform()
-                {
-                    Configuration = e.ProjectValue,
-                    TargetPlatform = e.SolutionPlatform,
-                })
-                .Where(e => e.Configuration != InvalidConfiguration)
-                .Distinct() ?? Enumerable.Empty<ConfigurationTargetPlatform>();
+            return project.GetModel().GetConfigurations().Select(e => new ConfigurationTargetPlatform()
+            {
+                Configuration = e.ProjectConfiguration,
+                TargetPlatform = e.ProjectPlatform,
+            });
 #endif
         }
+
+#if NET10_0_OR_GREATER
+        internal static IReadOnlyList<Configuration> GetConfigurations(this Microsoft.VisualStudio.SolutionPersistence.Model.SolutionProjectModel solutionProjectModel)
+        {
+            var result = new List<Configuration>();
+            var solutionModel = solutionProjectModel.Solution;
+            foreach (var buildType in solutionModel.BuildTypes)
+            {
+                foreach (var platform in solutionModel.Platforms)
+                {
+                    var projectConfiguration = solutionProjectModel.GetProjectConfiguration(buildType, platform);
+                    var configuration = new Configuration(
+                        buildType,
+                        platform,
+                        projectConfiguration.BuildType ?? buildType,
+                        projectConfiguration.Platform ?? platform,
+                        projectConfiguration.Build,
+                        projectConfiguration.Deploy
+                    );
+
+                    if (result.Any(c =>
+                        c.ProjectConfiguration == configuration.ProjectConfiguration &&
+                        c.ProjectPlatform == configuration.ProjectPlatform))
+                        continue;
+
+                    result.Add(configuration);
+                }
+            }
+            return result;
+        }
+
+        internal sealed class Configuration
+        {
+            public string SolutionConfiguration { get; }
+            public string SolutionPlatform { get; }
+            public string ProjectConfiguration { get; }
+            public string ProjectPlatform { get; }
+            public bool Build { get; }
+            public bool Deploy { get; }
+
+            public Configuration(
+                string solutionConfiguration,
+                string solutionPlatform,
+                string projectConfiguration,
+                string projectPlatform,
+                bool build,
+                bool deploy)
+            {
+                SolutionConfiguration = solutionConfiguration;
+                SolutionPlatform = solutionPlatform;
+                ProjectConfiguration = projectConfiguration;
+                ProjectPlatform = projectPlatform;
+                Build = build;
+                Deploy = deploy;
+            }
+            public override string ToString()
+                => $"{SolutionConfiguration}|{SolutionPlatform}\t" +
+                   $"{ProjectConfiguration}|{ProjectPlatform} (Build={Build})";
+        }
+#endif
 
         /// <summary>
         /// Gets the configurations target platform for the specified project.
