@@ -58,7 +58,7 @@
     <PackageReference Include="Nuke.Common" Version="10.1.0" Condition="$(TargetFramework.StartsWith('net10'))" />
   </ItemGroup>
 
-  <PropertyGroup>
+  <PropertyGroup Condition="!$(Configuration.Contains('Debug'))">
     <NoWarn>NU1903</NoWarn>
   </PropertyGroup>
 
