@@ -2,6 +2,7 @@
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
+using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Utilities.Collections;
 using System;
@@ -76,18 +77,73 @@ namespace ricaun.Nuke.Extensions
 #if NET8_0
             return project.Configurations.Values.Distinct().Select(e => (ConfigurationTargetPlatform)e);
 #else
-            const string InvalidConfiguration = "?";
-            return project.GetModel().ProjectConfigurationRules?
-                .Where(e => e.Dimension == Microsoft.VisualStudio.SolutionPersistence.Model.BuildDimension.BuildType)
-                .Select(e => new ConfigurationTargetPlatform()
-                {
-                    Configuration = e.ProjectValue,
-                    TargetPlatform = e.SolutionPlatform,
-                })
-                .Where(e => e.Configuration != InvalidConfiguration)
-                .Distinct() ?? Enumerable.Empty<ConfigurationTargetPlatform>();
+            return project.GetModel().GetConfigurations().Select(e => new ConfigurationTargetPlatform()
+            {
+                Configuration = e.ProjectConfiguration,
+                TargetPlatform = e.ProjectPlatform,
+            });
 #endif
         }
+
+#if NET10_0_OR_GREATER
+        internal static IReadOnlyList<Configuration> GetConfigurations(this Microsoft.VisualStudio.SolutionPersistence.Model.SolutionProjectModel solutionProjectModel)
+        {
+            var result = new List<Configuration>();
+            var solutionModel = solutionProjectModel.Solution;
+            foreach (var buildType in solutionModel.BuildTypes)
+            {
+                foreach (var platform in solutionModel.Platforms)
+                {
+                    var projectConfiguration = solutionProjectModel.GetProjectConfiguration(buildType, platform);
+                    var configuration = new Configuration(
+                        buildType,
+                        platform,
+                        projectConfiguration.BuildType ?? buildType,
+                        projectConfiguration.Platform ?? platform,
+                        projectConfiguration.Build,
+                        projectConfiguration.Deploy
+                    );
+
+                    if (result.Any(c =>
+                        c.ProjectConfiguration == configuration.ProjectConfiguration &&
+                        c.ProjectPlatform == configuration.ProjectPlatform))
+                        continue;
+
+                    result.Add(configuration);
+                }
+            }
+            return result;
+        }
+
+        internal sealed class Configuration
+        {
+            public string SolutionConfiguration { get; }
+            public string SolutionPlatform { get; }
+            public string ProjectConfiguration { get; }
+            public string ProjectPlatform { get; }
+            public bool Build { get; }
+            public bool Deploy { get; }
+
+            public Configuration(
+                string solutionConfiguration,
+                string solutionPlatform,
+                string projectConfiguration,
+                string projectPlatform,
+                bool build,
+                bool deploy)
+            {
+                SolutionConfiguration = solutionConfiguration;
+                SolutionPlatform = solutionPlatform;
+                ProjectConfiguration = projectConfiguration;
+                ProjectPlatform = projectPlatform;
+                Build = build;
+                Deploy = deploy;
+            }
+            public override string ToString()
+                => $"{SolutionConfiguration}|{SolutionPlatform}\t" +
+                   $"{ProjectConfiguration}|{ProjectPlatform} (Build={Build})";
+        }
+#endif
 
         /// <summary>
         /// Gets the configurations target platform for the specified project.
@@ -234,16 +290,22 @@ namespace ricaun.Nuke.Extensions
         /// <returns>The outputs of the rebuild.</returns>
         public static IReadOnlyCollection<Output> Rebuild(this Project project, string configuration, string targetPlatform = null)
         {
-            return MSBuildTasks.MSBuild(s => s
-                .SetTargets("Rebuild")
-                .SetTargetPath(project)
+            return DotNetTasks.DotNetBuild(s => s
+                .SetProjectFile(project)
                 .SetConfiguration(configuration)
                 .TrySetTargetPlatform(targetPlatform)
-                .SetVerbosity(MSBuildVerbosity.Minimal)
-                .SetMaxCpuCount(Environment.ProcessorCount)
-                .DisableNodeReuse()
-                .EnableRestore()
-                );
+                .EnableNoIncremental()
+            );
+            //return MSBuildTasks.MSBuild(s => s
+            //    .SetTargets("Rebuild")
+            //    .SetTargetPath(project)
+            //    .SetConfiguration(configuration)
+            //    .TrySetTargetPlatform(targetPlatform)
+            //    .SetVerbosity(MSBuildVerbosity.Minimal)
+            //    .SetMaxCpuCount(Environment.ProcessorCount)
+            //    .DisableNodeReuse()
+            //    .EnableRestore()
+            //);
         }
 
         /// <summary>
@@ -255,19 +317,24 @@ namespace ricaun.Nuke.Extensions
         /// <returns>The outputs of the build.</returns>
         public static IReadOnlyCollection<Output> Build(this Project project, string configuration, string targetPlatform = null)
         {
-            return MSBuildTasks.MSBuild(s => s
-                .SetTargets("Build")
-                .SetTargetPath(project)
+            return DotNetTasks.DotNetBuild(s => s
+                .SetProjectFile(project)
                 .SetConfiguration(configuration)
                 .TrySetTargetPlatform(targetPlatform)
-                .SetVerbosity(MSBuildVerbosity.Minimal)
-                .SetMaxCpuCount(Environment.ProcessorCount)
-                .DisableNodeReuse()
-                .EnableRestore()
-                );
+            );
+            //return MSBuildTasks.MSBuild(s => s
+            //    .SetTargets("Build")
+            //    .SetTargetPath(project)
+            //    .SetConfiguration(configuration)
+            //    .TrySetTargetPlatform(targetPlatform)
+            //    .SetVerbosity(MSBuildVerbosity.Minimal)
+            //    .SetMaxCpuCount(Environment.ProcessorCount)
+            //    .DisableNodeReuse()
+            //    .EnableRestore()
+            //);
         }
 
-        private static MSBuildSettings TrySetTargetPlatform(this MSBuildSettings settings, MSBuildTargetPlatform targetPlatform)
+        private static DotNetBuildSettings TrySetTargetPlatform(this DotNetBuildSettings settings, MSBuildTargetPlatform targetPlatform)
         {
             if (string.IsNullOrWhiteSpace(targetPlatform)) return settings;
 
@@ -280,11 +347,30 @@ namespace ricaun.Nuke.Extensions
             };
             if (validPlatforms.Contains(targetPlatform))
             {
-                return settings.SetTargetPlatform(targetPlatform);
+                return settings.SetPlatform(targetPlatform);
             }
 
             return settings;
         }
+
+        //private static MSBuildSettings TrySetTargetPlatform(this MSBuildSettings settings, MSBuildTargetPlatform targetPlatform)
+        //{
+        //    if (string.IsNullOrWhiteSpace(targetPlatform)) return settings;
+
+        //    var validPlatforms = new[] {
+        //        MSBuildTargetPlatform.MSIL,
+        //        MSBuildTargetPlatform.x86,
+        //        MSBuildTargetPlatform.x64,
+        //        MSBuildTargetPlatform.arm,
+        //        MSBuildTargetPlatform.Win32
+        //    };
+        //    if (validPlatforms.Contains(targetPlatform))
+        //    {
+        //        return settings.SetTargetPlatform(targetPlatform);
+        //    }
+
+        //    return settings;
+        //}
         #endregion
 
         #region String

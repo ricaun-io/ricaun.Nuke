@@ -28,8 +28,6 @@
         "Build",
         "Clean",
         "Compile",
-        "CompileAfter",
-        "CompileBefore",
         "CompileExample",
         "GitPreRelease",
         "GitRelease",
@@ -143,9 +141,6 @@
             "type": "string"
           }
         },
-        "ReleaseCompile": {
-          "type": "boolean"
-        },
         "ReleaseExample": {
           "type": "boolean"
         },
@@ -153,9 +148,6 @@
           "type": "string"
         },
         "ReleaseNameVersion": {
-          "type": "boolean"
-        },
-        "SignCompile": {
           "type": "boolean"
         },
         "SignFile": {
