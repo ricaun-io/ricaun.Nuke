@@ -107,7 +107,11 @@ namespace ricaun.Nuke.Extensions
                     throw new PathTooLongException(messageError);
                 }
 
-                if (HasSignature(filePath)) return;
+                if (HasSignature(filePath))
+                {
+                    Serilog.Log.Information($"File already signed: {filePath}");
+                    return;
+                }
 
                 Serilog.Log.Information($"Signing [{utils.GetFilePathLong()}]: {filePath}");
 
@@ -149,7 +153,11 @@ namespace ricaun.Nuke.Extensions
         /// <param name="binaryPath"></param>
         public static void SignNuGet(string certPath, string certPassword, string binaryPath)
         {
-            if (HasSignature(binaryPath)) return;
+            if (HasSignature(binaryPath))
+            {
+                Serilog.Log.Information($"File already signed: {binaryPath}");
+                return;
+            }
 
             Serilog.Log.Information($"Signing: {binaryPath}");
 
@@ -185,11 +193,12 @@ namespace ricaun.Nuke.Extensions
                     filePath = utils.GetFilePath();
 #if NET8_0
                     System.Security.Cryptography.X509Certificates.X509Certificate.CreateFromSignedFile(filePath);
+                    return true;
 #else
-                    System.Security.Cryptography.X509Certificates.X509CertificateLoader.LoadCertificateFromFile(filePath);
+                    var certContentType = System.Security.Cryptography.X509Certificates.X509Certificate2.GetCertContentType(filePath);
+                    return certContentType == System.Security.Cryptography.X509Certificates.X509ContentType.Authenticode;
 #endif
                 }
-                return true;
             }
             catch
             {

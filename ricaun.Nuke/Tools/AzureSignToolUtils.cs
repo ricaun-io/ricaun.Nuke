@@ -137,7 +137,10 @@ namespace ricaun.Nuke.Tools
             try
             {
                 if (SignExtension.HasSignature(filePath))
+                {
+                    Serilog.Log.Information($"File already signed: {filePath}");
                     return;
+                }
 
                 if (NuGetExtension.IsNuGetFile(filePath))
                 {
