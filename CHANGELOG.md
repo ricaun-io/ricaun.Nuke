@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [1.11.1] / 2026-02-12
 ### Updates
-- Fix `SignExtension.HasSignature` in `net10.0`.
+- Fix `SignExtension.HasSignature` in `net10.0` using `X509Certificate2.GetCertContentType` with `Authenticode`.
+- Add log when `SignExtension.HasSignature` return true and file is signed.
 
 ## [1.11.0] / 2026-02-11
 ### Updates
