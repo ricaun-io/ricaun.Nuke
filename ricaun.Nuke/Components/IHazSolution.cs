@@ -8,24 +8,12 @@ namespace ricaun.Nuke.Components
     /// </summary>
     public interface IHazSolution : INukeBuild
     {
-        //        /// <summary>
-        //        /// Solution (SuppressBuildProjectCheck = true)
-        //        /// </summary>
-        //        [Required][Solution(
-        //#if NET8_0
-        //            SuppressBuildProjectCheck = true
-        //#endif
-        //            )] Solution Solution => TryGetValue(() => Solution);
-
-
         /// <summary>
         /// Solution
         /// </summary>
         [Required]
 #if NET8_0
-        [Solution(
-            SuppressBuildProjectCheck = true
-            )]
+        [Solution(SuppressBuildProjectCheck = true)]
         Solution Solution => TryGetValue(() => Solution);
 #else
         [SolutionX()]
