@@ -3,19 +3,26 @@ using Nuke.Common.ProjectModel;
 
 namespace ricaun.Nuke.Components
 {
+#if NET8_0
+    [System.Obsolete("net8.0 is gonna be deprecated, update your project to net10.0.")]
+#endif
     /// <summary>
     /// IHazSolution
     /// </summary>
     public interface IHazSolution : INukeBuild
     {
         /// <summary>
-        /// Solution (SuppressBuildProjectCheck = true)
+        /// Solution
         /// </summary>
-        [Required][Solution(
+        [Required]
 #if NET8_0
-            SuppressBuildProjectCheck = true
+        [Solution(SuppressBuildProjectCheck = true)]
+        Solution Solution => TryGetValue(() => Solution);
+#else
+        [SolutionX()]
+        Solution Solution => TryGetValue(() => Solution);
 #endif
-            )] Solution Solution => TryGetValue(() => Solution);
+
     }
 
     /// <summary>

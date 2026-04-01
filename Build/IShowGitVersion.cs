@@ -1,5 +1,6 @@
 ﻿using Nuke.Common;
 using Nuke.Common.Git;
+using Nuke.Common.Tools.GitHub;
 using Nuke.Common.Utilities;
 using ricaun.Nuke.Components;
 using ricaun.Nuke.Extensions;
@@ -26,6 +27,9 @@ public interface IShowGitVersion : IHazGitRepository, IHazChangelog, IClean, ICo
             }
             catch { }
 
+            Serilog.Log.Information("GitHubName = {Value}", GitRepository.GetGitHubName());
+            Serilog.Log.Information("GitHubOwner = {Value}", GitRepository.GetGitHubOwner());
+            Serilog.Log.Information("GitRepositoryOwner = {Value}", GetGitRepositoryOwner());
 
             Serilog.Log.Information("Commit = {Value}", GitRepository.Commit);
             Serilog.Log.Information("Branch = {Value}", GitRepository.Branch);
