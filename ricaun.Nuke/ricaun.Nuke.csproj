@@ -14,7 +14,7 @@
   <PropertyGroup>
     <PackageAssemblyVersion></PackageAssemblyVersion>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <Company>ricaun</Company>
     <Authors>Luiz Henrique Cassettari</Authors>
@@ -58,8 +58,16 @@
     <PackageReference Include="Nuke.Common" Version="10.1.0" Condition="$(TargetFramework.StartsWith('net10'))" />
   </ItemGroup>
 
-  <PropertyGroup Condition="!$(Configuration.Contains('Debug'))">
-    <NoWarn>NU1903</NoWarn>
-  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NuGet.Packaging" Version="6.12.*" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="8.0.*" Condition="$(TargetFramework.StartsWith('net8'))" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.*" Condition="$(TargetFramework.StartsWith('net10'))" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net8'))">
+    <PackageReference Include="Microsoft.Build" Version="17.11.*" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="17.11.*" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.11.*"  />
+  </ItemGroup>
 
 </Project>

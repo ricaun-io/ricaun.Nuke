@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.11.3] / 2026-04-16
+### Updated
+- Update packages to fix vulnerabilities in [NuGet.Packaging](https://github.com/advisories/GHSA-g4vj-cjjj-v7hg) and [System.Security.Cryptography.Xml](https://github.com/advisories/GHSA-37gx-xxp4-5rgx) 
+- Update package in `net8` to fix vulnerabilities in [Microsoft.Build.*](https://github.com/advisories/GHSA-w3q9-fxm7-j8fq)
+
 ## [1.11.2] / 2026-03-20 - 2026-03-31
 ### Features
 - Update to support `.sln` and/or `.slnx` in the `Solution` in `net10.0`
@@ -440,6 +445,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.11.3]: ../../compare/1.11.2...1.11.3
 [1.11.2]: ../../compare/1.11.1...1.11.2
 [1.11.1]: ../../compare/1.11.0...1.11.1
 [1.11.0]: ../../compare/1.10.0...1.11.0
