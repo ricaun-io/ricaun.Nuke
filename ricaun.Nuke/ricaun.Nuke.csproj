@@ -60,8 +60,8 @@
 
   <ItemGroup>
     <PackageReference Include="NuGet.Packaging" Version="6.12.*" />
-    <PackageReference Include="System.Security.Cryptography.Xml" Version="8.*" Condition="$(TargetFramework.StartsWith('net8'))" />
-    <PackageReference Include="System.Security.Cryptography.Xml" Version="9.*" Condition="$(TargetFramework.StartsWith('net10'))" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="8.0.*" Condition="$(TargetFramework.StartsWith('net8'))" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.*" Condition="$(TargetFramework.StartsWith('net10'))" />
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('net8'))">
