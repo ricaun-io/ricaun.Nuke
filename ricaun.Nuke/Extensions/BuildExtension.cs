@@ -3,7 +3,7 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.MSBuild;
+using ricaun.Nuke.Tools.MSBuild;
 using Nuke.Common.Utilities.Collections;
 using System;
 using System.Collections.Generic;

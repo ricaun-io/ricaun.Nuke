@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.12.0] / 2026-04-29
 ### Updates
 - Use `MSBuildTasks` by default and when fail use `DotNetTasks` as fallback. (Rollback: #85)
+- Add `Tools.MSBuild` to support MSBuild from Visual Studio 2026. (Fix: #90)
 
 ## [1.11.3] / 2026-04-16
 ### Updated
