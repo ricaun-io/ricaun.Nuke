@@ -305,7 +305,7 @@ namespace ricaun.Nuke.Extensions
             }
             catch (Exception)
             {
-                Serilog.Log.Warning($"MSBuild Tool not found. Falling back to 'dotnet build' project '{project}' with configuration '{configuration}'.");
+                Serilog.Log.Warning($"MSBuild Tool failed. Falling back to 'dotnet build' project '{project}' with configuration '{configuration}'.");
                 return DotNetTasks.DotNetBuild(s => s
                     .SetProjectFile(project)
                     .SetConfiguration(configuration)
@@ -313,16 +313,6 @@ namespace ricaun.Nuke.Extensions
                     .EnableNoIncremental()
                 );
             }
-            //return MSBuildTasks.MSBuild(s => s
-            //    .SetTargets("Rebuild")
-            //    .SetTargetPath(project)
-            //    .SetConfiguration(configuration)
-            //    .TrySetTargetPlatform(targetPlatform)
-            //    .SetVerbosity(MSBuildVerbosity.Minimal)
-            //    .SetMaxCpuCount(Environment.ProcessorCount)
-            //    .DisableNodeReuse()
-            //    .EnableRestore()
-            //);
         }
 
         /// <summary>
@@ -349,23 +339,13 @@ namespace ricaun.Nuke.Extensions
             }
             catch (Exception)
             {
-                Serilog.Log.Warning($"MSBuild Tool not found. Falling back to 'dotnet build' project '{project}' with configuration '{configuration}'.");
+                Serilog.Log.Warning($"MSBuild Tool failed. Falling back to 'dotnet build' project '{project}' with configuration '{configuration}'.");
                 return DotNetTasks.DotNetBuild(s => s
                     .SetProjectFile(project)
                     .SetConfiguration(configuration)
                     .TrySetTargetPlatform(targetPlatform)
                 );
             }
-            //return MSBuildTasks.MSBuild(s => s
-            //    .SetTargets("Build")
-            //    .SetTargetPath(project)
-            //    .SetConfiguration(configuration)
-            //    .TrySetTargetPlatform(targetPlatform)
-            //    .SetVerbosity(MSBuildVerbosity.Minimal)
-            //    .SetMaxCpuCount(Environment.ProcessorCount)
-            //    .DisableNodeReuse()
-            //    .EnableRestore()
-            //);
         }
 
         private static DotNetBuildSettings TrySetTargetPlatform(this DotNetBuildSettings settings, MSBuildTargetPlatform targetPlatform)
