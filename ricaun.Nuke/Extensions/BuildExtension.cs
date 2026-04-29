@@ -343,6 +343,8 @@ namespace ricaun.Nuke.Extensions
                     .TrySetTargetPlatform(targetPlatform)
                     .SetVerbosity(MSBuildVerbosity.Minimal)
                     .SetMaxCpuCount(Environment.ProcessorCount)
+                    .DisableNodeReuse()
+                    .EnableRestore()
                 );
             }
             catch (Exception)
