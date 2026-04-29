@@ -305,7 +305,7 @@ namespace ricaun.Nuke.Extensions
             }
             catch (Exception)
             {
-                Serilog.Log.Warning($"DotNetTasks fallback for project {project} with configuration {configuration} and target platform {targetPlatform}");
+                Serilog.Log.Warning($"MSBuild Tool not found. Falling back to 'dotnet build' project '{project}' with configuration '{configuration}'.");
                 return DotNetTasks.DotNetBuild(s => s
                     .SetProjectFile(project)
                     .SetConfiguration(configuration)
@@ -347,7 +347,7 @@ namespace ricaun.Nuke.Extensions
             }
             catch (Exception)
             {
-                Serilog.Log.Warning($"DotNetTasks fallback for project {project} with configuration {configuration} and target platform {targetPlatform}");
+                Serilog.Log.Warning($"MSBuild Tool not found. Falling back to 'dotnet build' project '{project}' with configuration '{configuration}'.");
                 return DotNetTasks.DotNetBuild(s => s
                     .SetProjectFile(project)
                     .SetConfiguration(configuration)
