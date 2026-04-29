@@ -290,12 +290,29 @@ namespace ricaun.Nuke.Extensions
         /// <returns>The outputs of the rebuild.</returns>
         public static IReadOnlyCollection<Output> Rebuild(this Project project, string configuration, string targetPlatform = null)
         {
-            return DotNetTasks.DotNetBuild(s => s
-                .SetProjectFile(project)
-                .SetConfiguration(configuration)
-                .TrySetTargetPlatform(targetPlatform)
-                .EnableNoIncremental()
-            );
+            try
+            {
+                return MSBuildTasks.MSBuild(s => s
+                    .SetTargets("Rebuild")
+                    .SetTargetPath(project)
+                    .SetConfiguration(configuration)
+                    .TrySetTargetPlatform(targetPlatform)
+                    .SetVerbosity(MSBuildVerbosity.Minimal)
+                    .SetMaxCpuCount(Environment.ProcessorCount)
+                    .DisableNodeReuse()
+                    .EnableRestore()
+                );
+            }
+            catch (Exception)
+            {
+                Serilog.Log.Warning($"DotNetTasks fallback for project {project} with configuration {configuration} and target platform {targetPlatform}");
+                return DotNetTasks.DotNetBuild(s => s
+                    .SetProjectFile(project)
+                    .SetConfiguration(configuration)
+                    .TrySetTargetPlatform(targetPlatform)
+                    .EnableNoIncremental()
+                );
+            }
             //return MSBuildTasks.MSBuild(s => s
             //    .SetTargets("Rebuild")
             //    .SetTargetPath(project)
@@ -317,11 +334,26 @@ namespace ricaun.Nuke.Extensions
         /// <returns>The outputs of the build.</returns>
         public static IReadOnlyCollection<Output> Build(this Project project, string configuration, string targetPlatform = null)
         {
-            return DotNetTasks.DotNetBuild(s => s
-                .SetProjectFile(project)
-                .SetConfiguration(configuration)
-                .TrySetTargetPlatform(targetPlatform)
-            );
+            try
+            {
+                return MSBuildTasks.MSBuild(s => s
+                    .SetTargets("Build")
+                    .SetTargetPath(project)
+                    .SetConfiguration(configuration)
+                    .TrySetTargetPlatform(targetPlatform)
+                    .SetVerbosity(MSBuildVerbosity.Minimal)
+                    .SetMaxCpuCount(Environment.ProcessorCount)
+                );
+            }
+            catch (Exception)
+            {
+                Serilog.Log.Warning($"DotNetTasks fallback for project {project} with configuration {configuration} and target platform {targetPlatform}");
+                return DotNetTasks.DotNetBuild(s => s
+                    .SetProjectFile(project)
+                    .SetConfiguration(configuration)
+                    .TrySetTargetPlatform(targetPlatform)
+                );
+            }
             //return MSBuildTasks.MSBuild(s => s
             //    .SetTargets("Build")
             //    .SetTargetPath(project)
@@ -353,24 +385,24 @@ namespace ricaun.Nuke.Extensions
             return settings;
         }
 
-        //private static MSBuildSettings TrySetTargetPlatform(this MSBuildSettings settings, MSBuildTargetPlatform targetPlatform)
-        //{
-        //    if (string.IsNullOrWhiteSpace(targetPlatform)) return settings;
+        private static MSBuildSettings TrySetTargetPlatform(this MSBuildSettings settings, MSBuildTargetPlatform targetPlatform)
+        {
+            if (string.IsNullOrWhiteSpace(targetPlatform)) return settings;
 
-        //    var validPlatforms = new[] {
-        //        MSBuildTargetPlatform.MSIL,
-        //        MSBuildTargetPlatform.x86,
-        //        MSBuildTargetPlatform.x64,
-        //        MSBuildTargetPlatform.arm,
-        //        MSBuildTargetPlatform.Win32
-        //    };
-        //    if (validPlatforms.Contains(targetPlatform))
-        //    {
-        //        return settings.SetTargetPlatform(targetPlatform);
-        //    }
+            var validPlatforms = new[] {
+                MSBuildTargetPlatform.MSIL,
+                MSBuildTargetPlatform.x86,
+                MSBuildTargetPlatform.x64,
+                MSBuildTargetPlatform.arm,
+                MSBuildTargetPlatform.Win32
+            };
+            if (validPlatforms.Contains(targetPlatform))
+            {
+                return settings.SetTargetPlatform(targetPlatform);
+            }
 
-        //    return settings;
-        //}
+            return settings;
+        }
         #endregion
 
         #region String
