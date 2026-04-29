@@ -3,12 +3,12 @@ using Nuke.Common.ProjectModel;
 
 namespace ricaun.Nuke.Components
 {
-#if NET8_0
-    [System.Obsolete("net8.0 is gonna be deprecated, update your project to net10.0.")]
-#endif
     /// <summary>
     /// IHazSolution
     /// </summary>
+#if NET8_0
+    [System.Obsolete("net8.0 is gonna be deprecated, update your project to net10.0.")]
+#endif
     public interface IHazSolution : INukeBuild
     {
         /// <summary>
