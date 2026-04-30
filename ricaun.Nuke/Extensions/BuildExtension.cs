@@ -16,10 +16,67 @@ namespace ricaun.Nuke.Extensions
     /// </summary>
     public static class BuildExtension
     {
+        #region BuildTools
         /// <summary>
-        /// A flag indicating whether to use 'dotnet build' instead of MSBuild for building projects. If set to true, the build process will use 'dotnet build' as a fallback when MSBuild fails.
+        /// Gets the list of supported build tools, the default order is MSBuild first, then dotnet. You can change the order or remove build tools as needed. If the list is empty, it will fall back to using 'dotnet build'.
         /// </summary>
-        public static bool UseDotnetToBuild { get; set; }
+        public static IList<BuildTool> BuildTools { get; set; } = new List<BuildTool>() {
+            BuildTool.MSBuild,
+            BuildTool.dotnet
+        };
+
+        /// <summary>
+        /// Configures the specified build tools list to contain only the MSBuild tool.
+        /// </summary>
+        /// <param name="buildTools">The list of build tools to modify.</param>
+        /// <returns>The same <see cref="IList{BuildTool}"/> instance after clearing and adding <see cref="BuildTool.MSBuild"/>.</returns>
+        /// <remarks>
+        /// This method clears any existing entries in <paramref name="buildTools"/> and adds
+        /// <see cref="BuildTool.MSBuild"/> as the sole build tool. Useful for scenarios where
+        /// you want to force MSBuild usage only.
+        /// </remarks>
+        public static IList<BuildTool> MSBuildOnly(this IList<BuildTool> buildTools)
+        {
+            buildTools.Clear();
+            buildTools.Add(BuildTool.MSBuild);
+            return buildTools;
+        }
+
+        /// <summary>
+        /// Configures the specified build tools list to contain only the dotnet CLI tool.
+        /// </summary>
+        /// <param name="buildTools">The list of build tools to modify.</param>
+        /// <returns>The same <see cref="IList{BuildTool}"/> instance after clearing and adding <see cref="BuildTool.dotnet"/>.</returns>
+        /// <remarks>
+        /// This method clears any existing entries in <paramref name="buildTools"/> and adds
+        /// <see cref="BuildTool.dotnet"/> as the sole build tool. Useful for scenarios where
+        /// you want to force the usage of 'dotnet' only.
+        /// </remarks>
+        public static IList<BuildTool> dotnetOnly(this IList<BuildTool> buildTools)
+        {
+            buildTools.Clear();
+            buildTools.Add(BuildTool.dotnet);
+            return buildTools;
+        }
+
+        /// <summary>
+        /// Specifies the supported build tools for project compilation and build operations.
+        /// </summary>
+        /// <remarks>Use this enumeration to select the build tool when configuring or invoking build
+        /// processes. The available options correspond to common .NET build systems.</remarks>
+        public enum BuildTool
+        {
+            /// <summary>
+            /// MSBuild
+            /// </summary>
+            MSBuild,
+            /// <summary>
+            /// dotnet
+            /// </summary>
+            dotnet
+        }
+        #endregion
+
 
         #region Const Configuration
         /// <summary>
@@ -295,7 +352,7 @@ namespace ricaun.Nuke.Extensions
         /// <returns>The outputs of the rebuild.</returns>
         public static IReadOnlyCollection<Output> Rebuild(this Project project, string configuration, string targetPlatform = null)
         {
-            IReadOnlyCollection<Output> MSBuild() 
+            IReadOnlyCollection<Output> MSBuild()
                 => MSBuildTasks.MSBuild(s => s
                     .SetTargets("Rebuild")
                     .SetTargetPath(project)
@@ -350,32 +407,45 @@ namespace ricaun.Nuke.Extensions
         }
 
         private static IReadOnlyCollection<Output> BuildUsingMSBuildOrDotNet(
-            Func<IReadOnlyCollection<Output>> MSBuild, 
+            Func<IReadOnlyCollection<Output>> MSBuild,
             Func<IReadOnlyCollection<Output>> DotNet,
             Project project, string configuration)
         {
-            if (UseDotnetToBuild)
+            if (BuildTools.Count == 0)
+            {
+                Serilog.Log.Information($"No build tools specified. Falling back to 'dotnet build' for project '{project}' with configuration '{configuration}'.");
+                return DotNet();
+            }
+
+            var failToBuild = false;
+            foreach (var buildTool in BuildTools)
             {
                 try
                 {
-                    return DotNet();
+                    switch (buildTool)
+                    {
+                        case BuildTool.MSBuild:
+                            if (failToBuild)
+                            {
+                                Serilog.Log.Warning($"Falling back to 'MSBuild' to build project '{project}' with configuration '{configuration}'.");
+                            }
+                            return MSBuild();
+                        case BuildTool.dotnet:
+                            if (failToBuild)
+                            {
+                                Serilog.Log.Warning($"Falling back to 'dotnet build' to build project '{project}' with configuration '{configuration}'.");
+                            }
+                            return DotNet();
+                    }
                 }
-                catch
+                catch (Exception)
                 {
-                    Serilog.Log.Warning($"DotNet Tool failed. Falling back to 'msbuild' project '{project}' with configuration '{configuration}'.");
-                    return MSBuild();
+                    failToBuild = true;
                 }
             }
 
-            try
-            {
-                return MSBuild();
-            }
-            catch
-            {
-                Serilog.Log.Warning($"MSBuild Tool failed. Falling back to 'dotnet build' project '{project}' with configuration '{configuration}'.");
-                return DotNet();
-            }
+            var exception = new Exception($"Failed to build project '{project}' with configuration '{configuration}' using the specified build tools.");
+            throw exception;
         }
 
         private static DotNetBuildSettings TrySetTargetPlatform(this DotNetBuildSettings settings, MSBuildTargetPlatform targetPlatform)

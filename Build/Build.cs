@@ -6,7 +6,7 @@ using ricaun.Nuke.Extensions;
 
 class Build : NukeBuild, IPublishPack, ICompileExample, ITest, IShowGitVersion, IAzureSignTool, IPrePack, ILocalAssetRelease
 {
-    //public Build() => BuildExtension.UseDotnetToBuild = true;
+    public Build() => BuildExtension.BuildTools.dotnetOnly();
     public void ReleaseAsset(ReleaseAssets releaseAssets) { }
     IAssetRelease IHazAssetRelease.AssetRelease => new AssetRelease();
     //bool IPack.UnlistNuGet => true;
