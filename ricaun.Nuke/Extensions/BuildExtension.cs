@@ -3,7 +3,7 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.MSBuild;
+using ricaun.Nuke.Tools.MSBuild;
 using Nuke.Common.Utilities.Collections;
 using System;
 using System.Collections.Generic;
@@ -16,6 +16,68 @@ namespace ricaun.Nuke.Extensions
     /// </summary>
     public static class BuildExtension
     {
+        #region BuildTools
+        /// <summary>
+        /// Gets the list of supported build tools, the default order is MSBuild first, then dotnet. You can change the order or remove build tools as needed. If the list is empty, it will fall back to using 'dotnet build'.
+        /// </summary>
+        public static IList<BuildTool> BuildTools { get; set; } = new List<BuildTool>() {
+            BuildTool.MSBuild,
+            BuildTool.dotnetBuild
+        };
+
+        /// <summary>
+        /// Configures the specified build tools list to contain only the MSBuild tool.
+        /// </summary>
+        /// <param name="buildTools">The list of build tools to modify.</param>
+        /// <returns>The same <see cref="IList{BuildTool}"/> instance after clearing and adding <see cref="BuildTool.MSBuild"/>.</returns>
+        /// <remarks>
+        /// This method clears any existing entries in <paramref name="buildTools"/> and adds
+        /// <see cref="BuildTool.MSBuild"/> as the sole build tool. Useful for scenarios where
+        /// you want to force MSBuild usage only.
+        /// </remarks>
+        public static IList<BuildTool> MSBuildOnly(this IList<BuildTool> buildTools)
+        {
+            buildTools.Clear();
+            buildTools.Add(BuildTool.MSBuild);
+            return buildTools;
+        }
+
+        /// <summary>
+        /// Configures the specified build tools list to contain only the dotnet CLI tool.
+        /// </summary>
+        /// <param name="buildTools">The list of build tools to modify.</param>
+        /// <returns>The same <see cref="IList{BuildTool}"/> instance after clearing and adding <see cref="BuildTool.dotnetBuild"/>.</returns>
+        /// <remarks>
+        /// This method clears any existing entries in <paramref name="buildTools"/> and adds
+        /// <see cref="BuildTool.dotnetBuild"/> as the sole build tool. Useful for scenarios where
+        /// you want to force the usage of 'dotnet' only.
+        /// </remarks>
+        public static IList<BuildTool> dotnetBuildOnly(this IList<BuildTool> buildTools)
+        {
+            buildTools.Clear();
+            buildTools.Add(BuildTool.dotnetBuild);
+            return buildTools;
+        }
+
+        /// <summary>
+        /// Specifies the supported build tools for project compilation and build operations.
+        /// </summary>
+        /// <remarks>Use this enumeration to select the build tool when configuring or invoking build
+        /// processes. The available options correspond to common .NET build systems.</remarks>
+        public enum BuildTool
+        {
+            /// <summary>
+            /// MSBuild
+            /// </summary>
+            MSBuild,
+            /// <summary>
+            /// dotnet
+            /// </summary>
+            dotnetBuild
+        }
+        #endregion
+
+
         #region Const Configuration
         /// <summary>
         /// Configuration "Debug"
@@ -290,22 +352,27 @@ namespace ricaun.Nuke.Extensions
         /// <returns>The outputs of the rebuild.</returns>
         public static IReadOnlyCollection<Output> Rebuild(this Project project, string configuration, string targetPlatform = null)
         {
-            return DotNetTasks.DotNetBuild(s => s
-                .SetProjectFile(project)
-                .SetConfiguration(configuration)
-                .TrySetTargetPlatform(targetPlatform)
-                .EnableNoIncremental()
-            );
-            //return MSBuildTasks.MSBuild(s => s
-            //    .SetTargets("Rebuild")
-            //    .SetTargetPath(project)
-            //    .SetConfiguration(configuration)
-            //    .TrySetTargetPlatform(targetPlatform)
-            //    .SetVerbosity(MSBuildVerbosity.Minimal)
-            //    .SetMaxCpuCount(Environment.ProcessorCount)
-            //    .DisableNodeReuse()
-            //    .EnableRestore()
-            //);
+            IReadOnlyCollection<Output> MSBuild()
+                => MSBuildTasks.MSBuild(s => s
+                    .SetTargets("Rebuild")
+                    .SetTargetPath(project)
+                    .SetConfiguration(configuration)
+                    .TrySetTargetPlatform(targetPlatform)
+                    .SetVerbosity(MSBuildVerbosity.Minimal)
+                    .SetMaxCpuCount(Environment.ProcessorCount)
+                    .DisableNodeReuse()
+                    .EnableRestore()
+                );
+
+            IReadOnlyCollection<Output> DotNet() =>
+                DotNetTasks.DotNetBuild(s => s
+                    .SetProjectFile(project)
+                    .SetConfiguration(configuration)
+                    .TrySetTargetPlatform(targetPlatform)
+                    .EnableNoIncremental()
+                );
+
+            return BuildUsingMSBuildOrDotNet(MSBuild, DotNet, project, configuration);
         }
 
         /// <summary>
@@ -317,21 +384,68 @@ namespace ricaun.Nuke.Extensions
         /// <returns>The outputs of the build.</returns>
         public static IReadOnlyCollection<Output> Build(this Project project, string configuration, string targetPlatform = null)
         {
-            return DotNetTasks.DotNetBuild(s => s
-                .SetProjectFile(project)
-                .SetConfiguration(configuration)
-                .TrySetTargetPlatform(targetPlatform)
-            );
-            //return MSBuildTasks.MSBuild(s => s
-            //    .SetTargets("Build")
-            //    .SetTargetPath(project)
-            //    .SetConfiguration(configuration)
-            //    .TrySetTargetPlatform(targetPlatform)
-            //    .SetVerbosity(MSBuildVerbosity.Minimal)
-            //    .SetMaxCpuCount(Environment.ProcessorCount)
-            //    .DisableNodeReuse()
-            //    .EnableRestore()
-            //);
+            IReadOnlyCollection<Output> MSBuild()
+                => MSBuildTasks.MSBuild(s => s
+                    .SetTargets("Build")
+                    .SetTargetPath(project)
+                    .SetConfiguration(configuration)
+                    .TrySetTargetPlatform(targetPlatform)
+                    .SetVerbosity(MSBuildVerbosity.Minimal)
+                    .SetMaxCpuCount(Environment.ProcessorCount)
+                    .DisableNodeReuse()
+                    .EnableRestore()
+                );
+
+            IReadOnlyCollection<Output> DotNet() =>
+                DotNetTasks.DotNetBuild(s => s
+                    .SetProjectFile(project)
+                    .SetConfiguration(configuration)
+                    .TrySetTargetPlatform(targetPlatform)
+                );
+
+            return BuildUsingMSBuildOrDotNet(MSBuild, DotNet, project, configuration);
+        }
+
+        private static IReadOnlyCollection<Output> BuildUsingMSBuildOrDotNet(
+            Func<IReadOnlyCollection<Output>> MSBuild,
+            Func<IReadOnlyCollection<Output>> DotNet,
+            Project project, string configuration)
+        {
+            if (BuildTools.Count == 0)
+            {
+                Serilog.Log.Information($"No build tools specified. Falling back to 'dotnet build' for project '{project}' with configuration '{configuration}'.");
+                return DotNet();
+            }
+
+            var failToBuild = false;
+            foreach (var buildTool in BuildTools)
+            {
+                try
+                {
+                    switch (buildTool)
+                    {
+                        case BuildTool.MSBuild:
+                            if (failToBuild)
+                            {
+                                Serilog.Log.Warning($"Falling back to 'MSBuild' to build project '{project}' with configuration '{configuration}'.");
+                            }
+                            return MSBuild();
+                        case BuildTool.dotnetBuild:
+                            if (failToBuild)
+                            {
+                                Serilog.Log.Warning($"Falling back to 'dotnet build' to build project '{project}' with configuration '{configuration}'.");
+                            }
+                            return DotNet();
+                    }
+                }
+                catch (Exception)
+                {
+                    failToBuild = true;
+                }
+            }
+
+            var exception = new Exception($"Failed to build project '{project}' with configuration '{configuration}' using the specified build tools.");
+            throw exception;
         }
 
         private static DotNetBuildSettings TrySetTargetPlatform(this DotNetBuildSettings settings, MSBuildTargetPlatform targetPlatform)
@@ -353,24 +467,24 @@ namespace ricaun.Nuke.Extensions
             return settings;
         }
 
-        //private static MSBuildSettings TrySetTargetPlatform(this MSBuildSettings settings, MSBuildTargetPlatform targetPlatform)
-        //{
-        //    if (string.IsNullOrWhiteSpace(targetPlatform)) return settings;
+        private static MSBuildSettings TrySetTargetPlatform(this MSBuildSettings settings, MSBuildTargetPlatform targetPlatform)
+        {
+            if (string.IsNullOrWhiteSpace(targetPlatform)) return settings;
 
-        //    var validPlatforms = new[] {
-        //        MSBuildTargetPlatform.MSIL,
-        //        MSBuildTargetPlatform.x86,
-        //        MSBuildTargetPlatform.x64,
-        //        MSBuildTargetPlatform.arm,
-        //        MSBuildTargetPlatform.Win32
-        //    };
-        //    if (validPlatforms.Contains(targetPlatform))
-        //    {
-        //        return settings.SetTargetPlatform(targetPlatform);
-        //    }
+            var validPlatforms = new[] {
+                MSBuildTargetPlatform.MSIL,
+                MSBuildTargetPlatform.x86,
+                MSBuildTargetPlatform.x64,
+                MSBuildTargetPlatform.arm,
+                MSBuildTargetPlatform.Win32
+            };
+            if (validPlatforms.Contains(targetPlatform))
+            {
+                return settings.SetTargetPlatform(targetPlatform);
+            }
 
-        //    return settings;
-        //}
+            return settings;
+        }
         #endregion
 
         #region String

@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.12.0] / 2026-04-29
+### Updates
+- Use `MSBuildTasks` by default and when fail use `DotNetTasks` as fallback. (Rollback: #85)
+- Add `Tools.MSBuild` to support MSBuild from Visual Studio 2026. (Fix: #90)
+- Add `BuildExtension.BuildTools` with list of tools to build in order by `msbuild` and `dotnet`.
+- Add `BuildToolsExtension` to make simple to use `MSBuildOnly` and `dotnetBuildOnly` inside `INukeBuild`.
+
 ## [1.11.3] / 2026-04-16
 ### Updated
 - Update packages to fix vulnerabilities in [NuGet.Packaging](https://github.com/advisories/GHSA-g4vj-cjjj-v7hg) and [System.Security.Cryptography.Xml](https://github.com/advisories/GHSA-37gx-xxp4-5rgx) 
@@ -445,6 +452,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.12.0]: ../../compare/1.11.3...1.12.0
 [1.11.3]: ../../compare/1.11.2...1.11.3
 [1.11.2]: ../../compare/1.11.1...1.11.2
 [1.11.1]: ../../compare/1.11.0...1.11.1
