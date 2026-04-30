@@ -22,7 +22,7 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         public static IList<BuildTool> BuildTools { get; set; } = new List<BuildTool>() {
             BuildTool.MSBuild,
-            BuildTool.dotnet
+            BuildTool.dotnetBuild
         };
 
         /// <summary>
@@ -46,16 +46,16 @@ namespace ricaun.Nuke.Extensions
         /// Configures the specified build tools list to contain only the dotnet CLI tool.
         /// </summary>
         /// <param name="buildTools">The list of build tools to modify.</param>
-        /// <returns>The same <see cref="IList{BuildTool}"/> instance after clearing and adding <see cref="BuildTool.dotnet"/>.</returns>
+        /// <returns>The same <see cref="IList{BuildTool}"/> instance after clearing and adding <see cref="BuildTool.dotnetBuild"/>.</returns>
         /// <remarks>
         /// This method clears any existing entries in <paramref name="buildTools"/> and adds
-        /// <see cref="BuildTool.dotnet"/> as the sole build tool. Useful for scenarios where
+        /// <see cref="BuildTool.dotnetBuild"/> as the sole build tool. Useful for scenarios where
         /// you want to force the usage of 'dotnet' only.
         /// </remarks>
-        public static IList<BuildTool> dotnetOnly(this IList<BuildTool> buildTools)
+        public static IList<BuildTool> dotnetBuildOnly(this IList<BuildTool> buildTools)
         {
             buildTools.Clear();
-            buildTools.Add(BuildTool.dotnet);
+            buildTools.Add(BuildTool.dotnetBuild);
             return buildTools;
         }
 
@@ -73,7 +73,7 @@ namespace ricaun.Nuke.Extensions
             /// <summary>
             /// dotnet
             /// </summary>
-            dotnet
+            dotnetBuild
         }
         #endregion
 
@@ -430,7 +430,7 @@ namespace ricaun.Nuke.Extensions
                                 Serilog.Log.Warning($"Falling back to 'MSBuild' to build project '{project}' with configuration '{configuration}'.");
                             }
                             return MSBuild();
-                        case BuildTool.dotnet:
+                        case BuildTool.dotnetBuild:
                             if (failToBuild)
                             {
                                 Serilog.Log.Warning($"Falling back to 'dotnet build' to build project '{project}' with configuration '{configuration}'.");
