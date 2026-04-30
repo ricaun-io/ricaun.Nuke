@@ -16,6 +16,11 @@ namespace ricaun.Nuke.Extensions
     /// </summary>
     public static class BuildExtension
     {
+        /// <summary>
+        /// A flag indicating whether to use 'dotnet build' instead of MSBuild for building projects. If set to true, the build process will use 'dotnet build' as a fallback when MSBuild fails.
+        /// </summary>
+        public static bool UseDotnetToBuild { get; set; }
+
         #region Const Configuration
         /// <summary>
         /// Configuration "Debug"
@@ -290,9 +295,8 @@ namespace ricaun.Nuke.Extensions
         /// <returns>The outputs of the rebuild.</returns>
         public static IReadOnlyCollection<Output> Rebuild(this Project project, string configuration, string targetPlatform = null)
         {
-            try
-            {
-                return MSBuildTasks.MSBuild(s => s
+            IReadOnlyCollection<Output> MSBuild() 
+                => MSBuildTasks.MSBuild(s => s
                     .SetTargets("Rebuild")
                     .SetTargetPath(project)
                     .SetConfiguration(configuration)
@@ -302,17 +306,16 @@ namespace ricaun.Nuke.Extensions
                     .DisableNodeReuse()
                     .EnableRestore()
                 );
-            }
-            catch (Exception)
-            {
-                Serilog.Log.Warning($"MSBuild Tool failed. Falling back to 'dotnet build' project '{project}' with configuration '{configuration}'.");
-                return DotNetTasks.DotNetBuild(s => s
+
+            IReadOnlyCollection<Output> DotNet() =>
+                DotNetTasks.DotNetBuild(s => s
                     .SetProjectFile(project)
                     .SetConfiguration(configuration)
                     .TrySetTargetPlatform(targetPlatform)
                     .EnableNoIncremental()
                 );
-            }
+
+            return BuildUsingMSBuildOrDotNet(MSBuild, DotNet, project, configuration);
         }
 
         /// <summary>
@@ -324,9 +327,8 @@ namespace ricaun.Nuke.Extensions
         /// <returns>The outputs of the build.</returns>
         public static IReadOnlyCollection<Output> Build(this Project project, string configuration, string targetPlatform = null)
         {
-            try
-            {
-                return MSBuildTasks.MSBuild(s => s
+            IReadOnlyCollection<Output> MSBuild()
+                => MSBuildTasks.MSBuild(s => s
                     .SetTargets("Build")
                     .SetTargetPath(project)
                     .SetConfiguration(configuration)
@@ -336,15 +338,43 @@ namespace ricaun.Nuke.Extensions
                     .DisableNodeReuse()
                     .EnableRestore()
                 );
-            }
-            catch (Exception)
-            {
-                Serilog.Log.Warning($"MSBuild Tool failed. Falling back to 'dotnet build' project '{project}' with configuration '{configuration}'.");
-                return DotNetTasks.DotNetBuild(s => s
+
+            IReadOnlyCollection<Output> DotNet() =>
+                DotNetTasks.DotNetBuild(s => s
                     .SetProjectFile(project)
                     .SetConfiguration(configuration)
                     .TrySetTargetPlatform(targetPlatform)
                 );
+
+            return BuildUsingMSBuildOrDotNet(MSBuild, DotNet, project, configuration);
+        }
+
+        private static IReadOnlyCollection<Output> BuildUsingMSBuildOrDotNet(
+            Func<IReadOnlyCollection<Output>> MSBuild, 
+            Func<IReadOnlyCollection<Output>> DotNet,
+            Project project, string configuration)
+        {
+            if (UseDotnetToBuild)
+            {
+                try
+                {
+                    return DotNet();
+                }
+                catch
+                {
+                    Serilog.Log.Warning($"DotNet Tool failed. Falling back to 'msbuild' project '{project}' with configuration '{configuration}'.");
+                    return MSBuild();
+                }
+            }
+
+            try
+            {
+                return MSBuild();
+            }
+            catch
+            {
+                Serilog.Log.Warning($"MSBuild Tool failed. Falling back to 'dotnet build' project '{project}' with configuration '{configuration}'.");
+                return DotNet();
             }
         }
 
