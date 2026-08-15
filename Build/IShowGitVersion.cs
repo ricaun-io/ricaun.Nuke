@@ -12,6 +12,11 @@ public interface IShowGitVersion : IHazGitRepository, IHazChangelog, IClean, ICo
         .Before(Compile)
         .Executes(() =>
         {
+            foreach (var item in Solution.GetAllProjectsOrderByName("*"))
+            {
+                System.Console.WriteLine(item.Name);
+            }
+
             // GitVersion.BranchName
             Serilog.Log.Information(GitRepository.Branch);
 

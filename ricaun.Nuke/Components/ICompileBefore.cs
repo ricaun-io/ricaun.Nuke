@@ -1,5 +1,6 @@
 using Nuke.Common;
 using Nuke.Common.ProjectModel;
+using ricaun.Nuke.Extensions;
 using System.Collections.Generic;
 
 namespace ricaun.Nuke.Components;
@@ -49,5 +50,5 @@ public interface IHazCompileBefore : IHazRelease
     /// GetProjects
     /// </summary>
     /// <returns></returns>
-    public IEnumerable<Project> GetProjects() => Solution.GetAllProjects(Name);
+    public IEnumerable<Project> GetProjects() => Solution.GetAllProjectsOrderByName(Name);
 }
