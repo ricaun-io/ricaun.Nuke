@@ -40,7 +40,7 @@ namespace ricaun.Nuke.Components
             Func<DotNetTestSettings, DotNetTestSettings> customDotNetTestSettings = null)
         {
             var testFailed = false;
-            var testProjects = Solution.GetAllProjects(testProjectName);
+            var testProjects = Solution.GetAllProjectsOrderByName(testProjectName);
 
             foreach (var testProject in testProjects)
             {

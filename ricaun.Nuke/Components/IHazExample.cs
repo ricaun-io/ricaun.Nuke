@@ -1,5 +1,6 @@
 ﻿using Nuke.Common;
 using Nuke.Common.ProjectModel;
+using ricaun.Nuke.Extensions;
 using System.Collections.Generic;
 
 namespace ricaun.Nuke.Components
@@ -25,6 +26,6 @@ namespace ricaun.Nuke.Components
         /// GetExampleProjects
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Project> GetExampleProjects() => Solution.GetAllProjects(Name);
+        public IEnumerable<Project> GetExampleProjects() => Solution.GetAllProjectsOrderByName(Name);
     }
 }
