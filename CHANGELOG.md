@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.12.4] / 2026-10-15
+### Updated
+- Update `NuGet.Packaging` to last version to fix [`System.Security.Cryptography.Pkcs`](https://github.com/advisories/GHSA-2fmv-rv2c-59x7) vulnerability.
+- Update [System.Security.Cryptography.Xml](https://github.com/advisories/GHSA-7hqp-7c5m-4vq6) to last to fix vulnerability.
+
 ## [1.12.3] / 2026-08-26
 ### Updated
 - Update `NuGet.Packaging` to last version.
@@ -464,6 +469,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.12.4]: ../../compare/1.12.3...1.12.4
 [1.12.3]: ../../compare/1.12.2...1.12.3
 [1.12.2]: ../../compare/1.12.1...1.12.2
 [1.12.1]: ../../compare/1.12.0...1.12.1
