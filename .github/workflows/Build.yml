@@ -14,7 +14,7 @@ on:
 
 permissions:
   contents: write
-  #packages: read
+  packages: read
   id-token: write
 
 jobs:
