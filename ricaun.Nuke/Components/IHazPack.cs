@@ -15,9 +15,13 @@ namespace ricaun.Nuke.Components
         /// </summary>
         [Secret][Parameter] public string NuGetApiUrl => TryGetValue(() => NuGetApiUrl) ?? GetGitRepositoryPackageUrl();
         /// <summary>
+        /// NuGetApiUser
+        /// </summary>
+        [Secret][Parameter] public string NuGetApiUser => TryGetValue(() => NuGetApiUser) ?? GetGitRepositoryPackageUser();
+        /// <summary>
         /// NuGetApiKey
         /// </summary>
-        [Secret][Parameter] public string NuGetApiKey => TryGetValue(() => NuGetApiKey) ?? GitHubToken;
+        [Secret][Parameter] public string NuGetApiKey => TryGetValue(() => NuGetApiKey) ?? GetGitRepositoryPackageKey(NuGetApiUrl, NuGetApiUser);
 
         /// <summary>
         /// DotNetNuGetPush
