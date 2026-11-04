@@ -107,8 +107,6 @@ The `SIGN_PASSWORD_AZURE` is the `AzureKeyVaultClientSecret` of the `Azure Key V
 ```yml
 env:
     GitHubToken: ${{ secrets.GITHUB_TOKEN }}
-    SignFile: ${{ secrets.SIGN_FILE }}
-    SignPassword: ${{ secrets.SIGN_PASSWORD }}
     NuGetApiUrl: ${{ secrets.NUGET_API_URL }}
     NuGetApiKey: ${{ secrets.NUGET_API_KEY }}
 ```
@@ -126,8 +124,6 @@ permissions:
 
 env:
     GitHubToken: ${{ secrets.GITHUB_TOKEN }}
-    SignFile: ${{ secrets.SIGN_FILE }}
-    SignPassword: ${{ secrets.SIGN_PASSWORD }}
     NuGetApiUrl: ${{ secrets.NUGET_API_URL }}
     NuGetApiUser: ${{ secrets.NUGET_API_USER }} # Optional, if not set, will use the GitHub current user.
 ```
