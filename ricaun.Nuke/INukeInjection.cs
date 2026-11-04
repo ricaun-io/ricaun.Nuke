@@ -33,12 +33,12 @@ internal static class NukeInjection
 
                     return null;
                 });
-                informationAction?.Invoke($"Creating instance of {type.FullName} - {constructor}");
+                informationAction?.Invoke($" Creating instance of {type.FullName} - {constructor}");
                 var nukeInjection = constructor.Invoke(arguments.ToArray()) as INukeInjection;
             }
             catch (Exception ex)
             {
-                informationAction?.Invoke($"Failed to create instance of {type.FullName}: {ex.Message}");
+                informationAction?.Invoke($" Failed to create instance of {type.FullName}: {ex.Message}");
             }
         }
     }

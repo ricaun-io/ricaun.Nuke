@@ -26,7 +26,8 @@ namespace ricaun.Nuke
             Information();
             var assemblyName = typeof(CommonExtension).Assembly.GetName().Name;
             foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()
-                .Where(e => e.GetName().Name.StartsWith(assemblyName, System.StringComparison.InvariantCultureIgnoreCase)))
+                .Where(e => e.GetName().Name.StartsWith(assemblyName, System.StringComparison.InvariantCultureIgnoreCase))
+                .OrderBy(e => e.GetName().Name))
             {
                 Information($"{assembly.GetName().Name} {assembly.GetVersionText()}");
                 NukeInjection.CreateInstance(nukeBuild, assembly, Information);
