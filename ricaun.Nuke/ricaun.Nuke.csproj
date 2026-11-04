@@ -40,7 +40,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="!$(Configuration.Contains('Debug'))">
-    <GenerateDocumentationFile>true</GenerateDocumentationFile >
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
@@ -67,7 +67,7 @@
   <ItemGroup Condition="$(TargetFramework.StartsWith('net8'))">
     <PackageReference Include="Microsoft.Build" Version="17.11.*" />
     <PackageReference Include="Microsoft.Build.Tasks.Core" Version="17.11.*" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.11.*"  />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.11.*" />
   </ItemGroup>
 
 </Project>
