@@ -507,6 +507,192 @@ public static class HttpAuthTasks
     }
     #endregion
 
+    #region HttpJson
+    public static async Task<T> HttpPostFileAsync<T>(
+        string uri,
+        string filePath,
+        string authorization = null,
+        Dictionary<string, string> formData = null,
+        string fileStreamContentName = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPostFileAsync(uri, filePath, authorization, formData, fileStreamContentName, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    public static T HttpPostFile<T>(
+        string uri,
+        string filePath,
+        string authorization = null,
+        Dictionary<string, string> formData = null,
+        string fileStreamContentName = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPostFile(uri, filePath, authorization, formData, fileStreamContentName, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    public static async Task<T> HttpPostAsync<T>(
+        string uri,
+        object content,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPostAsync(uri, content, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    public static T HttpPost<T>(
+        string uri,
+        object content,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPost(uri, content, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    public static async Task<T> HttpPostAsync<T>(
+        string uri,
+        HttpContent httpContent = null,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPostAsync(uri, httpContent, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    public static T HttpPost<T>(
+        string uri,
+        HttpContent httpContent = null,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPost(uri, httpContent, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    public static async Task<T> HttpPutFileAsync<T>(
+        string uri,
+        string filePath,
+        string authorization = null,
+        Dictionary<string, string> formData = null,
+        string fileStreamContentName = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPutFileAsync(uri, filePath, authorization, formData, fileStreamContentName, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    public static T HttpPutFile<T>(
+        string uri,
+        string filePath,
+        string authorization = null,
+        Dictionary<string, string> formData = null,
+        string fileStreamContentName = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPutFile(uri, filePath, authorization, formData, fileStreamContentName, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    public static async Task<T> HttpPutAsync<T>(
+        string uri,
+        object content,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPutAsync(uri, content, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    public static T HttpPut<T>(
+        string uri,
+        object content,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPut(uri, content, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    public static async Task<T> HttpPutAsync<T>(
+        string uri,
+        HttpContent httpContent = null,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPutAsync(uri, httpContent, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    public static T HttpPut<T>(
+        string uri,
+        HttpContent httpContent = null,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null) 
+        => HttpPut(uri, httpContent, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    public static async Task<T> HttpPatchFileAsync<T>(
+        string uri,
+        string filePath,
+        string authorization = null,
+        Dictionary<string, string> formData = null,
+        string fileStreamContentName = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPatchFileAsync(uri, filePath, authorization, formData, fileStreamContentName, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    public static T HttpPatchFile<T>(
+        string uri,
+        string filePath,
+        string authorization = null,
+        Dictionary<string, string> formData = null,
+        string fileStreamContentName = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPatchFile(uri, filePath, authorization, formData, fileStreamContentName, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    public static async Task<T> HttpPatchAsync<T>(
+        string uri,
+        object content,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPatchAsync(uri, content, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    public static T HttpPatch<T>(
+        string uri,
+        object content,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPatch(uri, content, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    public static async Task<T> HttpPatchAsync<T>(
+        string uri,
+        HttpContent httpContent = null,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPatchAsync(uri, httpContent, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    public static T HttpPatch<T>(
+        string uri,
+        HttpContent httpContent = null,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPatch(uri, httpContent, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    public static async Task<T> HttpGetAsync<T>(
+        string uri,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpGetAsync(uri, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    public static T HttpGet<T>(
+        string uri,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpGet(uri, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    public static async Task<T> HttpDeleteAsync<T>(
+        string uri,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpDeleteAsync(uri, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    public static T HttpDelete<T>(
+        string uri,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpDelete(uri, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
+    #endregion
+
     #region HttpClient
     /// <summary>
     /// DefaultTimeout (30 seconds)
