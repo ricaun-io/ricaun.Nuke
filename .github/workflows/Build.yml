@@ -46,7 +46,7 @@ jobs:
           GitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
           NuGetApiUrl: ${{ secrets.NUGET_API_URL }}
-          NuGetApiName: ${{ secrets.NUGET_API_NAME }}
+          #NuGetApiName: ${{ secrets.NUGET_API_NAME }}
           #NuGetApiKey: ${{ steps.nuget.outputs.NUGET_API_KEY }}
 
           SignFile: ${{ secrets.SIGN_FILE }}
