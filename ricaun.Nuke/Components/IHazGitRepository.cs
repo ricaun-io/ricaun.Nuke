@@ -82,7 +82,7 @@ namespace ricaun.Nuke.Components
                 }
                 catch (System.Exception ex)
                 {
-                    Serilog.Log.Warning($"NugetTokenId failed. Exception: {ex.Message}");
+                    Serilog.Log.Error($"NugetTokenId failed. Exception: {ex.Message}");
                     return string.Empty;
                 }
             }
