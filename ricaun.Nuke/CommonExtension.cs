@@ -1,5 +1,6 @@
 ﻿using Nuke.Common;
 using Nuke.Common.Utilities;
+using ricaun.Nuke.Injection;
 using System.Linq;
 
 namespace ricaun.Nuke
