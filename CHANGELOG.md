@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Support `CreateInstance` using `INukeInjection` interface.
 - Update `ci` to use `NuGet/login`.
 - Update `HttpAuthTasks` to support json response.
+- Create `NugetActionTokenIdUtils` to get the `NugetTokenId` using `Action`.
 
 ## [1.12.4] / 2026-10-15
 ### Updated
