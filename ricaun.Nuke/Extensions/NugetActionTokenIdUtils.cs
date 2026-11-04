@@ -12,6 +12,8 @@ namespace ricaun.Nuke.Extensions
     /// variables when available.</remarks>
     public static class NugetActionTokenIdUtils
     {
+        private static string _apiKey;
+
         /// <summary>
         /// Get NugetTokenId from GitHub OIDC token exchange for NuGet API key.
         /// </summary>
@@ -20,6 +22,9 @@ namespace ricaun.Nuke.Extensions
         /// </remarks>
         public static string GetNugetTokenId(string nugetUsername)
         {
+            if (!string.IsNullOrEmpty(_apiKey))
+                return _apiKey;
+
             if (string.IsNullOrEmpty(nugetUsername))
             {
                 throw new Exception("NuGet username is missing. Make sure you are using the username of the policy creator, not the policy owner.");
@@ -85,6 +90,7 @@ namespace ricaun.Nuke.Extensions
 
             Serilog.Log.Information("Successfully exchanged OIDC token for NuGet API key.");
 
+            _apiKey = apiKey;
             return apiKey;
         }
 
