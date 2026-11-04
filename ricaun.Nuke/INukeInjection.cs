@@ -1,6 +1,7 @@
 ﻿
 using Nuke.Common;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -21,6 +22,11 @@ internal static class NukeInjection
         var types = assembly.GetExportedTypes()
             .Where(type => typeof(INukeInjection).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract);
 
+        if (Debugger.IsAttached && informationAction == null)
+        {
+            informationAction = (text) => Serilog.Log.Information(text);
+        }
+
         foreach (var type in types)
         {
             try
@@ -33,12 +39,12 @@ internal static class NukeInjection
 
                     return null;
                 });
-                informationAction?.Invoke($" Creating instance of {type.FullName} - {constructor}");
+                informationAction?.Invoke($"Creating instance of {type.FullName} - {constructor}");
                 var nukeInjection = constructor.Invoke(arguments.ToArray()) as INukeInjection;
             }
             catch (Exception ex)
             {
-                informationAction?.Invoke($" Failed to create instance of {type.FullName}: {ex.Message}");
+                informationAction?.Invoke($"Failed to create instance of {type.FullName}: {ex.Message}");
             }
         }
     }

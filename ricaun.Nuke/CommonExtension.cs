@@ -30,9 +30,9 @@ namespace ricaun.Nuke
                 .OrderBy(e => e.GetName().Name))
             {
                 Information($"{assembly.GetName().Name} {assembly.GetVersionText()}");
-                NukeInjection.CreateInstance(nukeBuild, assembly, Information);
+                NukeInjection.CreateInstance(nukeBuild, assembly);
             }
-            NukeInjection.CreateInstance(nukeBuild, nukeBuild.GetType().Assembly, Information);
+            NukeInjection.CreateInstance(nukeBuild, nukeBuild.GetType().Assembly);
         }
 
         internal static void Information(string text = null)
