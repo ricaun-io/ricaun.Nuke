@@ -287,7 +287,7 @@ public static class HttpAuthTasks
         Action<HttpRequestHeaders> headerConfigurator = null)
     {
         using var content = CreateFormDataContent(filePath, formData, fileStreamContentName);
-        return await HttpPostAsync(uri, content, authorization, clientConfigurator, headerConfigurator);
+        return await HttpPatchAsync(uri, content, authorization, clientConfigurator, headerConfigurator);
     }
 
     /// <summary>
