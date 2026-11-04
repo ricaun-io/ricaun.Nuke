@@ -113,6 +113,25 @@ env:
     NuGetApiKey: ${{ secrets.NUGET_API_KEY }}
 ```
 
+#### Trusted Publishing on nuget.org
+
+The [Trusted Publishing on nuget.org](https://learn.microsoft.com/en-us/nuget/nuget-org/trusted-publishing).
+
+Set the `permissions` below to allow the `NuGet/login` action to use the `id-token` to get the `NuGetApiUser` from the `GitHub Actions`:
+
+```yml
+permissions:
+  contents: write
+  id-token: write
+
+env:
+    GitHubToken: ${{ secrets.GITHUB_TOKEN }}
+    SignFile: ${{ secrets.SIGN_FILE }}
+    SignPassword: ${{ secrets.SIGN_PASSWORD }}
+    NuGetApiUrl: ${{ secrets.NUGET_API_URL }}
+    NuGetApiUser: ${{ secrets.NUGET_API_USER }} # Optional, if not set, will use the GitHub current user.
+```
+
 # Build.cs - ITest
 
 `ITest` runs all the `TestLocalProjectName` tests on local build and server build.
