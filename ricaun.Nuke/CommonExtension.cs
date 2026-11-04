@@ -17,19 +17,21 @@ namespace ricaun.Nuke
         /// <returns></returns>
         public static T From<T>(this T nukeBuild) where T : INukeBuild
         {
-            ShowVersion();
+            nukeBuild.ShowVersion();
             return (T)(object)nukeBuild;
         }
 
-        internal static void ShowVersion()
+        internal static void ShowVersion<T>(this T nukeBuild) where T : INukeBuild
         {
             Information();
             var assemblyName = typeof(CommonExtension).Assembly.GetName().Name;
-            foreach (var item in System.AppDomain.CurrentDomain.GetAssemblies()
+            foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()
                 .Where(e => e.GetName().Name.StartsWith(assemblyName, System.StringComparison.InvariantCultureIgnoreCase)))
             {
-                Information($"{item.GetName().Name} {item.GetVersionText()}");
+                Information($"{assembly.GetName().Name} {assembly.GetVersionText()}");
+                NukeInjection.CreateInstance(nukeBuild, assembly, Information);
             }
+            NukeInjection.CreateInstance(nukeBuild, nukeBuild.GetType().Assembly, Information);
         }
 
         internal static void Information(string text = null)
