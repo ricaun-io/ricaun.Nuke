@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Features
 - Support `NuGet Trusted Publishing` when `NuGetApiUrl` is `https://api.nuget.org/v3/index.json` and `NuGetApiKey` is not empty.
 - Support `NuGetApiUser` to use in `NuGet Trusted Publishing` user name.
+- Support `NuGetAddGitHubSource` by default using `Injection` class.
 ### Updated
 - Support `CreateInstance` using `INukeInjection` interface.
 - Update `ci` to use `NuGet/login`.
