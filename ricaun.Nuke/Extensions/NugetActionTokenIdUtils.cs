@@ -19,6 +19,7 @@ namespace ricaun.Nuke.Extensions
         /// </summary>
         /// <remarks>
         /// Based in the code: https://github.com/NuGet/login/blob/main/src/index.ts
+        /// GitHub openid configuration: https://token.actions.githubusercontent.com/.well-known/openid-configuration
         /// </remarks>
         public static string GetNugetTokenId(string nugetUsername)
         {
