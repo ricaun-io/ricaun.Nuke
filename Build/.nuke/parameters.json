@@ -1,4 +1,4 @@
 {
   "$schema": "./build.schema.json",
-  "Solution": "../ricaun.Nuke.sln"
+  "Solution": "../ricaun.Nuke.slnx"
 }
