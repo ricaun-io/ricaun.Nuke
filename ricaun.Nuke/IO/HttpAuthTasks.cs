@@ -287,7 +287,7 @@ public static class HttpAuthTasks
         Action<HttpRequestHeaders> headerConfigurator = null)
     {
         using var content = CreateFormDataContent(filePath, formData, fileStreamContentName);
-        return await HttpPostAsync(uri, content, authorization, clientConfigurator, headerConfigurator);
+        return await HttpPatchAsync(uri, content, authorization, clientConfigurator, headerConfigurator);
     }
 
     /// <summary>
@@ -505,6 +505,420 @@ public static class HttpAuthTasks
     {
         return HttpDeleteAsync(uri, authorization, clientConfigurator, headerConfigurator).GetAwaiter().GetResult();
     }
+    #endregion
+
+    #region HttpJson
+    /// <summary>
+    /// Sends a multipart/form-data POST request containing a file and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="filePath">The path to the file to upload.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="formData">Optional additional form fields.</param>
+    /// <param name="fileStreamContentName">The optional name of the file content field.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>A task representing the asynchronous operation, containing the deserialized response.</returns>
+    public static async Task<T> HttpPostFileAsync<T>(
+        string uri,
+        string filePath,
+        string authorization = null,
+        Dictionary<string, string> formData = null,
+        string fileStreamContentName = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPostFileAsync(uri, filePath, authorization, formData, fileStreamContentName, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    /// <summary>
+    /// Sends a multipart/form-data POST request containing a file and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="filePath">The path to the file to upload.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="formData">Optional additional form fields.</param>
+    /// <param name="fileStreamContentName">The optional name of the file content field.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>The deserialized response.</returns>
+    public static T HttpPostFile<T>(
+        string uri,
+        string filePath,
+        string authorization = null,
+        Dictionary<string, string> formData = null,
+        string fileStreamContentName = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPostFile(uri, filePath, authorization, formData, fileStreamContentName, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    /// <summary>
+    /// Sends an asynchronous POST request with a serialized request body and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="content">The request object to serialize.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>A task representing the asynchronous operation, containing the deserialized response.</returns>
+    public static async Task<T> HttpPostAsync<T>(
+        string uri,
+        object content,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPostAsync(uri, content, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    /// <summary>
+    /// Sends a POST request with a serialized request body and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="content">The request object to serialize.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>The deserialized response.</returns>
+    public static T HttpPost<T>(
+        string uri,
+        object content,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPost(uri, content, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    /// <summary>
+    /// Sends an asynchronous POST request using the specified HTTP content and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="httpContent">The optional HTTP request content.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>A task representing the asynchronous operation, containing the deserialized response.</returns>
+    public static async Task<T> HttpPostAsync<T>(
+        string uri,
+        HttpContent httpContent = null,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPostAsync(uri, httpContent, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    /// <summary>
+    /// Sends a POST request using the specified HTTP content and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="httpContent">The optional HTTP request content.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>The deserialized response.</returns>
+    public static T HttpPost<T>(
+        string uri,
+        HttpContent httpContent = null,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPost(uri, httpContent, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    /// <summary>
+    /// Sends an asynchronous PUT request containing a file and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="filePath">The path to the file to upload.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="formData">Optional additional form fields.</param>
+    /// <param name="fileStreamContentName">The optional name of the file content field.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>A task representing the asynchronous operation, containing the deserialized response.</returns>
+    public static async Task<T> HttpPutFileAsync<T>(
+        string uri,
+        string filePath,
+        string authorization = null,
+        Dictionary<string, string> formData = null,
+        string fileStreamContentName = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPutFileAsync(uri, filePath, authorization, formData, fileStreamContentName, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    /// <summary>
+    /// Sends a PUT request containing a file and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="filePath">The path to the file to upload.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="formData">Optional additional form fields.</param>
+    /// <param name="fileStreamContentName">The optional name of the file content field.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>The deserialized response.</returns>
+    public static T HttpPutFile<T>(
+        string uri,
+        string filePath,
+        string authorization = null,
+        Dictionary<string, string> formData = null,
+        string fileStreamContentName = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPutFile(uri, filePath, authorization, formData, fileStreamContentName, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    /// <summary>
+    /// Sends an asynchronous PUT request with a serialized request body and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="content">The request object to serialize.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>A task representing the asynchronous operation, containing the deserialized response.</returns>
+    public static async Task<T> HttpPutAsync<T>(
+        string uri,
+        object content,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPutAsync(uri, content, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    /// <summary>
+    /// Sends a PUT request with a serialized request body and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="content">The request object to serialize.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>The deserialized response.</returns>
+    public static T HttpPut<T>(
+        string uri,
+        object content,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPut(uri, content, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    /// <summary>
+    /// Sends an asynchronous PUT request using the specified HTTP content and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="httpContent">The optional HTTP request content.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>A task representing the asynchronous operation, containing the deserialized response.</returns>
+    public static async Task<T> HttpPutAsync<T>(
+        string uri,
+        HttpContent httpContent = null,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPutAsync(uri, httpContent, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    /// <summary>
+    /// Sends a PUT request using the specified HTTP content and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="httpContent">The optional HTTP request content.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>The deserialized response.</returns>
+    public static T HttpPut<T>(
+        string uri,
+        HttpContent httpContent = null,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPut(uri, httpContent, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    /// <summary>
+    /// Sends an asynchronous PATCH request containing a file and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="filePath">The path to the file to upload.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="formData">Optional additional form fields.</param>
+    /// <param name="fileStreamContentName">The optional name of the file content field.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>A task representing the asynchronous operation, containing the deserialized response.</returns>
+    public static async Task<T> HttpPatchFileAsync<T>(
+        string uri,
+        string filePath,
+        string authorization = null,
+        Dictionary<string, string> formData = null,
+        string fileStreamContentName = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPatchFileAsync(uri, filePath, authorization, formData, fileStreamContentName, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    /// <summary>
+    /// Sends a PATCH request containing a file and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="filePath">The path to the file to upload.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="formData">Optional additional form fields.</param>
+    /// <param name="fileStreamContentName">The optional name of the file content field.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>The deserialized response.</returns>
+    public static T HttpPatchFile<T>(
+        string uri,
+        string filePath,
+        string authorization = null,
+        Dictionary<string, string> formData = null,
+        string fileStreamContentName = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPatchFile(uri, filePath, authorization, formData, fileStreamContentName, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    /// <summary>
+    /// Sends an asynchronous PATCH request with a serialized request body and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="content">The request object to serialize.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>A task representing the asynchronous operation, containing the deserialized response.</returns>
+    public static async Task<T> HttpPatchAsync<T>(
+        string uri,
+        object content,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPatchAsync(uri, content, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    /// <summary>
+    /// Sends a PATCH request with a serialized request body and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="content">The request object to serialize.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>The deserialized response.</returns>
+    public static T HttpPatch<T>(
+        string uri,
+        object content,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPatch(uri, content, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    /// <summary>
+    /// Sends an asynchronous PATCH request using the specified HTTP content and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="httpContent">The optional HTTP request content.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>A task representing the asynchronous operation, containing the deserialized response.</returns>
+    public static async Task<T> HttpPatchAsync<T>(
+        string uri,
+        HttpContent httpContent = null,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpPatchAsync(uri, httpContent, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    /// <summary>
+    /// Sends a PATCH request using the specified HTTP content and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="httpContent">The optional HTTP request content.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>The deserialized response.</returns>
+    public static T HttpPatch<T>(
+        string uri,
+        HttpContent httpContent = null,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpPatch(uri, httpContent, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    /// <summary>
+    /// Sends an asynchronous GET request and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>A task representing the asynchronous operation, containing the deserialized response.</returns>
+    public static async Task<T> HttpGetAsync<T>(
+        string uri,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpGetAsync(uri, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    /// <summary>
+    /// Sends a GET request and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>The deserialized response.</returns>
+    public static T HttpGet<T>(
+        string uri,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpGet(uri, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
+
+    /// <summary>
+    /// Sends an asynchronous DELETE request and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>A task representing the asynchronous operation, containing the deserialized response.</returns>
+    public static async Task<T> HttpDeleteAsync<T>(
+        string uri,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => (await HttpDeleteAsync(uri, authorization, clientConfigurator, headerConfigurator)).FromJson<T>();
+
+    /// <summary>
+    /// Sends a DELETE request and deserializes the response into <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The response type.</typeparam>
+    /// <param name="uri">The request URI.</param>
+    /// <param name="authorization">The optional authorization value.</param>
+    /// <param name="clientConfigurator">An optional callback to configure the HTTP client.</param>
+    /// <param name="headerConfigurator">An optional callback to configure the request headers.</param>
+    /// <returns>The deserialized response.</returns>
+    public static T HttpDelete<T>(
+        string uri,
+        string authorization = null,
+        Configure<HttpClient> clientConfigurator = null,
+        Action<HttpRequestHeaders> headerConfigurator = null)
+        => HttpDelete(uri, authorization, clientConfigurator, headerConfigurator).FromJson<T>();
     #endregion
 
     #region HttpClient

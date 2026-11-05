@@ -2,6 +2,7 @@ using Nuke.Common;
 using Nuke.Common.Execution;
 using ricaun.Nuke;
 using ricaun.Nuke.Components;
+using System;
 
 class Build : NukeBuild, IPublishPack, ICompileExample, ITest, IShowGitVersion, IAzureSignTool, IPrePack, ILocalAssetRelease
 {
@@ -12,3 +13,14 @@ class Build : NukeBuild, IPublishPack, ICompileExample, ITest, IShowGitVersion, 
     bool ITest.TestBuildStopWhenFailed => false;
     public static int Main() => Execute<Build>(x => x.From<IPublishPack>().Build);
 }
+
+#if DEBUG
+public class NukeInjectionDebug : INukeInjection
+{
+    public NukeInjectionDebug(IHazGitRepository hazGitRepository)
+    {
+        Serilog.Log.Information($"NukeInjectionDebug {hazGitRepository.GitRepository}");
+        throw new Exception($"NukeInjectionDebug {hazGitRepository.GitRepository}");
+    }
+}
+#endif

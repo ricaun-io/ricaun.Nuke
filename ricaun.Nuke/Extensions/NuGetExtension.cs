@@ -5,6 +5,8 @@ using Nuke.Common.Tools.NuGet;
 using Nuke.Common.Tools.SignTool;
 using System;
 using System.IO;
+using System.Net.Http;
+using System.Text;
 
 namespace ricaun.Nuke.Extensions
 {
@@ -204,5 +206,43 @@ namespace ricaun.Nuke.Extensions
             );
         }
 
+        /// <summary>
+        /// Adds a GitHub Packages NuGet source for the specified repository owner after validating the provided
+        /// credentials against the feed endpoint.
+        /// </summary>
+        /// <remarks>Stores the credential in clear text in the NuGet configuration.</remarks>
+        /// <param name="repository_owner">The GitHub account or organization that owns the NuGet package feed.</param>
+        /// <param name="userName">The user name used to authenticate to the GitHub Packages feed and to name the NuGet source.</param>
+        /// <param name="password">The password or personal access token used to authenticate to the GitHub Packages feed.</param>
+        /// <returns><see langword="true"/> when the source is added successfully; otherwise, <see langword="false"/>.</returns>
+        public static bool DotNetNuGetAddGitHubSource(string repository_owner, string userName, string password)
+        {
+            var repositoryPackageUrl = $@"https://nuget.pkg.github.com/{repository_owner}/index.json";
+            var repositoryPackageQueryUrl = $@"https://nuget.pkg.github.com/{repository_owner}/query";
+
+            try
+            {
+                var credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{userName}:{password}"));
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentials);
+
+                using var response = client.GetAsync(repositoryPackageQueryUrl).GetAwaiter().GetResult();
+                response.EnsureSuccessStatusCode();
+
+                Serilog.Log.Information("NuGet Add Source: {Organization}", repository_owner);
+
+                DotNetTasks.DotNetNuGetAddSource(s => s
+                    .SetName(userName)
+                    .SetSource(repositoryPackageUrl)
+                    .SetUsername(userName)
+                    .EnableStorePasswordInClearText()
+                    .SetPassword(password));
+
+                return true;
+            }
+            catch { }
+
+            return false;
+        }
     }
 }

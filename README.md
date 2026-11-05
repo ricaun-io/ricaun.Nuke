@@ -2,8 +2,8 @@
 
 This package is to simplify the build automation system using [Nuke.Common](https://www.nuget.org/packages/Nuke.Common/).
 
-[![Visual Studio 2022](https://img.shields.io/badge/Visual%20Studio-2022-blue)](https://github.com/ricaun-io/ricaun.Nuke)
-[![Nuke](https://img.shields.io/badge/Nuke-Build-blue)](https://nuke.build/)
+[![Visual Studio 2026](https://img.shields.io/badge/Visual%20Studio-2026-blue)](https://github.com/ricaun-io/ricaun.Nuke)
+[![Nuke](https://img.shields.io/badge/Nuke-Build-blue)](https://www.nuget.org/packages/Nuke.Common/)
 [![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Build](https://github.com/ricaun-io/ricaun.Nuke/actions/workflows/Build.yml/badge.svg)](https://github.com/ricaun-io/ricaun.Nuke/actions)
 [![Release](https://img.shields.io/nuget/v/ricaun.Nuke?logo=nuget&label=release&color=blue)](https://www.nuget.org/packages/ricaun.Nuke)
@@ -107,10 +107,25 @@ The `SIGN_PASSWORD_AZURE` is the `AzureKeyVaultClientSecret` of the `Azure Key V
 ```yml
 env:
     GitHubToken: ${{ secrets.GITHUB_TOKEN }}
-    SignFile: ${{ secrets.SIGN_FILE }}
-    SignPassword: ${{ secrets.SIGN_PASSWORD }}
     NuGetApiUrl: ${{ secrets.NUGET_API_URL }}
     NuGetApiKey: ${{ secrets.NUGET_API_KEY }}
+```
+
+#### Trusted Publishing on nuget.org
+
+The [Trusted Publishing on nuget.org](https://learn.microsoft.com/en-us/nuget/nuget-org/trusted-publishing).
+
+Set the `permissions` below to allow the `NuGet/login` action to use the `id-token` to get the `NuGetApiUser` from the `GitHub Actions`:
+
+```yml
+permissions:
+  contents: write
+  id-token: write
+
+env:
+    GitHubToken: ${{ secrets.GITHUB_TOKEN }}
+    NuGetApiUrl: ${{ secrets.NUGET_API_URL }}
+    NuGetApiUser: ${{ secrets.NUGET_API_USER }} # Optional, if not set, will use the GitHub current user.
 ```
 
 # Build.cs - ITest

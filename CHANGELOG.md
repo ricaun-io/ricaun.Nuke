@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.13.0] / 2026-11-03 - 2026-11-04
+### Features
+- Support `NuGet Trusted Publishing` when `NuGetApiUrl` is `https://api.nuget.org/v3/index.json` and `NuGetApiKey` is not empty.
+- Support `NuGetApiUser` to use in `NuGet Trusted Publishing` user name.
+- Support `NuGetAddGitHubSource` by default using `Injection` class.
+### Updated
+- Support `CreateInstance` using `INukeInjection` interface.
+- Update `ci` to use `NuGet/login`.
+- Update `HttpAuthTasks` to support json response.
+- Create `NugetActionTokenIdUtils` to get the `NugetTokenId` using `Action`.
+
 ## [1.12.4] / 2026-10-15
 ### Updated
 - Update `NuGet.Packaging` to last version to fix [`System.Security.Cryptography.Pkcs`](https://github.com/advisories/GHSA-2fmv-rv2c-59x7) vulnerability.
@@ -469,6 +480,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.13.0]: ../../compare/1.12.4...1.13.0
 [1.12.4]: ../../compare/1.12.3...1.12.4
 [1.12.3]: ../../compare/1.12.2...1.12.3
 [1.12.2]: ../../compare/1.12.1...1.12.2

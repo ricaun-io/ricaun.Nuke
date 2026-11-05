@@ -1,5 +1,6 @@
 ﻿using Nuke.Common;
 using Nuke.Common.Utilities;
+using ricaun.Nuke.Injection;
 using System.Linq;
 
 namespace ricaun.Nuke
@@ -17,19 +18,22 @@ namespace ricaun.Nuke
         /// <returns></returns>
         public static T From<T>(this T nukeBuild) where T : INukeBuild
         {
-            ShowVersion();
+            nukeBuild.ShowVersion();
             return (T)(object)nukeBuild;
         }
 
-        internal static void ShowVersion()
+        internal static void ShowVersion<T>(this T nukeBuild) where T : INukeBuild
         {
             Information();
             var assemblyName = typeof(CommonExtension).Assembly.GetName().Name;
-            foreach (var item in System.AppDomain.CurrentDomain.GetAssemblies()
-                .Where(e => e.GetName().Name.StartsWith(assemblyName, System.StringComparison.InvariantCultureIgnoreCase)))
+            foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()
+                .Where(e => e.GetName().Name.StartsWith(assemblyName, System.StringComparison.InvariantCultureIgnoreCase))
+                .OrderBy(e => e.GetName().Name))
             {
-                Information($"{item.GetName().Name} {item.GetVersionText()}");
+                Information($"{assembly.GetName().Name} {assembly.GetVersionText()}");
+                NukeInjection.CreateInstance(nukeBuild, assembly);
             }
+            NukeInjection.CreateInstance(nukeBuild, nukeBuild.GetType().Assembly);
         }
 
         internal static void Information(string text = null)
