@@ -83,7 +83,7 @@ namespace ricaun.Nuke.Components
                 catch (System.Exception ex)
                 {
                     Serilog.Log.Error($"NugetTokenId failed. Exception: {ex.Message}");
-                    return string.Empty;
+                    throw;
                 }
             }
             return GitHubToken;
