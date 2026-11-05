@@ -3,7 +3,7 @@
 This package is to simplify the build automation system using [Nuke.Common](https://www.nuget.org/packages/Nuke.Common/).
 
 [![Visual Studio 2022](https://img.shields.io/badge/Visual%20Studio-2022-blue)](https://github.com/ricaun-io/ricaun.Nuke)
-[![Nuke](https://img.shields.io/badge/Nuke-Build-blue)](https://nuke.build/)
+[![Nuke](https://img.shields.io/badge/Nuke-Build-blue)](https://www.nuget.org/packages/Nuke.Common/)
 [![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Build](https://github.com/ricaun-io/ricaun.Nuke/actions/workflows/Build.yml/badge.svg)](https://github.com/ricaun-io/ricaun.Nuke/actions)
 [![Release](https://img.shields.io/nuget/v/ricaun.Nuke?logo=nuget&label=release&color=blue)](https://www.nuget.org/packages/ricaun.Nuke)
