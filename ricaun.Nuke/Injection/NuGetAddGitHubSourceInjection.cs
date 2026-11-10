@@ -19,7 +19,7 @@ internal class NuGetAddGitHubSourceInjection : INukeInjection
             return;
 
         var repository_owner = gitRepository.GetGitRepositoryOwner();
-        var userName = GitHubActions.Instance?.Actor ?? gitRepository.GitRepository.GetGitHubOwner();
+        var userName = gitRepository.GetGitRepositoryPackageUser();
         var password = gitRepository.GitHubToken;
 
         NuGetExtension.DotNetNuGetAddGitHubSource(repository_owner, userName, password);

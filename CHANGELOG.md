@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.13.1] / 2026-11-10
+### Updated
+- Update `GetGitRepositoryPackageUser` to fix issue when is not `GitHub`.
+
 ## [1.13.0] / 2026-11-03 - 2026-11-04
 ### Features
 - Support `NuGet Trusted Publishing` when `NuGetApiUrl` is `https://api.nuget.org/v3/index.json` and `NuGetApiKey` is not empty.
@@ -480,6 +484,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - First Release
 
 [vNext]: ../../compare/1.0.0...HEAD
+[1.13.1]: ../../compare/1.13.0...1.13.1
 [1.13.0]: ../../compare/1.12.4...1.13.0
 [1.12.4]: ../../compare/1.12.3...1.12.4
 [1.12.3]: ../../compare/1.12.2...1.12.3
