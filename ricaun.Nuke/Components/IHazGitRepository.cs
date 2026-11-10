@@ -49,7 +49,7 @@ namespace ricaun.Nuke.Components
                 Serilog.Log.Warning($"GitRepository not found, PackageUser not found.");
                 return string.Empty;
             }
-            var userName = GitHubActions.Instance?.Actor ?? GitRepository.GetGitHubOwner();
+            var userName = GitHubActions.Instance?.Actor ?? (GitRepository.IsGitHubRepository() ? GitRepository.GetGitHubOwner() : string.Empty);
             return userName;
         }
 
